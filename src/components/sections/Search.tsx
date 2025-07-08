@@ -1,9 +1,9 @@
 function Search() {
   return (
     <section>
-      {/* Search functionality goes here */}
+      <h2>Search</h2>
     </section>
   )
 }
 
-export { Search } 
+export { Search }

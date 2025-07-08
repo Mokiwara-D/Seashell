@@ -1,4 +1,3 @@
-import { Search } from '../sections/Search'
 import { Hero } from '../sections/Hero'
 import { LocationInfo } from '../sections/LocationInfo'
 import { Holidays } from '../sections/Holidays'
@@ -9,8 +8,7 @@ import { SignUp } from '../sections/SignUp'
 
 function Main() {
   return (
-    <main>
-      <Search />
+    <main id="main-container" className="flex flex-col gap-4 grow min-h-screen">
       <Hero />
       <LocationInfo />
       <Holidays />
