@@ -1,9 +1,13 @@
+import { Content, Wrapper } from '@/components/ui/container'
+
 function CustomerReviews() {
   return (
-    <section>
-      {/* Customer reviews content goes here */}
-    </section>
+    <Wrapper>
+      <Content>
+        <h1>Customer Reviews</h1>
+      </Content>
+    </Wrapper>
   )
 }
 
-export { CustomerReviews } 
+export { CustomerReviews }

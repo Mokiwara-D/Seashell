@@ -1,9 +1,13 @@
+import { Content, Wrapper } from '@/components/ui/container'
+
 function LocationInfo() {
   return (
-    <section>
-      {/* Location information goes here */}
-    </section>
+    <Wrapper>
+      <Content>
+        <h1>Location Info</h1>
+      </Content>
+    </Wrapper>
   )
 }
 
-export { LocationInfo } 
+export { LocationInfo }

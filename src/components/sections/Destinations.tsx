@@ -1,9 +1,13 @@
+import { Content, Wrapper } from '@/components/ui/container'
+
 function Destinations() {
   return (
-    <section>
-      {/* Destinations content goes here */}
-    </section>
+    <Wrapper>
+      <Content>
+        <h1>Destinations</h1>
+      </Content>
+    </Wrapper>
   )
 }
 
-export { Destinations } 
+export { Destinations }

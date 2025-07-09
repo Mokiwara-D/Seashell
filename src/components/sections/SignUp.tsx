@@ -1,9 +1,13 @@
+import { Content, Wrapper } from '@/components/ui/container'
+
 function SignUp() {
   return (
-    <section>
-      {/* Sign up content goes here */}
-    </section>
+    <Wrapper>
+      <Content>
+        <h1>Sign Up</h1>
+      </Content>
+    </Wrapper>
   )
 }
 
-export { SignUp } 
+export { SignUp }

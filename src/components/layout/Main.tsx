@@ -8,7 +8,7 @@ import { SignUp } from '../sections/SignUp'
 
 function Main() {
   return (
-    <main id="main-container" className="flex min-h-screen grow">
+    <main id="main-container" className="flex grow flex-col">
       <Hero />
       <LocationInfo />
       <Holidays />

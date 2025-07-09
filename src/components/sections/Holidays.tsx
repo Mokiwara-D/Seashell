@@ -1,9 +1,13 @@
+import { Content, Wrapper } from '@/components/ui/container'
+
 function Holidays() {
   return (
-    <section>
-      {/* Holidays content goes here */}
-    </section>
+    <Wrapper>
+      <Content>
+        <h1>Holidays</h1>
+      </Content>
+    </Wrapper>
   )
 }
 
-export { Holidays } 
+export { Holidays }
