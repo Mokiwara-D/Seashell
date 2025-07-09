@@ -7,7 +7,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { PiUmbrellaLight } from 'react-icons/pi'
 import { Content, Wrapper } from '@/components/ui/container'
-import placeholder from '@/assets/placeholder.jpg'
+import logo from '@/assets/logo.svg'
 import { useState } from 'react'
 
 function NavBar() {
@@ -24,14 +24,14 @@ function NavBar() {
 
   return (
     <>
-      <Wrapper className="bg-background relative">
+      <Wrapper className="bg-background relative overflow-visible">
         <Content className="h-16 gap-2 font-bold sm:h-18 sm:gap-4 md:h-20">
           {/* Mobile Layout: Hamburger - Logo - My Booking */}
           <div className="flex w-full items-center justify-between gap-2 lg:hidden">
             {/* Mobile Menu Button - Left */}
             <Button
               size="lg"
-              className="hover:bg-accent hover:text-foreground gap-2 rounded-full px-3"
+              className="hover:bg-accent hover:text-foreground flex-shrink-0 gap-1 rounded-full px-2"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle mobile menu"
             >
@@ -62,15 +62,15 @@ function NavBar() {
 
             {/* Logo - Center */}
             <img
-              src={placeholder}
+              src={logo}
               alt="Seashell Holidays logo"
-              className="h-10 w-auto flex-shrink-0 object-contain sm:h-12 md:h-14"
+              className="h-16 w-auto max-w-32 object-contain"
             />
 
             {/* My Booking Button - Right */}
             <Button
               size="lg"
-              className="hover:bg-accent hover:text-foreground gap-2 rounded-full px-3"
+              className="hover:bg-accent hover:text-foreground flex-shrink-0 gap-1 rounded-full px-2"
               aria-label="My Booking"
             >
               <PiUmbrellaLight className="size-4 rotate-[-45deg]" />
@@ -83,7 +83,7 @@ function NavBar() {
             {/* Logo - Left */}
             <div className="flex-1">
               <img
-                src={placeholder}
+                src={logo}
                 alt="Seashell Holidays logo"
                 className="h-14 w-auto flex-shrink-0 object-contain lg:h-16"
               />
@@ -119,8 +119,8 @@ function NavBar() {
 
         {/* Mobile Menu Dropdown - Positioned below menu button */}
         {isMobileMenuOpen && (
-          <div className="absolute top-full left-4 z-50 mt-2 lg:hidden">
-            <div className="w-64 overflow-hidden rounded-2xl border bg-white shadow-2xl">
+          <div className="absolute top-full left-4 z-50 lg:hidden">
+            <div className="w-64 overflow-hidden rounded-lg border bg-white shadow-2xl">
               <div className="p-4">
                 {/* Navigation Items */}
                 <div className="space-y-1">

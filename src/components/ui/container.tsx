@@ -1,6 +1,6 @@
 import React from 'react'
 
-type WrapperElement = 'header' | 'section' | 'footer'
+type WrapperElement = 'section' | 'div'
 
 interface WrapperProps<T extends WrapperElement = 'section'> {
   children?: React.ReactNode
@@ -19,7 +19,7 @@ function Wrapper<T extends WrapperElement = 'section'>({
   return React.createElement(
     Component,
     {
-      className: `w-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 ${className || ''}`,
+      className: `w-full flex flex-col items-center justify-center px-6 sm:px-12 lg:px-24 overflow-hidden ${className || ''}`,
       ...props,
     },
     children
@@ -34,7 +34,7 @@ interface ContentProps {
 function Content({ children, className }: ContentProps) {
   return (
     <div
-      className={`mx-auto flex w-full max-w-sm items-center justify-between sm:max-w-2xl md:max-w-4xl lg:max-w-6xl xl:max-w-7xl ${className || ''}`}
+      className={`mx-auto flex w-full max-w-7xl items-center justify-between ${className || ''}`}
     >
       {children}
     </div>

@@ -45,10 +45,7 @@ const SearchOptions = ({
   ]
 
   return (
-    <Container
-      wrapperClassName="pt-2 sm:pt-4"
-      contentClassName="justify-center py-0"
-    >
+    <Container wrapperClassName="pt-2" contentClassName="justify-center py-0">
       <div className="flex justify-center gap-1 sm:gap-2">
         {tabs.map((tab) => (
           <Button

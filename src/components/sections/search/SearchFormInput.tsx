@@ -48,7 +48,7 @@ function SearchFormInput(props: SearchFormInputProps) {
         max={max}
         placeholder={placeholder}
         required={required}
-        className={`text-foreground h-10 touch-manipulation rounded-none border-none bg-white p-2 text-sm focus:ring-0 focus:outline-none sm:h-10 sm:p-2 sm:text-sm lg:h-12 lg:p-3 lg:text-base ${
+        className={`text-foreground h-10 touch-manipulation rounded-xs border-none bg-white p-2 text-sm focus:ring-0 focus:outline-none sm:h-10 sm:p-2 sm:text-sm lg:h-12 lg:p-3 lg:text-base ${
           type === 'number'
             ? '[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none'
             : ''

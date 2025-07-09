@@ -49,12 +49,12 @@ const SearchForm = memo(
 
     return (
       <Container
-        wrapperClassName="bg-accent py-3 sm:py-4 lg:py-6"
+        wrapperClassName="bg-accent py-3"
         contentClassName="justify-center"
       >
         <form onSubmit={handleSubmit} className="w-full">
           {/* Mobile Layout - Vertical Stack */}
-          <div className="flex flex-col gap-3 sm:hidden">
+          <div className="flex flex-col gap-3 lg:hidden">
             <div className="grid grid-cols-2 gap-3">
               <SearchFormInput
                 type="text"
@@ -164,7 +164,7 @@ const SearchForm = memo(
           </div>
 
           {/* Tablet and Desktop Layout - Horizontal */}
-          <div className="hidden items-end gap-2 sm:flex lg:gap-4">
+          <div className="hidden items-end gap-2 lg:flex lg:gap-4">
             <SearchFormInput
               type="text"
               label="DEPARTURE"
