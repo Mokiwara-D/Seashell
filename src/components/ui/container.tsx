@@ -19,7 +19,7 @@ function Wrapper<T extends WrapperElement = 'section'>({
   return React.createElement(
     Component,
     {
-      className: `flex w-dvw flex-col items-center justify-center px-4 ${className}`,
+      className: `w-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 ${className || ''}`,
       ...props,
     },
     children
@@ -34,7 +34,7 @@ interface ContentProps {
 function Content({ children, className }: ContentProps) {
   return (
     <div
-      className={`container mx-auto flex w-full max-w-6xl items-center justify-between ${className}`}
+      className={`mx-auto flex w-full max-w-sm items-center justify-between sm:max-w-2xl md:max-w-4xl lg:max-w-6xl xl:max-w-7xl ${className || ''}`}
     >
       {children}
     </div>

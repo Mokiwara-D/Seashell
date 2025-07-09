@@ -4,12 +4,14 @@ import { Content, Wrapper } from '@/components/ui/container'
 function Hero() {
   return (
     <Wrapper
-      className="h-96 bg-black/40 bg-cover bg-center bg-blend-multiply"
+      className="h-64 bg-black/40 bg-cover bg-center bg-blend-multiply sm:h-80 md:h-96"
       style={{ backgroundImage: `url(${placeholder})` }}
     >
-      <Content>
-        <div className="flex h-28 w-1/2 items-center justify-center rounded-lg bg-white p-4">
-          <h1 className="text-accent text-4xl font-bold">SPAIN HOLIDAYS</h1>
+      <Content className="justify-center">
+        <div className="flex w-fit max-w-full items-center justify-center rounded-lg bg-white p-3 sm:p-4 md:p-6">
+          <h1 className="text-accent text-center text-xl font-bold whitespace-nowrap sm:text-2xl md:text-3xl lg:text-4xl">
+            SPAIN HOLIDAYS
+          </h1>
         </div>
       </Content>
     </Wrapper>

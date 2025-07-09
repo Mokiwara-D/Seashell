@@ -49,15 +49,126 @@ const SearchForm = memo(
 
     return (
       <Container
-        wrapperClassName="bg-accent py-4"
+        wrapperClassName="bg-accent py-3 sm:py-4 lg:py-6"
         contentClassName="justify-center"
       >
         <form onSubmit={handleSubmit} className="w-full">
-          <div className="flex items-end gap-4">
+          {/* Mobile Layout - Vertical Stack */}
+          <div className="flex flex-col gap-3 sm:hidden">
+            <div className="grid grid-cols-2 gap-3">
+              <SearchFormInput
+                type="text"
+                label="DEPARTURE"
+                id="departure"
+                value={searchInput.departure}
+                onChange={(e) =>
+                  dispatch({
+                    type: 'UPDATE_DEPARTURE',
+                    payload: e.target.value,
+                  })
+                }
+                placeholder="Any Airport"
+                required
+              />
+              <SearchFormInput
+                type="text"
+                label="DESTINATION"
+                id="destination"
+                value={searchInput.destination}
+                onChange={(e) =>
+                  dispatch({
+                    type: 'UPDATE_DESTINATION',
+                    payload: e.target.value,
+                  })
+                }
+                placeholder="Any Destination"
+                required
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <SearchFormInput
+                type="date"
+                label="DATE"
+                id="departure-date"
+                value={searchInput.departureDate || todayDate}
+                onChange={(e) =>
+                  dispatch({
+                    type: 'UPDATE_DEPARTURE_DATE',
+                    payload: e.target.value,
+                  })
+                }
+                min={todayDate}
+                required
+              />
+              <SearchFormInput
+                type="number"
+                label="DURATION"
+                id="duration"
+                value={searchInput.duration}
+                onChange={(e) =>
+                  dispatch({
+                    type: 'UPDATE_DURATION',
+                    payload: parseInt(e.target.value) || 1,
+                  })
+                }
+                placeholder="Nights"
+                min={1}
+                max={30}
+                required
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <SearchFormInput
+                type="number"
+                label="ADULTS"
+                id="adults-mobile"
+                value={searchInput.passengers.adults}
+                onChange={handleAdultsChange}
+                min={1}
+                max={99}
+                required
+              />
+              <SearchFormInput
+                type="number"
+                label="CHILDREN"
+                id="children-mobile"
+                value={searchInput.passengers.children}
+                onChange={handleChildrenChange}
+                min={0}
+                max={99}
+              />
+            </div>
+
+            <Button
+              type="submit"
+              size="lg"
+              className="flex h-12 w-full touch-manipulation items-center justify-center gap-2 rounded-lg bg-black px-6 font-semibold text-white hover:bg-gray-800"
+            >
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+              SEARCH
+            </Button>
+          </div>
+
+          {/* Tablet and Desktop Layout - Horizontal */}
+          <div className="hidden items-end gap-2 sm:flex lg:gap-4">
             <SearchFormInput
               type="text"
-              label="DEPARTURE AIRPORT"
-              id="departure"
+              label="DEPARTURE"
+              id="departure-desktop"
               value={searchInput.departure}
               onChange={(e) =>
                 dispatch({
@@ -72,7 +183,7 @@ const SearchForm = memo(
             <SearchFormInput
               type="text"
               label="DESTINATION"
-              id="destination"
+              id="destination-desktop"
               value={searchInput.destination}
               onChange={(e) =>
                 dispatch({
@@ -86,8 +197,8 @@ const SearchForm = memo(
 
             <SearchFormInput
               type="date"
-              label="DEPARTURE DATE"
-              id="departure-date"
+              label="DATE"
+              id="departure-date-desktop"
               value={searchInput.departureDate || todayDate}
               onChange={(e) =>
                 dispatch({
@@ -102,7 +213,7 @@ const SearchForm = memo(
             <SearchFormInput
               type="number"
               label="DURATION"
-              id="duration"
+              id="duration-desktop"
               value={searchInput.duration}
               onChange={(e) =>
                 dispatch({
@@ -119,7 +230,7 @@ const SearchForm = memo(
             <SearchFormInput
               type="number"
               label="ADULTS"
-              id="adults"
+              id="adults-desktop"
               value={searchInput.passengers.adults}
               onChange={handleAdultsChange}
               min={1}
@@ -131,7 +242,7 @@ const SearchForm = memo(
             <SearchFormInput
               type="number"
               label="CHILDREN"
-              id="children"
+              id="children-desktop"
               value={searchInput.passengers.children}
               onChange={handleChildrenChange}
               min={0}
@@ -142,7 +253,7 @@ const SearchForm = memo(
             <Button
               type="submit"
               size="lg"
-              className="ml-4 flex h-12 items-center gap-2 rounded-lg bg-black px-8 font-semibold text-white hover:bg-gray-800"
+              className="ml-2 flex h-12 items-center gap-2 rounded-lg bg-black px-6 font-semibold whitespace-nowrap text-white hover:bg-gray-800 lg:ml-4 lg:px-8"
             >
               <svg
                 className="h-4 w-4"
