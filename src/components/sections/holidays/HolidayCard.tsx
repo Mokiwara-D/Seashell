@@ -15,6 +15,9 @@ function HolidayCard({ holiday }: HolidayCardProps) {
           src={holiday.image}
           alt={holiday.name}
           className="h-full w-full object-cover"
+          width="320"
+          height="240"
+          loading="lazy"
         />
       </div>
       <CardContent className="flex flex-col justify-between pb-2">

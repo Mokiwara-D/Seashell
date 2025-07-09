@@ -15,7 +15,7 @@ function Tabs({ tabs, activeTab, onTabChange, className }: TabsProps) {
           <button
             key={tab}
             onClick={() => onTabChange(tab)}
-            className={`border-b-2 px-1 py-4 text-sm font-medium whitespace-nowrap transition-colors ${
+            className={`cursor-pointer border-b-2 px-1 py-4 text-sm font-medium whitespace-nowrap transition-colors ${
               activeTab === tab
                 ? 'border-foreground text-foreground'
                 : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'

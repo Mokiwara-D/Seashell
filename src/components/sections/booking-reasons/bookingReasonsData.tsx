@@ -51,6 +51,9 @@ export const bookingReasonsData: BookingReason[] = [
           src="/src/assets/TOL.svg"
           alt="Holiday Protection"
           className="h-14 w-14"
+          width="56"
+          height="56"
+          loading="lazy"
         />
       </div>
     ),

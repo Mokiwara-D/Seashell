@@ -30,8 +30,8 @@ function NavBar() {
           <div className="flex w-full items-center justify-between gap-2 lg:hidden">
             {/* Mobile Menu Button - Left */}
             <Button
-              size="lg"
-              className="hover:bg-accent hover:text-foreground flex-shrink-0 gap-1 rounded-full px-2"
+              size={'lg'}
+              className="hover:text-foreground flex-shrink-0 gap-1 rounded-full px-2"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle mobile menu"
             >
@@ -70,7 +70,7 @@ function NavBar() {
             {/* My Booking Button - Right */}
             <Button
               size="lg"
-              className="hover:bg-accent hover:text-foreground flex-shrink-0 gap-1 rounded-full px-2"
+              className="hover:text-foreground flex-shrink-0 gap-1 rounded-full px-2"
               aria-label="My Booking"
             >
               <PiUmbrellaLight className="size-4 rotate-[-45deg]" />
@@ -92,10 +92,13 @@ function NavBar() {
             {/* Desktop Navigation - Center (absolutely centered) */}
             <div className="relative">
               <NavigationMenu>
-                <NavigationMenuList className="flex gap-2 xl:gap-4">
+                <NavigationMenuList className="mx-4 flex transition-all duration-300 xl:gap-4">
                   {navigationItems.map((item) => (
                     <NavigationMenuItem key={item}>
-                      <NavigationMenuLink className="px-2 text-sm whitespace-nowrap xl:px-3 xl:text-base">
+                      <NavigationMenuLink
+                        href="#"
+                        className="hover:text-foreground text-muted-foreground rounded-full border-2 border-transparent px-3 text-sm whitespace-nowrap transition-all duration-300 hover:bg-transparent xl:px-3 xl:text-base"
+                      >
                         {item}
                       </NavigationMenuLink>
                     </NavigationMenuItem>
@@ -125,13 +128,14 @@ function NavBar() {
                 {/* Navigation Items */}
                 <div className="space-y-1">
                   {navigationItems.map((item) => (
-                    <button
+                    <a
                       key={item}
-                      className="hover:bg-accent hover:text-accent-foreground w-full cursor-pointer rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors"
+                      href="#"
+                      className="hover:bg-secondary hover:text-accent-foreground border-input bg-background block w-full cursor-pointer rounded-lg border px-3 py-2 text-left text-sm font-medium transition-colors"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {item}
-                    </button>
+                    </a>
                   ))}
                 </div>
               </div>

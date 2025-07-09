@@ -11,20 +11,53 @@ import { Tabs } from '@/components/ui/tabs'
 import { useState } from 'react'
 
 function LocationInfo() {
-  const [activeTab, setActiveTab] = useState('Overview')
+  const [activeTab, setActiveTab] = useState('About')
   const [isExpanded, setIsExpanded] = useState(false)
 
-  const tabs = ['Overview', 'Food & Drink', 'Beaches', 'Nightlife', 'Families']
+  const tabs = ['About', 'Attractions', 'Weather', 'Resorts']
 
-  const tabContent = {
-    Overview: `Spain is a European nation which can be found situated between France, to the northeast, and Portugal, to the west. One of the most singular destinations on the globe, Spain is a fascinating and quite varied country whether you want to stay along the coast or explore the countryside. One of the most recognised features on the map, Spain is famous for the many fantastic beaches you'll discover along the coastline, the magnificent architecture including the famously colourful shell-shaped buildings of famed Catalonian architect Antoni Gaudi, the Dadaist masterpieces of legendary surrealist artist Salvador Dali, or the pageant sports and festivals of the population, culture of Spain. A far cry from the stereotypical view from a country, a trip to Spain is a particularly exciting adventure, whether you want to visit crowded, frantic urban centres or peaceful, desert-like rural areas. Spain is the third most visited country in the world. Spain is surrounded by only Armenia and France when it comes to international tourist arrivals. A world total of 75 million visitors have come to the crowd. For paella, a delectable slow-cooked rice dish traditionally cooked with seafood or lamb, and spicy chorizo flavours. As long as the local culture is preserved, a visit to one of Spain's beautiful provinces would not be the same.`,
-    'Food & Drink': `Spanish cuisine is renowned worldwide for its rich flavors and diverse regional specialties. From the famous paella of Valencia to the pintxos of the Basque Country, Spain offers an incredible culinary journey. Don't miss trying authentic tapas, jamón ibérico, gazpacho, and traditional Spanish wines and sangria.`,
-    Beaches: `Spain boasts some of Europe's most beautiful beaches along its extensive coastline. The Costa del Sol, Costa Brava, and Balearic Islands offer pristine sandy beaches with crystal-clear waters. Whether you prefer bustling beach resorts or secluded coves, Spain's diverse coastal regions have something for every beach lover.`,
-    Nightlife: `Spanish nightlife is legendary, with cities like Madrid, Barcelona, and Ibiza offering world-class entertainment. From traditional flamenco shows to cutting-edge nightclubs, Spain comes alive after dark. The Spanish tradition of staying up late means the party often continues until dawn, especially during weekends and festivals.`,
-    Families: `Spain is an excellent destination for families, offering a perfect blend of culture, adventure, and relaxation. Theme parks like PortAventura, beautiful beaches with calm waters, interactive museums, and family-friendly festivals make Spain an ideal choice for travelers with children of all ages.`,
+  const content = {
+    About: (
+      <p>
+        Discover the enchanting beauty of Spain with Seashell Holidays. From the
+        vibrant culture of Barcelona to the historic charm of Madrid, Spain
+        offers an incredible diversity of experiences. Whether you're looking to
+        relax on the pristine beaches of Costa del Sol, explore the
+        architectural wonders of Gaudí, or indulge in world-class cuisine and
+        wine, Spain has something for every traveler. Our carefully curated
+        holiday packages ensure you experience the very best of this magnificent
+        country, with comfortable accommodations, expert local guides, and
+        unforgettable memories.
+      </p>
+    ),
+    Attractions: (
+      <p>
+        Spain boasts world-renowned attractions including the iconic Sagrada
+        Familia in Barcelona, the majestic Alhambra in Granada, and the vibrant
+        Flamenco shows in Seville. Visit the stunning Park Güell, explore the
+        historic streets of Toledo, or experience the excitement of Madrid's
+        world-class museums like the Prado and Reina Sofia.
+      </p>
+    ),
+    Weather: (
+      <p>
+        Spain enjoys a Mediterranean climate with warm, dry summers and mild
+        winters. The best time to visit is during spring (April-June) and autumn
+        (September-November) when temperatures are pleasant and crowds are
+        smaller. Summer months offer perfect beach weather along the coastlines.
+      </p>
+    ),
+    Resorts: (
+      <p>
+        Our partner resorts in Spain offer luxury accommodations across the
+        country's most beautiful locations. From beachfront properties in Costa
+        Brava to historic paradors in Andalusia, experience Spanish hospitality
+        at its finest with modern amenities and authentic local experiences.
+      </p>
+    ),
   }
 
-  const currentContent = tabContent[activeTab as keyof typeof tabContent]
+  const currentContent = content[activeTab as keyof typeof content]
 
   return (
     <Container
@@ -35,11 +68,15 @@ function LocationInfo() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink>Home</BreadcrumbLink>
+            <BreadcrumbLink href="#" aria-label="Go to homepage">
+              Home
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink>Holidays</BreadcrumbLink>
+            <BreadcrumbLink href="#" aria-label="Browse all holidays">
+              Holidays
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
@@ -77,6 +114,8 @@ function LocationInfo() {
         <button
           onClick={() => setIsExpanded(!isExpanded)}
           className="text-accent hover:text-accent/80 cursor-pointer text-sm font-medium transition-colors"
+          aria-expanded={isExpanded}
+          aria-label={isExpanded ? 'Show less content' : 'Show more content'}
         >
           {isExpanded ? 'Read less' : 'Read more'}
         </button>

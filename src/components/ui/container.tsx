@@ -45,15 +45,17 @@ interface ContainerProps {
   children?: React.ReactNode
   wrapperClassName?: string
   contentClassName?: string
+  wrapperElement?: WrapperElement
 }
 
 function Container({
   children,
   wrapperClassName,
   contentClassName,
+  wrapperElement,
 }: ContainerProps) {
   return (
-    <Wrapper className={wrapperClassName}>
+    <Wrapper className={wrapperClassName} as={wrapperElement}>
       <Content className={contentClassName}>{children}</Content>
     </Wrapper>
   )

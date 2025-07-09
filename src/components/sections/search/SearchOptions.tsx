@@ -8,9 +8,13 @@ import packageIcon from '@/assets/pkg.svg'
 const SearchOptions = ({
   selectedOption = 'flightHotel',
   dispatch,
+  isExpanded = false,
+  setIsExpanded,
 }: {
   selectedOption?: string
   dispatch: React.Dispatch<SearchAction>
+  isExpanded?: boolean
+  setIsExpanded: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
   const tabs = [
     {
@@ -51,11 +55,16 @@ const SearchOptions = ({
           <Button
             key={tab.id}
             className={`max-w-24 flex-1 touch-manipulation rounded-br-none rounded-bl-none px-4 py-6 text-center text-xs font-bold transition-all sm:max-w-none sm:min-w-fit sm:text-sm ${
-              selectedOption === tab.id
+              isExpanded && selectedOption === tab.id
                 ? 'bg-accent text-foreground'
                 : 'bg-primary hover:bg-accent/50 hover:text-foreground text-muted-foreground'
             } `}
-            onClick={() => dispatch({ type: 'UPDATE_OPTION', payload: tab.id })}
+            onClick={() => {
+              dispatch({ type: 'UPDATE_OPTION', payload: tab.id })
+              if (!isExpanded) {
+                setIsExpanded(true)
+              }
+            }}
           >
             <div className="flex flex-row items-center gap-1 sm:gap-2">
               <img

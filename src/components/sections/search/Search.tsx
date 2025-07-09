@@ -1,7 +1,10 @@
 import SearchOptions from './SearchOptions'
 import SearchForm from './SearchForm'
-import { useReducer } from 'react'
+import { useReducer, useState } from 'react'
 import type { SearchInput, SearchAction } from './searchTypes'
+import { Button } from '@/components/ui/button'
+import { ChevronDown } from 'lucide-react'
+import { Container } from '@/components/ui/container'
 
 const searchReducer = (
   state: SearchInput,
@@ -49,20 +52,50 @@ const initialState: SearchInput = {
 
 function Search() {
   const [searchInput, dispatch] = useReducer(searchReducer, initialState)
+  const [isExpanded, setIsExpanded] = useState(false)
 
   const handleSubmit = (input: SearchInput) => {
     console.log('Search submitted:', input)
   }
 
   return (
-    <>
-      <SearchOptions selectedOption={searchInput.option} dispatch={dispatch} />
+    <div role="search" aria-label="Holiday search">
+      <SearchOptions
+        selectedOption={searchInput.option}
+        dispatch={dispatch}
+        isExpanded={isExpanded}
+        setIsExpanded={setIsExpanded}
+      />
       <SearchForm
         searchInput={searchInput}
         dispatch={dispatch}
         onSubmit={handleSubmit}
+        isExpanded={isExpanded}
       />
-    </>
+      <Container
+        wrapperElement="div"
+        wrapperClassName="absolute bottom-0 translate-y-12"
+        contentClassName="flex justify-end"
+      >
+        <Button
+          size="icon"
+          className="text-foreground rounded-full bg-gray-200/80"
+          onClick={() => setIsExpanded(!isExpanded)}
+          aria-label={
+            isExpanded ? 'Collapse search form' : 'Expand search form'
+          }
+          aria-expanded={isExpanded}
+          aria-controls="search-form"
+        >
+          <ChevronDown
+            className={`size-4 transition-transform duration-300 ${
+              isExpanded ? 'rotate-180' : ''
+            }`}
+            aria-hidden="true"
+          />
+        </Button>
+      </Container>
+    </div>
   )
 }
 

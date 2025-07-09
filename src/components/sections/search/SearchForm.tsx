@@ -8,10 +8,11 @@ interface SearchFormProps {
   searchInput: SearchInput
   dispatch: React.Dispatch<SearchAction>
   onSubmit: (input: SearchInput) => void
+  isExpanded: boolean
 }
 
 const SearchForm = memo(
-  ({ searchInput, dispatch, onSubmit }: SearchFormProps) => {
+  ({ searchInput, dispatch, onSubmit, isExpanded }: SearchFormProps) => {
     const { todayDate } = useMemo(() => {
       const today = new Date()
       const tomorrow = new Date(today)
@@ -49,7 +50,9 @@ const SearchForm = memo(
 
     return (
       <Container
-        wrapperClassName="bg-accent py-3"
+        wrapperClassName={`bg-accent transition-all duration-500 ease-in-out overflow-hidden ${
+          isExpanded ? 'max-h-96 py-3' : 'max-h-0 py-0'
+        }`}
         contentClassName="justify-center"
       >
         <form onSubmit={handleSubmit} className="w-full">

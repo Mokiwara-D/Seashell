@@ -1,11 +1,28 @@
 import placeholder from '@/assets/placeholder.jpg'
 import { Content, Wrapper } from '@/components/ui/container'
+import { useEffect } from 'react'
 
 function Hero() {
+  useEffect(() => {
+    const link = document.createElement('link')
+    link.rel = 'preload'
+    link.as = 'image'
+    link.href = placeholder
+    document.head.appendChild(link)
+
+    return () => {
+      document.head.removeChild(link)
+    }
+  }, [])
+
   return (
     <Wrapper
-      className="h-64 bg-black/40 bg-cover bg-center bg-blend-multiply sm:h-80 md:h-104"
-      style={{ backgroundImage: `url(${placeholder})` }}
+      className="hero-background h-64 bg-black/40 bg-cover bg-center bg-blend-multiply sm:h-80 md:h-104"
+      style={{
+        backgroundImage: `url(${placeholder})`,
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
     >
       <Content className="justify-center md:justify-start">
         <div className="flex w-fit max-w-full items-center justify-center overflow-hidden rounded-lg bg-white p-3 sm:p-4 md:px-8 md:py-6 lg:px-10 lg:py-8">
