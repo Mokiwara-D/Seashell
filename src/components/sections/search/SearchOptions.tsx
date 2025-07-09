@@ -53,7 +53,7 @@ const SearchOptions = ({
             className={`max-w-24 flex-1 touch-manipulation rounded-br-none rounded-bl-none px-4 py-6 text-center text-xs font-bold transition-all sm:max-w-none sm:min-w-fit sm:text-sm ${
               selectedOption === tab.id
                 ? 'bg-accent text-foreground'
-                : 'bg-primary hover:bg-accent hover:text-foreground text-gray-700'
+                : 'bg-primary hover:bg-accent/50 hover:text-foreground text-muted-foreground'
             } `}
             onClick={() => dispatch({ type: 'UPDATE_OPTION', payload: tab.id })}
           >

@@ -57,7 +57,7 @@ function NavBar() {
                   />
                 )}
               </svg>
-              <span className="text-xs">Menu</span>
+              <span className="hidden text-xs sm:block">Menu</span>
             </Button>
 
             {/* Logo - Center */}
@@ -74,7 +74,7 @@ function NavBar() {
               aria-label="My Booking"
             >
               <PiUmbrellaLight className="size-4 rotate-[-45deg]" />
-              <span className="text-xs">Booking</span>
+              <span className="hidden text-xs sm:block">Booking</span>
             </Button>
           </div>
 
@@ -90,7 +90,7 @@ function NavBar() {
             </div>
 
             {/* Desktop Navigation - Center (absolutely centered) */}
-            <div className="absolute left-1/2 -translate-x-1/2 transform">
+            <div className="relative">
               <NavigationMenu>
                 <NavigationMenuList className="flex gap-2 xl:gap-4">
                   {navigationItems.map((item) => (

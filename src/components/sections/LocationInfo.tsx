@@ -7,6 +7,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
+import { Tabs } from '@/components/ui/tabs'
 import { useState } from 'react'
 
 function LocationInfo() {
@@ -48,25 +49,12 @@ function LocationInfo() {
       </Breadcrumb>
 
       {/* Navigation Tabs */}
-      <div className="border-b border-gray-200">
-        <nav className="flex space-x-8 overflow-x-auto">
-          {tabs.map((tab) => (
-            <button
-              key={tab}
-              onClick={() => {
-                setActiveTab(tab)
-              }}
-              className={`border-b-2 px-1 py-4 text-sm font-medium whitespace-nowrap transition-colors ${
-                activeTab === tab
-                  ? 'border-foreground text-foreground'
-                  : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-              }`}
-            >
-              {tab}
-            </button>
-          ))}
-        </nav>
-      </div>
+      <Tabs
+        className="border-b border-gray-200"
+        tabs={tabs}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+      />
 
       {/* Content Area */}
       <div className="space-y-4">
