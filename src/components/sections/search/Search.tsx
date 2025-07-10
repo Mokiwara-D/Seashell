@@ -52,7 +52,7 @@ const initialState: SearchInput = {
 
 function Search() {
   const [searchInput, dispatch] = useReducer(searchReducer, initialState)
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(true)
 
   const handleSubmit = (input: SearchInput) => {
     console.log('Search submitted:', input)
@@ -79,7 +79,7 @@ function Search() {
       >
         <Button
           size="icon"
-          className="text-foreground rounded-full bg-gray-200/80"
+          className="text-foreground bg-primary/80 rounded-full"
           onClick={() => setIsExpanded(!isExpanded)}
           aria-label={
             isExpanded ? 'Collapse search form' : 'Expand search form'

@@ -4,7 +4,7 @@ import { bookingReasonsData } from './bookingReasonsData'
 function BookingReasons() {
   return (
     <Container
-      wrapperClassName="py-8 md:py-12 bg-white"
+      wrapperClassName="py-16 md:py-20 bg-white"
       contentClassName="flex flex-col gap-12"
     >
       <h2 className="text-foreground text-center text-2xl font-bold md:text-3xl">

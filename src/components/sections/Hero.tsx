@@ -1,20 +1,7 @@
 import placeholder from '@/assets/placeholder.jpg'
 import { Content, Wrapper } from '@/components/ui/container'
-import { useEffect } from 'react'
 
 function Hero() {
-  useEffect(() => {
-    const link = document.createElement('link')
-    link.rel = 'preload'
-    link.as = 'image'
-    link.href = placeholder
-    document.head.appendChild(link)
-
-    return () => {
-      document.head.removeChild(link)
-    }
-  }, [])
-
   return (
     <Wrapper
       className="hero-background h-64 bg-black/40 bg-cover bg-center bg-blend-multiply sm:h-80 md:h-104"
