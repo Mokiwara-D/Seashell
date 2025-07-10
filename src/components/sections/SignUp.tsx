@@ -5,7 +5,7 @@ function SignUp() {
   return (
     <Container
       wrapperClassName="py-4 bg-accent"
-      contentClassName="flex flex-col items-center justify-between sm:flex-row gap-2"
+      contentClassName="flex flex-row items-center justify-center gap-2 flex-wrap"
     >
       <div className="flex flex-col items-start justify-between lg:flex-row lg:items-center">
         <h1 className="text-center text-xl font-bold lg:text-left">
@@ -21,6 +21,7 @@ function SignUp() {
           Sign up to our emails today...
         </p>
       </div>
+      <div className="grow"></div>
       <Button
         size="lg"
         className="bg-foreground rounded-full text-xs font-bold text-white"

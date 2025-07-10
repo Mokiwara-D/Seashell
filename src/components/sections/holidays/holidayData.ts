@@ -1,3 +1,5 @@
+import placeholder from '@/assets/placeholder.jpg'
+
 export interface Holiday {
   id: number
   name: string
@@ -13,7 +15,7 @@ export const holidayData: Holiday[] = [
   {
     id: 1,
     name: 'Sol Costa Dorada',
-    image: '/src/assets/placeholder.jpg',
+    image: placeholder,
     stars: 4,
     tripAdvisorRating: 4.5,
     tripAdvisorReviews: 2991,
@@ -23,7 +25,7 @@ export const holidayData: Holiday[] = [
   {
     id: 2,
     name: 'Golden Costa Salou',
-    image: '/src/assets/placeholder.jpg',
+    image: placeholder,
     stars: 4,
     tripAdvisorRating: 4.0,
     tripAdvisorReviews: 339,
@@ -33,7 +35,7 @@ export const holidayData: Holiday[] = [
   {
     id: 3,
     name: 'Hotel Porta Coeli',
-    image: '/src/assets/placeholder.jpg',
+    image: placeholder,
     stars: 3,
     tripAdvisorRating: 4.5,
     tripAdvisorReviews: 715,
@@ -43,7 +45,7 @@ export const holidayData: Holiday[] = [
   {
     id: 4,
     name: 'Sh Villa Gadea',
-    image: '/src/assets/placeholder.jpg',
+    image: placeholder,
     stars: 5,
     tripAdvisorRating: 4.5,
     tripAdvisorReviews: 2036,
@@ -53,7 +55,7 @@ export const holidayData: Holiday[] = [
   {
     id: 5,
     name: 'Costa del Sol Resort',
-    image: '/src/assets/placeholder.jpg',
+    image: placeholder,
     stars: 4,
     tripAdvisorRating: 4.2,
     tripAdvisorReviews: 1000,

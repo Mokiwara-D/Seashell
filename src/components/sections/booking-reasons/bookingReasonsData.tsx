@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { BsFillHandIndexThumbFill } from 'react-icons/bs'
+import ATOL from '@/assets/TOL.svg'
 
 export interface BookingReason {
   id: number
@@ -48,7 +49,7 @@ export const bookingReasonsData: BookingReason[] = [
         className={`flex ${iconSize} items-center justify-center rounded-full bg-gray-100`}
       >
         <img
-          src="/src/assets/TOL.svg"
+          src={ATOL}
           alt="Holiday Protection"
           className="h-14 w-14"
           width="56"
