@@ -1,17 +1,13 @@
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-} from '@/components/ui/navigation-menu'
 import { Button } from '@/components/ui/button'
+import { Tabs } from '@/components/ui/tabs'
 import { PiUmbrellaBold } from 'react-icons/pi'
 import { Content, Wrapper } from '@/components/ui/container'
-import logo from '@/assets/logo.svg'
+import placeholder from '@/assets/placeholder.jpg'
 import { useState } from 'react'
 
 function NavBar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [activeTab, setActiveTab] = useState('Holidays')
 
   const navigationItems = [
     'Holidays',
@@ -62,7 +58,7 @@ function NavBar() {
 
             {/* Logo - Center */}
             <img
-              src={logo}
+              src={placeholder}
               alt="Seashell Holidays logo"
               className="h-16 w-auto max-w-32 object-contain"
             />
@@ -79,36 +75,26 @@ function NavBar() {
           </div>
 
           {/* Desktop Layout */}
-          <div className="relative hidden w-full items-center lg:flex">
+          <div className="hidden w-full items-center justify-between gap-8 lg:flex">
             {/* Logo - Left */}
-            <div className="flex-1">
+            <div className="min-w-32">
               <img
-                src={logo}
+                src={placeholder}
                 alt="Seashell Holidays logo"
-                className="h-14 w-auto flex-shrink-0 object-contain lg:h-16"
+                className="h-16 min-h-16 flex-shrink-0 object-contain sm:h-18 md:h-20"
               />
             </div>
 
-            {/* Desktop Navigation - Center (absolutely centered) */}
-            <div className="relative">
-              <NavigationMenu>
-                <NavigationMenuList className="mx-4 flex transition-all duration-300 xl:gap-4">
-                  {navigationItems.map((item) => (
-                    <NavigationMenuItem key={item}>
-                      <NavigationMenuLink
-                        href="#"
-                        className="hover:text-foreground text-muted-foreground rounded-full border-2 border-transparent px-3 text-sm whitespace-nowrap transition-all duration-300 hover:bg-transparent xl:px-3 xl:text-base"
-                      >
-                        {item}
-                      </NavigationMenuLink>
-                    </NavigationMenuItem>
-                  ))}
-                </NavigationMenuList>
-              </NavigationMenu>
-            </div>
+            {/* Desktop Navigation Tabs - Center */}
+            <Tabs
+              className="extra-bold max-w-2/3 grow items-center justify-between space-x-0 text-lg"
+              tabs={navigationItems}
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
+            />
 
             {/* My Booking Button - Right */}
-            <div className="flex flex-1 justify-end">
+            <div className="flex">
               <Button
                 size="lg"
                 className="hover:bg-accent hover:text-foreground gap-2 rounded-full px-4 lg:px-6"
@@ -125,17 +111,23 @@ function NavBar() {
           <div className="absolute top-full left-4 z-50 lg:hidden">
             <div className="w-64 overflow-hidden rounded-lg border bg-white shadow-2xl">
               <div className="p-4">
-                {/* Navigation Items */}
+                {/* Navigation Items using Tab system */}
                 <div className="space-y-1">
                   {navigationItems.map((item) => (
-                    <a
+                    <button
                       key={item}
-                      href="#"
-                      className="hover:bg-secondary hover:text-accent-foreground border-input bg-background block w-full cursor-pointer rounded-lg border px-3 py-2 text-left text-sm font-medium transition-colors"
-                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`block w-full cursor-pointer rounded-lg border px-3 py-2 text-left text-sm font-medium transition-colors ${
+                        activeTab === item
+                          ? 'bg-accent text-accent-foreground border-accent'
+                          : 'hover:bg-secondary hover:text-accent-foreground border-input bg-background'
+                      }`}
+                      onClick={() => {
+                        setActiveTab(item)
+                        setIsMobileMenuOpen(false)
+                      }}
                     >
                       {item}
-                    </a>
+                    </button>
                   ))}
                 </div>
               </div>
