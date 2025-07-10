@@ -31,7 +31,7 @@ function NavBar() {
             {/* Mobile Menu Button - Left */}
             <Button
               size={'lg'}
-              className="hover:text-foreground flex-shrink-0 gap-1 rounded-full px-2"
+              className="hover:text-foreground flex-shrink-0 gap-1 rounded-full"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle mobile menu"
             >
