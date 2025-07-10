@@ -1,6 +1,6 @@
 import React from 'react'
 
-type WrapperElement = 'section' | 'div'
+type WrapperElement = 'header' | 'footer' | 'section' | 'div'
 
 interface WrapperProps<T extends WrapperElement = 'section'> {
   children?: React.ReactNode

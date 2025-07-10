@@ -5,7 +5,7 @@ import {
   NavigationMenuList,
 } from '@/components/ui/navigation-menu'
 import { Button } from '@/components/ui/button'
-import { PiUmbrellaLight } from 'react-icons/pi'
+import { PiUmbrellaBold } from 'react-icons/pi'
 import { Content, Wrapper } from '@/components/ui/container'
 import logo from '@/assets/logo.svg'
 import { useState } from 'react'
@@ -73,7 +73,7 @@ function NavBar() {
               className="hover:text-foreground flex-shrink-0 gap-1 rounded-full px-2"
               aria-label="My Booking"
             >
-              <PiUmbrellaLight className="size-4 rotate-[-45deg]" />
+              <PiUmbrellaBold className="size-4 -rotate-45" />
               <span className="hidden text-xs sm:block">Booking</span>
             </Button>
           </div>
@@ -113,7 +113,7 @@ function NavBar() {
                 size="lg"
                 className="hover:bg-accent hover:text-foreground gap-2 rounded-full px-4 lg:px-6"
               >
-                <PiUmbrellaLight className="size-4 rotate-[-45deg]" />
+                <PiUmbrellaBold className="size-4 -rotate-45" />
                 <span className="text-sm whitespace-nowrap">My Booking</span>
               </Button>
             </div>
