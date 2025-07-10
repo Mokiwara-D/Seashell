@@ -1,5 +1,5 @@
-import { TiStarFullOutline } from 'react-icons/ti'
 import { SiTrustpilot } from 'react-icons/si'
+import { StarRating } from './StarRating'
 import type { trustpilotData } from './customerReviewsData'
 
 interface TrustpilotBadgeProps {
@@ -15,14 +15,7 @@ function TrustpilotBadge({ data }: TrustpilotBadgeProps) {
 
         {/* Stars */}
         <div className="my-2 flex justify-center">
-          {[...Array(5)].map((_, i) => (
-            <TiStarFullOutline
-              key={i}
-              className={`h-6 w-6 ${
-                i < data.stars ? 'text-green-500' : 'text-gray-300'
-              }`}
-            />
-          ))}
+          <StarRating rating={data.averageRating} size="lg" />
         </div>
 
         {/* Review Count */}
@@ -34,7 +27,7 @@ function TrustpilotBadge({ data }: TrustpilotBadgeProps) {
 
       {/* Trustpilot Logo */}
       <div className="flex items-center">
-        <SiTrustpilot className="h-5 w-5 text-green-500" />
+        <SiTrustpilot className="text-trustpilot-green h-5 w-5" />
         <span className="font-bold">Trustpilot</span>
       </div>
     </div>

@@ -18,7 +18,7 @@ export const customerReviewsData: CustomerReview[] = [
   },
   {
     id: 2,
-    rating: 5,
+    rating: 4.5,
     text: 'Staff are really helpful. Staff are really helpful. They have great knowledge. A pleasant experience.',
     customerName: 'Sandra',
     timeAgo: '24 minutes ago',
@@ -26,7 +26,7 @@ export const customerReviewsData: CustomerReview[] = [
   },
   {
     id: 3,
-    rating: 5,
+    rating: 4.5,
     text: 'Friendly. Friendly, helpful.',
     customerName: 'Ann',
     timeAgo: '30 minutes ago',

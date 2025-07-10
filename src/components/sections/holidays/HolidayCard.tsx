@@ -30,7 +30,7 @@ function HolidayCard({ holiday }: HolidayCardProps) {
           </p>
         </div>
 
-        <div className="flex items-start justify-between">
+        <div className="flex flex-wrap items-start justify-between gap-2">
           <StarRating stars={holiday.stars} />
           <TripAdvisorBadge
             rating={holiday.tripAdvisorRating}

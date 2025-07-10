@@ -34,12 +34,18 @@ function Footer() {
             </p>
           </div>
           <div className="bg-primary flex w-fit min-w-1/2 flex-col gap-2 self-center rounded-lg p-4 lg:w-full">
-            <Button variant="ghost" className="hover:bg-accent/90 w-fit gap-2">
+            <Button
+              variant="ghost"
+              className="hover:bg-accent/80 w-fit gap-2 rounded-full"
+            >
               <FaPhone className="h-4 w-4" />
               0800 265 5488
             </Button>
 
-            <Button variant="ghost" className="hover:bg-accent/10 w-fit gap-2">
+            <Button
+              variant="ghost"
+              className="hover:bg-accent/80 w-fit gap-2 rounded-full"
+            >
               <PiUmbrellaBold className="h-4 w-4 -rotate-45" />
               My Booking
             </Button>

@@ -1,6 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card'
-import { TiStarFullOutline } from 'react-icons/ti'
 import { IoCheckmarkCircle } from 'react-icons/io5'
+import { StarRating } from './StarRating'
 import type { CustomerReview } from './customerReviewsData'
 
 interface ReviewCardProps {
@@ -13,16 +13,7 @@ function ReviewCard({ review }: ReviewCardProps) {
       <CardContent className="flex flex-col gap-3 p-4">
         {/* Stars and Verified Badge */}
         <div className="flex items-center justify-start gap-2">
-          <div className="flex items-center">
-            {[...Array(5)].map((_, i) => (
-              <TiStarFullOutline
-                key={i}
-                className={`h-4 w-4 ${
-                  i < review.rating ? 'text-green-500' : 'text-gray-300'
-                }`}
-              />
-            ))}
-          </div>
+          <StarRating rating={review.rating} size="sm" />
           {review.isVerified && (
             <div className="text-muted-foreground flex items-center gap-1 text-xs">
               <IoCheckmarkCircle className="h-4 w-4" />

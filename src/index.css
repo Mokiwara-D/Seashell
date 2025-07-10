@@ -6,10 +6,7 @@
 @theme {
   --font-heading: 'Montserrat', sans-serif;
   --font-body: 'Open Sans', sans-serif;
-  --color-primary: #fff;
-  --color-secondary: #f9f9f9;
-  --color-tertiary: #000;
-  --color-quaternary: #fca44b;
+  --color-trustpilot-green: #22c55e;
 }
 
 @layer base {

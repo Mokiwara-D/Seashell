@@ -32,7 +32,7 @@ function TripAdvisorBadge({ rating, reviews }: TripAdvisorBadgeProps) {
   }
 
   return (
-    <div className="flex flex-col items-center gap-1">
+    <div className="flex flex-col items-start gap-1">
       <div className="flex items-center gap-1">
         <SiTripadvisor className="h-4 w-4" />
         {[...Array(5)].map((_, i) => (

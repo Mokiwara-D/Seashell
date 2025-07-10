@@ -1,5 +1,5 @@
 import { Search } from '@/components/sections/search/Search'
-import { NavBar } from '@/components/sections/NavBar'
+import { NavBar } from '@/components/layout/header/NavBar'
 
 function Header() {
   return (
