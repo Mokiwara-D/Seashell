@@ -24,14 +24,14 @@ function CustomerReviews() {
       </div>
 
       {/* Content Layout */}
-      <div className="flex flex-col items-start md:gap-8 lg:flex-row lg:items-center xl:gap-4">
+      <div className="flex max-w-full flex-col items-start gap-6 md:gap-8 lg:flex-row lg:items-center xl:gap-4">
         {/* Trustpilot Badge - Left Side */}
         <div className="flex w-full justify-center lg:w-1/4 lg:justify-start">
           <TrustpilotBadge data={trustpilotData} />
         </div>
 
         {/* Reviews Carousel - Right Side */}
-        <div className="flex w-full grow flex-col items-start">
+        <div className="flex w-full grow flex-col md:items-start">
           <Carousel
             opts={{
               align: 'start',
