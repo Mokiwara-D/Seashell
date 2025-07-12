@@ -19,7 +19,7 @@ function Wrapper<T extends WrapperElement = 'section'>({
   return React.createElement(
     Component,
     {
-      className: `w-full flex flex-col items-center justify-center px-6 sm:px-12 lg:px-16 overflow-hidden ${className || ''}`,
+      className: `w-full flex flex-col items-center justify-center px-4 sm:px-12 overflow-hidden ${className || ''}`,
       ...props,
     },
     children

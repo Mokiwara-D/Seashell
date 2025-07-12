@@ -10,7 +10,7 @@ function DesktopNavigation({
   onTabChange,
 }: DesktopNavigationProps) {
   return (
-    <div className="hidden w-full items-center justify-between gap-6 lg:flex">
+    <div className="hidden w-full items-center justify-between gap-4 lg:flex">
       {/* Logo - Left */}
       <div className="min-w-32">
         <img
