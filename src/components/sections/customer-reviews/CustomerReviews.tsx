@@ -54,7 +54,7 @@ function CustomerReviews() {
           </Carousel>
           {/* Additional Info */}
           <p className="text-center text-xs">
-            Showing our {trustpilotData.averageRating} star reviews
+            Showing our 4 and 5 star reviews
           </p>
         </div>
       </div>

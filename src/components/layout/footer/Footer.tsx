@@ -55,7 +55,7 @@ function Footer() {
         {/* Navigation Links - Side by side on mobile, stacked on tablet+ */}
         <div className="flex flex-1 flex-row flex-wrap gap-8 sm:gap-12 md:flex-row md:gap-8 lg:flex-nowrap lg:gap-12">
           {/* Seashell Links */}
-          <div className="flex flex-1 flex-col gap-4 text-right text-nowrap sm:text-left">
+          <div className="flex flex-1 flex-col gap-4 text-center text-nowrap sm:text-left">
             <h3 className="text-foreground text-lg font-bold">Seashell</h3>
             <div className="flex flex-col gap-2">
               <a
@@ -92,7 +92,7 @@ function Footer() {
           </div>
 
           {/* Policies Links */}
-          <div className="flex flex-1 flex-col gap-4 text-left text-nowrap sm:text-right lg:text-left">
+          <div className="flex flex-1 flex-col gap-4 text-center text-nowrap sm:text-right lg:text-left">
             <h3 className="text-foreground text-lg font-bold">Policies</h3>
             <div className="flex flex-col gap-2">
               <a
@@ -222,7 +222,7 @@ function Footer() {
         </div>
 
         {/* Copyright Text */}
-        <p className="text-muted-foreground">
+        <p className="text-muted-foreground text-center sm:text-left">
           Seashell Holidays is a trading name of Hays Travel Limited and is
           registered with UK Companies House with registered number 01990682
           Gilbridge House, Keel Square, Sunderland, Tyne and Wear SR1 3HA ©

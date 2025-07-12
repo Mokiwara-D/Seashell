@@ -87,7 +87,7 @@ function LocationInfo() {
 
       {/* Navigation Tabs */}
       <Tabs
-        className="border-b border-gray-200"
+        className="w-full border-b border-gray-200"
         tabs={tabs}
         activeTab={activeTab}
         onTabChange={setActiveTab}

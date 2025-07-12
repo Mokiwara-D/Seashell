@@ -9,7 +9,9 @@ interface TabsProps {
 
 function Tabs({ tabs, activeTab, onTabChange, className }: TabsProps) {
   return (
-    <nav className={cn('flex space-x-8 overflow-x-auto', className)}>
+    <nav
+      className={cn('flex touch-pan-x space-x-8 overflow-x-auto', className)}
+    >
       {tabs.map((tab) => (
         <button
           key={tab}
