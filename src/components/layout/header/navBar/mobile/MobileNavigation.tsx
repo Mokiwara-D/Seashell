@@ -3,12 +3,12 @@ import { PiUmbrellaBold } from 'react-icons/pi'
 import placeholder from '@/assets/placeholder.jpg'
 import type { MobileNavigationProps } from '../types'
 
-function MobileNavigation({ 
-  isMenuOpen, 
-  activeTab, 
-  navigationItems, 
-  onTabChange, 
-  onMenuToggle 
+function MobileNavigation({
+  isMenuOpen,
+  activeTab,
+  navigationItems,
+  onTabChange,
+  onMenuToggle,
 }: MobileNavigationProps) {
   return (
     <>
@@ -17,7 +17,7 @@ function MobileNavigation({
         {/* Mobile Menu Button - Left */}
         <Button
           size={'lg'}
-          className="hover:text-foreground flex-shrink-0 gap-1 rounded-full"
+          className="hover:text-foreground flex-shrink-0 gap-1 rounded-full px-3"
           onClick={onMenuToggle}
           aria-label="Toggle mobile menu"
         >
@@ -56,7 +56,7 @@ function MobileNavigation({
         {/* My Booking Button - Right */}
         <Button
           size="lg"
-          className="hover:text-foreground flex-shrink-0 gap-1 rounded-full px-2"
+          className="hover:text-foreground flex-shrink-0 gap-1 rounded-full px-3"
           aria-label="My Booking"
         >
           <PiUmbrellaBold className="size-4 -rotate-45" />
@@ -95,4 +95,4 @@ function MobileNavigation({
   )
 }
 
-export { MobileNavigation } 
+export { MobileNavigation }

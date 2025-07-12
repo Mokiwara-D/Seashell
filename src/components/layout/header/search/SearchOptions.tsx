@@ -54,7 +54,7 @@ const SearchOptions = ({
         {tabs.map((tab) => (
           <Button
             key={tab.id}
-            className={`max-w-24 flex-1 touch-manipulation rounded-br-none rounded-bl-none px-4 py-6 text-center text-xs font-bold transition-all sm:max-w-none sm:min-w-fit sm:text-sm ${
+            className={`max-w-24 flex-1 touch-manipulation rounded-br-none rounded-bl-none px-4 py-8 text-center text-xs font-bold transition-all sm:max-w-none sm:min-w-fit sm:py-6 sm:text-sm ${
               isExpanded && selectedOption === tab.id
                 ? 'bg-accent text-foreground'
                 : 'bg-primary hover:bg-accent/50 hover:text-foreground text-muted-foreground'
@@ -66,11 +66,11 @@ const SearchOptions = ({
               }
             }}
           >
-            <div className="flex flex-row items-center gap-1 sm:gap-2">
+            <div className="flex flex-col items-center gap-1 sm:flex-row sm:gap-2">
               <img
                 src={tab.icon}
                 alt={`${typeof tab.label === 'string' ? tab.label : 'Tab'} icon`}
-                className="h-4 w-4 flex-shrink-0 sm:h-5 sm:w-5 lg:h-6 lg:w-6"
+                className="h-4 w-4 flex-shrink-0 sm:block sm:h-5 sm:w-5 lg:h-6 lg:w-6"
               />
               <span className="text-center leading-tight">{tab.label}</span>
             </div>
