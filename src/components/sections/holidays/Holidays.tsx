@@ -61,7 +61,7 @@ function Holidays() {
 
       <Button
         variant="outline"
-        className="rounded-full border-gray-300 bg-white px-6 text-gray-700 hover:bg-gray-50"
+        className="border-border bg-background text-foreground hover:bg-muted rounded-full px-6"
       >
         View all Last Minute holidays
       </Button>

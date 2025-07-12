@@ -1,4 +1,5 @@
 import { Input } from '@/components/ui/input'
+import { cn } from '@/lib/utils'
 
 interface SearchFormInputProps {
   label: string
@@ -37,7 +38,7 @@ function SearchFormInput(props: SearchFormInputProps) {
   )
 
   return (
-    <div className={`min-w-0 flex-1 ${className || ''}`}>
+    <div className={cn('min-w-0 flex-1', className)}>
       {labelElement}
       <Input
         id={id || label.toLowerCase().replace(/\s+/g, '-')}
@@ -48,11 +49,16 @@ function SearchFormInput(props: SearchFormInputProps) {
         max={max}
         placeholder={placeholder}
         required={required}
-        className={`text-foreground h-10 touch-manipulation rounded-xs border-none bg-white p-2 text-sm focus:ring-0 focus:outline-none sm:h-10 sm:p-2 sm:text-sm lg:h-12 lg:p-3 lg:text-base ${
-          type === 'number'
-            ? '[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none'
-            : ''
-        } `}
+        className={cn(
+          'text-foreground bg-background h-10 touch-manipulation rounded-sm border-none p-2 text-sm',
+          'focus:ring-ring focus:ring-2 focus:outline-none',
+          'sm:h-10 sm:p-2 sm:text-sm lg:h-12 lg:p-3 lg:text-base',
+          type === 'number' && [
+            '[appearance:textfield]',
+            '[&::-webkit-inner-spin-button]:appearance-none',
+            '[&::-webkit-outer-spin-button]:appearance-none',
+          ]
+        )}
       />
     </div>
   )

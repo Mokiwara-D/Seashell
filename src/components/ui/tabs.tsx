@@ -14,11 +14,12 @@ function Tabs({ tabs, activeTab, onTabChange, className }: TabsProps) {
         <button
           key={tab}
           onClick={() => onTabChange(tab)}
-          className={`cursor-pointer border-b-2 p-2 font-medium whitespace-nowrap transition-colors ${
+          className={cn(
+            'cursor-pointer border-b-2 p-2 font-medium whitespace-nowrap transition-colors',
             activeTab === tab
               ? 'border-foreground text-foreground'
-              : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-          }`}
+              : 'text-muted-foreground hover:border-border hover:text-foreground border-transparent'
+          )}
         >
           {tab}
         </button>

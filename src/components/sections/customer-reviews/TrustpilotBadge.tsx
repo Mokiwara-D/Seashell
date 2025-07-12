@@ -11,7 +11,7 @@ function TrustpilotBadge({ data }: TrustpilotBadgeProps) {
     <div className="flex flex-col items-center gap-4">
       {/* Excellent Rating */}
       <div className="text-center">
-        <h3 className="text-xl text-gray-900">{data.overallRating}</h3>
+        <h3 className="text-foreground text-xl">{data.overallRating}</h3>
 
         {/* Stars */}
         <div className="my-2 flex justify-center">
@@ -27,7 +27,7 @@ function TrustpilotBadge({ data }: TrustpilotBadgeProps) {
 
       {/* Trustpilot Logo */}
       <div className="flex items-center">
-        <SiTrustpilot className="text-trustpilot-green h-5 w-5" />
+        <SiTrustpilot className="text-green h-5 w-5" />
         <span className="font-bold">Trustpilot</span>
       </div>
     </div>

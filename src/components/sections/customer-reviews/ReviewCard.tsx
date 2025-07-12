@@ -9,7 +9,7 @@ interface ReviewCardProps {
 
 function ReviewCard({ review }: ReviewCardProps) {
   return (
-    <Card className="overflow-hidden border-none bg-white">
+    <Card className="bg-card overflow-hidden border-none">
       <CardContent className="flex flex-col gap-3 p-4">
         {/* Stars and Verified Badge */}
         <div className="flex items-center justify-start gap-2">

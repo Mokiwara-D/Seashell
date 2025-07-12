@@ -18,37 +18,63 @@ const sizeClasses = {
   xl: 'h-7 w-7',
 }
 
-function Rating({ 
-  rating, 
-  size = 'sm', 
-  variant = 'default', 
+function Rating({
+  rating,
+  size = 'sm',
+  variant = 'default',
   mode = 'half',
-  className = '' 
+  className = '',
 }: RatingProps) {
   const normalizedRating = Math.max(0, Math.min(5, rating))
-  const processedRating = mode === 'integer' 
-    ? Math.round(normalizedRating)
-    : mode === 'half' 
-    ? Math.round(normalizedRating * 2) / 2
-    : Math.round(normalizedRating * 10) / 10
+  const processedRating =
+    mode === 'integer'
+      ? Math.round(normalizedRating)
+      : mode === 'half'
+        ? Math.round(normalizedRating * 2) / 2
+        : Math.round(normalizedRating * 10) / 10
 
   const renderTripAdvisorCircle = (index: number) => {
     const position = index + 1
 
     if (position <= Math.floor(processedRating)) {
-      return <div className={cn(sizeClasses[size], 'flex-shrink-0 rounded-full bg-green')} />
-    } else if (position === Math.ceil(processedRating) && processedRating % 1 !== 0) {
+      return (
+        <div
+          className={cn(
+            sizeClasses[size],
+            'bg-green flex-shrink-0 rounded-full'
+          )}
+        />
+      )
+    } else if (
+      position === Math.ceil(processedRating) &&
+      processedRating % 1 !== 0
+    ) {
       const percentage = (processedRating % 1) * 100
       return (
-        <div className={cn(sizeClasses[size], 'relative flex-shrink-0 overflow-hidden rounded-full border border-green bg-muted-foreground/20')}>
+        <div
+          className={cn(
+            sizeClasses[size],
+            'border-green bg-muted-foreground/20 relative flex-shrink-0 overflow-hidden rounded-full border'
+          )}
+        >
           <div
-            className={cn(sizeClasses[size], 'absolute top-0 left-0 rounded-tl-full rounded-bl-full bg-green')}
+            className={cn(
+              sizeClasses[size],
+              'bg-green absolute top-0 left-0 rounded-tl-full rounded-bl-full'
+            )}
             style={{ width: `${percentage}%` }}
           />
         </div>
       )
     } else {
-      return <div className={cn(sizeClasses[size], 'flex-shrink-0 rounded-full border border-green bg-muted-foreground/20')} />
+      return (
+        <div
+          className={cn(
+            sizeClasses[size],
+            'border-green bg-muted-foreground/20 flex-shrink-0 rounded-full border'
+          )}
+        />
+      )
     }
   }
 
@@ -69,7 +95,8 @@ function Rating({
       {[...Array(5)].map((_, i) => {
         const position = i + 1
         const isFullStar = position <= Math.floor(processedRating)
-        const isHalfStar = position === Math.ceil(processedRating) && processedRating % 1 !== 0
+        const isHalfStar =
+          position === Math.ceil(processedRating) && processedRating % 1 !== 0
 
         if (variant === 'trustpilot') {
           const baseClasses = cn(
@@ -109,4 +136,4 @@ function Rating({
   )
 }
 
-export { Rating } 
+export { Rating }

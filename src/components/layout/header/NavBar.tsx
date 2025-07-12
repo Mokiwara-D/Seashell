@@ -21,7 +21,7 @@ function NavBar() {
   return (
     <>
       <Wrapper className="bg-background relative overflow-visible">
-        <Content className="h-16 gap-2 font-bold sm:h-18 sm:gap-4 md:h-20">
+        <Content className="h-16 gap-2 font-bold sm:h-20 sm:gap-4 md:h-24">
           {/* Mobile Layout: Hamburger - Logo - My Booking */}
           <div className="flex w-full items-center justify-between gap-2 lg:hidden">
             {/* Mobile Menu Button - Left */}
@@ -81,7 +81,7 @@ function NavBar() {
               <img
                 src={placeholder}
                 alt="Seashell Holidays logo"
-                className="h-16 min-h-16 flex-shrink-0 object-contain sm:h-18 md:h-20"
+                className="h-16 min-h-16 flex-shrink-0 object-contain sm:h-20 md:h-24"
               />
             </div>
 
@@ -109,7 +109,7 @@ function NavBar() {
         {/* Mobile Menu Dropdown - Positioned below menu button */}
         {isMobileMenuOpen && (
           <div className="absolute top-full left-4 z-50 lg:hidden">
-            <div className="w-64 overflow-hidden rounded-lg border bg-white shadow-2xl">
+            <div className="border-border bg-background w-64 overflow-hidden rounded-lg border shadow-2xl">
               <div className="p-4">
                 {/* Navigation Items using Tab system */}
                 <div className="space-y-1">

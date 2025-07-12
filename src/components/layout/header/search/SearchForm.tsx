@@ -147,7 +147,7 @@ const SearchForm = memo(
             <Button
               type="submit"
               size="lg"
-              className="flex h-12 w-full touch-manipulation items-center justify-center gap-2 rounded-lg bg-black px-6 font-semibold text-white hover:bg-gray-800"
+              className="bg-foreground text-primary-foreground hover:bg-foreground/90 flex h-12 w-full touch-manipulation items-center justify-center gap-2 rounded-lg px-6 font-semibold"
             >
               <svg
                 className="h-4 w-4"
@@ -256,7 +256,7 @@ const SearchForm = memo(
             <Button
               type="submit"
               size="lg"
-              className="ml-2 flex h-12 items-center gap-2 rounded-lg bg-black px-6 font-semibold whitespace-nowrap text-white hover:bg-gray-800 lg:ml-4 lg:px-8"
+              className="bg-foreground text-primary-foreground hover:bg-foreground/90 ml-2 flex h-12 items-center gap-2 rounded-lg px-6 font-semibold whitespace-nowrap lg:ml-4 lg:px-8"
             >
               <svg
                 className="h-4 w-4"
