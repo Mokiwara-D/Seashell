@@ -1,5 +1,5 @@
 import { memo, useMemo, useCallback } from 'react'
-import type { SearchInput, SearchAction } from './searchTypes'
+import type { SearchInput, SearchAction } from '../searchTypes'
 import { Container } from '@/components/ui/container'
 import { Button } from '@/components/ui/button'
 import { SearchFormInput } from './SearchFormInput'

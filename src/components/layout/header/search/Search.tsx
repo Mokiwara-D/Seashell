@@ -1,5 +1,5 @@
-import SearchOptions from './SearchOptions'
-import SearchForm from './SearchForm'
+import SearchOptions from './searchOptions/SearchOptions'
+import SearchForm from './searchForm/SearchForm'
 import { useReducer, useState } from 'react'
 import type { SearchInput, SearchAction } from './searchTypes'
 import { Button } from '@/components/ui/button'
@@ -74,12 +74,12 @@ function Search() {
       />
       <Container
         wrapperElement="div"
-        wrapperClassName="absolute bottom-0 translate-y-12"
+        wrapperClassName="absolute bottom-0 translate-y-12 pointer-events-none"
         contentClassName="flex justify-end"
       >
         <Button
           size="icon"
-          className="text-foreground bg-primary/80 rounded-full"
+          className="text-foreground bg-primary/80 pointer-events-auto rounded-full"
           onClick={() => setIsExpanded(!isExpanded)}
           aria-label={
             isExpanded ? 'Collapse search form' : 'Expand search form'
