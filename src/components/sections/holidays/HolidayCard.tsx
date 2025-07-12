@@ -1,5 +1,5 @@
 import { Card, CardContent } from '@/components/ui/card'
-import { StarRating } from './StarRating'
+import { Rating } from '@/components/ui/rating'
 import { TripAdvisorBadge } from './TripAdvisorBadge'
 import type { Holiday } from './holidayData'
 
@@ -31,7 +31,7 @@ function HolidayCard({ holiday }: HolidayCardProps) {
         </div>
 
         <div className="flex flex-wrap items-start justify-between gap-2">
-          <StarRating stars={holiday.stars} />
+          <Rating rating={holiday.stars} variant="default" mode="integer" />
           <TripAdvisorBadge
             rating={holiday.tripAdvisorRating}
             reviews={holiday.tripAdvisorReviews}

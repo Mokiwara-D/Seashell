@@ -1,5 +1,5 @@
 import { SiTrustpilot } from 'react-icons/si'
-import { StarRating } from './StarRating'
+import { Rating } from '@/components/ui/rating'
 import type { trustpilotData } from './customerReviewsData'
 
 interface TrustpilotBadgeProps {
@@ -15,7 +15,7 @@ function TrustpilotBadge({ data }: TrustpilotBadgeProps) {
 
         {/* Stars */}
         <div className="my-2 flex justify-center">
-          <StarRating rating={data.averageRating} size="lg" />
+          <Rating rating={data.averageRating} size="lg" variant="trustpilot" />
         </div>
 
         {/* Review Count */}

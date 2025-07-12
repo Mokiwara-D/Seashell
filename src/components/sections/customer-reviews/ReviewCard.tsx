@@ -1,6 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { IoCheckmarkCircle } from 'react-icons/io5'
-import { StarRating } from './StarRating'
+import { Rating } from '@/components/ui/rating'
 import type { CustomerReview } from './customerReviewsData'
 
 interface ReviewCardProps {
@@ -13,7 +13,7 @@ function ReviewCard({ review }: ReviewCardProps) {
       <CardContent className="flex flex-col gap-3 p-4">
         {/* Stars and Verified Badge */}
         <div className="flex items-center justify-start gap-2">
-          <StarRating rating={review.rating} size="sm" />
+          <Rating rating={review.rating} size="sm" variant="trustpilot" />
           {review.isVerified && (
             <div className="text-muted-foreground flex items-center gap-1 text-xs">
               <IoCheckmarkCircle className="h-4 w-4" />
