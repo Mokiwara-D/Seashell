@@ -1,6 +1,6 @@
 import SearchOptions from './searchOptions/SearchOptions'
 import SearchForm from './searchForm/SearchForm'
-import { useReducer, useState } from 'react'
+import { useReducer, useState, useEffect } from 'react'
 import type { SearchInput, SearchAction } from './searchTypes'
 import { Button } from '@/components/ui/button'
 import { ChevronDown } from 'lucide-react'
@@ -53,6 +53,27 @@ const initialState: SearchInput = {
 function Search() {
   const [searchInput, dispatch] = useReducer(searchReducer, initialState)
   const [isExpanded, setIsExpanded] = useState(true)
+
+  useEffect(() => {
+    let lastScrollY = window.scrollY
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+
+      // Check if search is expanded, user was at top, and is now scrolling down
+      if (isExpanded && lastScrollY === 0 && currentScrollY > 0) {
+        setIsExpanded(false)
+      }
+
+      lastScrollY = currentScrollY
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [isExpanded])
 
   const handleSubmit = (input: SearchInput) => {
     console.log('Search submitted:', input)
