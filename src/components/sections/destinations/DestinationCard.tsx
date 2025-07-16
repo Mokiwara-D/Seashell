@@ -21,7 +21,7 @@ function DestinationCard({ destination }: DestinationCardProps) {
       <CardContent className="flex grow flex-col justify-between">
         <h3 className="text-xl font-bold">{destination.name}</h3>
 
-        <p className="text-muted-foreground line-clamp-2 text-sm leading-relaxed">
+        <p className="text-muted-foreground line-clamp-3 text-sm leading-relaxed">
           {destination.description}
         </p>
 
