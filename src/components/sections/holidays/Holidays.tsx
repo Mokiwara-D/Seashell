@@ -42,11 +42,11 @@ function Holidays() {
           }}
           className="w-full"
         >
-          <CarouselContent className="-ml-2 md:-ml-4">
+          <CarouselContent className="-ml-2 mr-2 my-2">
             {holidayData.map((holiday) => (
               <CarouselItem
                 key={holiday.id}
-                className="basis-full pl-2 sm:basis-1/2 md:basis-1/3 md:pl-4 lg:basis-1/4"
+                className="basis-full pl-2 sm:basis-1/2 md:basis-1/3 md:pl-4 lg:basis-1/4 hover:scale-102"
               >
                 <HolidayCard holiday={holiday} />
               </CarouselItem>

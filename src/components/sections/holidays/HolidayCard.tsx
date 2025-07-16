@@ -25,12 +25,12 @@ function HolidayCard({ holiday }: HolidayCardProps) {
           <h3 className="text-foreground mb-1 text-sm font-semibold">
             {holiday.name}
           </h3>
-          <p className="text-muted-foreground mb-4 text-xs">
+          <p className="text-muted-foreground mb-2 text-xs">
             {holiday.location}
           </p>
         </div>
 
-        <div className="flex flex-wrap items-start justify-between gap-2">
+        <div className="flex flex-wrap items-start justify-between gap-1">
           <Rating rating={holiday.stars} variant="default" mode="integer" />
           <TripAdvisorBadge
             rating={holiday.tripAdvisorRating}

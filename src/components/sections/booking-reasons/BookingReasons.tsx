@@ -1,5 +1,5 @@
 import { Container } from '@/components/ui/container'
-import { bookingReasonsData } from './bookingReasonsData'
+import { bookingReasonsData } from './reasons'
 
 function BookingReasons() {
   return (

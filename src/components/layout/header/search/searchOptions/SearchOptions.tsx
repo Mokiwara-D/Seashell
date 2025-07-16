@@ -30,11 +30,11 @@ const SearchOptions = ({
   }
   return (
     <Container wrapperClassName="pt-2" contentClassName="justify-center py-0">
-      <div className="flex justify-center gap-2">
+      <div className="flex justify-center gap-2 ">
         {searchOptionTabs.map((tab) => (
           <Button
             key={tab.id}
-            className={`max-w-24 flex-1 touch-manipulation rounded-br-none rounded-bl-none px-4 py-8 text-center text-xs font-bold transition-all sm:max-w-none sm:min-w-fit sm:py-6 sm:text-sm ${
+            className={`max-w-24 flex-1 touch-manipulation rounded-br-none rounded-bl-none px-4 py-8 text-center text-xs font-bold transition-all sm:max-w-none sm:min-w-fit sm:py-6 sm:text-sm  ${
               isExpanded && selectedOption === tab.id
                 ? 'bg-accent text-foreground'
                 : 'bg-primary hover:bg-accent/50 hover:text-foreground text-muted-foreground'
