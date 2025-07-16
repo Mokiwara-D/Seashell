@@ -21,7 +21,7 @@ export const bookingReasonsData: BookingReason[] = [
         className: `flex ${iconSize} items-center justify-center rounded-full bg-gray-100`,
       },
       createElement(
-        'span',
+        'h2',
         {
           className: 'text-foreground text-3xl font-bold',
         },
@@ -39,7 +39,7 @@ export const bookingReasonsData: BookingReason[] = [
         className: `flex ${iconSize} items-center justify-center rounded-full bg-gray-100`,
       },
       createElement(
-        'span',
+        'h2',
         {
           className: 'text-foreground text-4xl font-extrabold',
         },

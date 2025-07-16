@@ -100,7 +100,8 @@ function Search() {
       >
         <Button
           size="icon"
-          className="text-foreground bg-primary/80 pointer-events-auto rounded-full"
+          variant="outline"
+          className="pointer-events-auto size-8 rounded-full"
           onClick={() => setIsExpanded(!isExpanded)}
           aria-label={
             isExpanded ? 'Collapse search form' : 'Expand search form'

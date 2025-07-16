@@ -18,11 +18,11 @@ function BookingReasons() {
             className="flex flex-col items-center space-y-4 text-center"
           >
             {reason.icon}
-            <div className="max-w-56 space-y-2">
-              <h3 className="text-foreground text-xl font-semibold">
+            <div className="mt-2 max-w-56 space-y-2">
+              <h3 className="text-foreground text-xl font-bold tracking-wide">
                 {reason.title}
               </h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">
+              <p className="text-muted-foreground text-sm">
                 {reason.description}
               </p>
             </div>

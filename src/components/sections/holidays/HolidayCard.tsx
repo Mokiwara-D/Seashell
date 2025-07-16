@@ -20,12 +20,12 @@ function HolidayCard({ holiday }: HolidayCardProps) {
           loading="lazy"
         />
       </div>
-      <CardContent className="flex flex-col justify-between pb-2">
+      <CardContent className="flex flex-col justify-between pb-6">
         <div>
           <h3 className="text-foreground mb-1 text-sm font-semibold">
             {holiday.name}
           </h3>
-          <p className="text-muted-foreground mb-2 text-xs">
+          <p className="text-muted-foreground mb-4 text-xs">
             {holiday.location}
           </p>
         </div>
@@ -38,11 +38,11 @@ function HolidayCard({ holiday }: HolidayCardProps) {
           />
         </div>
 
-        <div className="py-2">
-          <span className="text-foreground text-xl font-bold">
+        <div className="mt-4 flex items-end">
+          <h3 className="text-foreground text-2xl leading-none font-bold">
             £{holiday.price}
-          </span>
-          <span className="text-sm font-bold">pp</span>
+          </h3>
+          <h3 className="text-sm font-bold">pp</h3>
         </div>
       </CardContent>
     </Card>

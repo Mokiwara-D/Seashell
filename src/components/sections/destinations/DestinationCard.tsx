@@ -18,15 +18,17 @@ function DestinationCard({ destination }: DestinationCardProps) {
           loading="lazy"
         />
       </div>
-      <CardContent className="flex grow flex-col justify-between gap-2">
+      <CardContent className="flex grow flex-col justify-between">
         <h3 className="text-xl font-bold">{destination.name}</h3>
 
         <p className="text-sm leading-relaxed">{destination.description}</p>
 
-        <div className="mt-auto font-bold">
-          <span className="text-sm">from </span>
-          <span className="text-xl">£{destination.priceFrom}</span>
-          <span className="text-sm"> pp</span>
+        <div className="mt-auto flex items-end pt-4">
+          <span className="mr-1.5 text-sm">from</span>
+          <h3 className="text-2xl leading-none font-bold">
+            £{destination.priceFrom}
+          </h3>
+          <h3 className="text-sm font-bold"> pp</h3>
         </div>
       </CardContent>
     </Card>
