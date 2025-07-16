@@ -27,7 +27,7 @@ function NavBar() {
     <>
       <Container
         wrapperClassName="bg-background relative overflow-visible"
-        contentClassName="h-16 gap-2 font-bold sm:h-20 sm:gap-4 md:h-24"
+        contentClassName="gap-2 font-bold sm:gap-4 h-24"
       >
         <MobileNavigation
           isMenuOpen={isMobileMenuOpen}

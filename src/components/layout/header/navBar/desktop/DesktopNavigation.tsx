@@ -10,13 +10,13 @@ function DesktopNavigation({
   onTabChange,
 }: DesktopNavigationProps) {
   return (
-    <div className="hidden w-full items-center justify-between gap-4 lg:flex">
+    <div className="hidden h-full w-full items-center justify-between gap-4 lg:flex">
       {/* Logo - Left */}
-      <div className="min-w-32">
+      <div className="h-full">
         <img
           src={placeholder}
           alt="Seashell Holidays logo"
-          className="h-16 min-h-16 flex-shrink-0 object-contain sm:h-20 md:h-24"
+          className="aspect-ratio-maintain h-full object-contain"
         />
       </div>
 
