@@ -13,7 +13,7 @@ import { customerReviewsData, trustpilotData } from './customerReviewsData'
 function CustomerReviews() {
   return (
     <Container
-      wrapperClassName="py-12 md:py-16 bg-white"
+      wrapperClassName="py-12 md:py-16"
       contentClassName="flex flex-col gap-8"
     >
       {/* Header */}

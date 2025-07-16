@@ -10,23 +10,15 @@ export interface BookingReason {
   description: ReactNode
 }
 
-const iconSize = 'h-24 w-24'
-
 export const bookingReasonsData: BookingReason[] = [
   {
     id: 1,
     icon: createElement(
-      'div',
+      'h2',
       {
-        className: `flex ${iconSize} items-center justify-center rounded-full bg-gray-100`,
+        className: 'text-foreground text-3xl font-bold',
       },
-      createElement(
-        'h2',
-        {
-          className: 'text-foreground text-3xl font-bold',
-        },
-        '0%'
-      )
+      '0%'
     ),
     title: 'Spread the cost',
     description: 'Interest free monthly payment options available',
@@ -34,17 +26,11 @@ export const bookingReasonsData: BookingReason[] = [
   {
     id: 2,
     icon: createElement(
-      'div',
+      'h2',
       {
-        className: `flex ${iconSize} items-center justify-center rounded-full bg-gray-100`,
+        className: 'text-foreground text-4xl font-extrabold',
       },
-      createElement(
-        'h2',
-        {
-          className: 'text-foreground text-4xl font-extrabold',
-        },
-        '£'
-      )
+      '£'
     ),
     title: 'Low deposits',
     description: createElement(
@@ -57,20 +43,14 @@ export const bookingReasonsData: BookingReason[] = [
   },
   {
     id: 3,
-    icon: createElement(
-      'div',
-      {
-        className: `flex ${iconSize} items-center justify-center rounded-full bg-gray-100`,
-      },
-      createElement('img', {
-        src: ATOL,
-        alt: 'Holiday Protection',
-        className: 'h-14 w-14',
-        width: '56',
-        height: '56',
-        loading: 'lazy',
-      })
-    ),
+    icon: createElement('img', {
+      src: ATOL,
+      alt: 'Holiday Protection',
+      className: 'h-14 w-14',
+      width: '56',
+      height: '56',
+      loading: 'lazy',
+    }),
     title: 'Holiday protection',
     description: createElement(
       'div',
@@ -82,15 +62,9 @@ export const bookingReasonsData: BookingReason[] = [
   },
   {
     id: 4,
-    icon: createElement(
-      'div',
-      {
-        className: `flex ${iconSize} items-center justify-center rounded-full bg-gray-100`,
-      },
-      createElement(BsFillHandIndexThumbFill, {
-        className: 'h-10 w-10 rotate-45',
-      })
-    ),
+    icon: createElement(BsFillHandIndexThumbFill, {
+      className: 'h-10 w-10 rotate-45',
+    }),
     title: 'Book with ease',
     description: 'Secure your dream holiday in a few easy taps',
   },

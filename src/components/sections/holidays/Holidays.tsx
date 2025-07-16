@@ -16,7 +16,7 @@ function Holidays() {
   const [activeTab, setActiveTab] = useState('Last Minute')
   return (
     <Container
-      wrapperClassName="py-8 md:py-12 bg-secondary"
+      wrapperClassName="py-8 md:py-12"
       contentClassName="flex flex-col gap-6 items-start"
     >
       {/* Header */}

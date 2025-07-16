@@ -4,7 +4,7 @@ import { bookingReasonsData } from './bookingReasonsData'
 function BookingReasons() {
   return (
     <Container
-      wrapperClassName="py-16 md:py-20 bg-white"
+      wrapperClassName="py-16 md:py-20"
       contentClassName="flex flex-col gap-12"
     >
       <h2 className="text-foreground text-center text-2xl font-bold md:text-3xl">
@@ -17,7 +17,9 @@ function BookingReasons() {
             key={reason.id}
             className="flex flex-col items-center space-y-4 text-center"
           >
-            {reason.icon}
+            <div className="bg-primary flex h-24 w-24 items-center justify-center rounded-full">
+              {reason.icon}
+            </div>
             <div className="mt-2 space-y-2">
               <h3 className="text-foreground text-xl font-bold tracking-wide">
                 {reason.title}
