@@ -1,6 +1,7 @@
 export interface CustomerReview {
   id: number
   rating: number
+  title: string
   text: string
   customerName: string
   timeAgo: string
@@ -11,23 +12,26 @@ export const customerReviewsData: CustomerReview[] = [
   {
     id: 1,
     rating: 5,
-    text: 'Very friendly staff and extremely helpful. Nothing is too much trouble. Stacey so...',
+    title: 'Very friendly staff and extremely helpful',
+    text: 'Very friendly staff and extremely helpful. Nothing is too much trouble.',
     customerName: 'Samantha',
     timeAgo: '23 minutes ago',
     isVerified: true,
   },
   {
     id: 2,
-    rating: 4.5,
-    text: 'Staff are really helpful. Staff are really helpful. They have great knowledge. A pleasant experience.',
+    rating: 5,
+    title: 'Staff are really helpful',
+    text: 'Staff are really helpful. They have great knowledge. A pleasant experience.',
     customerName: 'Sandra',
     timeAgo: '24 minutes ago',
     isVerified: true,
   },
   {
     id: 3,
-    rating: 4.5,
-    text: 'Friendly. Friendly, helpful.',
+    rating: 5,
+    title: 'Friendly',
+    text: 'Friendly, helpful',
     customerName: 'Ann',
     timeAgo: '30 minutes ago',
     isVerified: true,
@@ -35,7 +39,8 @@ export const customerReviewsData: CustomerReview[] = [
   {
     id: 4,
     rating: 5,
-    text: 'Fantastic service. Fantastic service, will book again.',
+    title: 'Fantastic service',
+    text: 'Fantastic service, will book again ❤️',
     customerName: 'Emma',
     timeAgo: '30 minutes ago',
     isVerified: true,
@@ -44,7 +49,6 @@ export const customerReviewsData: CustomerReview[] = [
 
 export const trustpilotData = {
   overallRating: 'Excellent',
-  stars: 5,
-  totalReviews: 224,
-  averageRating: 4.5,
+  totalReviews: 324,
+  averageRating: 5,
 }

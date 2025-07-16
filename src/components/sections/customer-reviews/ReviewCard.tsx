@@ -10,7 +10,7 @@ interface ReviewCardProps {
 function ReviewCard({ review }: ReviewCardProps) {
   return (
     <Card className="bg-card overflow-hidden border-none">
-      <CardContent className="flex flex-col gap-3 p-4">
+      <CardContent className="flex flex-col gap-1 p-4">
         {/* Stars and Verified Badge */}
         <div className="flex items-center justify-start gap-2">
           <Rating rating={review.rating} size="sm" variant="trustpilot" />
@@ -22,13 +22,20 @@ function ReviewCard({ review }: ReviewCardProps) {
           )}
         </div>
 
+        {/* Review Title */}
+        <h3 className="overflow-hidden text-xs font-semibold text-ellipsis whitespace-nowrap">
+          {review.title}
+        </h3>
+
         {/* Review Text */}
-        <p className="line-clamp-3 text-sm leading-relaxed">{review.text}</p>
+        <p className="line-clamp-2 text-xs leading-snug tracking-tight">
+          {review.text}
+        </p>
 
         {/* Customer Info */}
-        <div className="text-muted-foreground mt-auto text-xs">
+        <div className="text-muted-foreground text-xs leading-snug tracking-tight">
           <span className="font-medium">{review.customerName}</span>
-          <span className="mx-1">•</span>
+          <span>, </span>
           <span>{review.timeAgo}</span>
         </div>
       </CardContent>
