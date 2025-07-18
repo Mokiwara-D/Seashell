@@ -42,8 +42,8 @@ function Destinations() {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="top-1/3" />
-          <CarouselNext className="top-1/3" />
+          <CarouselPrevious />
+          <CarouselNext />
         </Carousel>
       </div>
     </Container>
