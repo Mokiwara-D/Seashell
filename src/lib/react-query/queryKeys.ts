@@ -57,34 +57,22 @@ export interface SearchParams {
 
 // Utility functions for query key management
 export const queryKeyUtils = {
-  /**
-   * Get all holiday-related query keys for cache invalidation
-   */
+  // Get all holiday-related query keys for cache invalidation
   getAllHolidayKeys: () => queryKeys.holidays,
 
-  /**
-   * Get all destination-related query keys for cache invalidation
-   */
+  // Get all destination-related query keys for cache invalidation
   getAllDestinationKeys: () => queryKeys.destinations,
 
-  /**
-   * Get all search-related query keys for cache invalidation
-   */
+  // Get all search-related query keys for cache invalidation
   getAllSearchKeys: () => queryKeys.search,
 
-  /**
-   * Create a query key for holiday list with optional filters
-   */
+  // Create a query key for holiday list with optional filters
   createHolidayListKey: (filters?: HolidayFilters) => queryKeys.holidaysList(filters),
 
-  /**
-   * Create a query key for search results
-   */
+  // Create a query key for search results
   createSearchKey: (params: SearchParams) => queryKeys.searchResults(params),
 
-  /**
-   * Check if a query key matches a specific pattern
-   */
+  // Check if a query key matches a specific pattern
   isHolidayKey: (queryKey: unknown[]): boolean => {
     return Array.isArray(queryKey) && queryKey[0] === 'holidays'
   },
