@@ -9,7 +9,7 @@ interface HolidayCardProps {
 
 function HolidayCard({ holiday }: HolidayCardProps) {
   return (
-    <Card className="border-border bg-card overflow-hidden shadow-sm transition-shadow hover:shadow-md">
+    <Card className="border-border bg-card overflow-hidden shadow-sm transition-all hover:scale-102 hover:shadow-md">
       <div className="aspect-[4/3] overflow-hidden">
         <img
           src={holiday.image}

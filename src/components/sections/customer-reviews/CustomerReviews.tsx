@@ -36,10 +36,11 @@ function CustomerReviews() {
             opts={{
               align: 'start',
               slidesToScroll: 1,
+              loop: true,
             }}
             className="w-full"
           >
-            <CarouselContent className="">
+            <CarouselContent className="py-4">
               {customerReviewsData.map((review) => (
                 <CarouselItem
                   key={review.id}

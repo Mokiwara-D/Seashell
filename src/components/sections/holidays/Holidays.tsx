@@ -39,14 +39,15 @@ function Holidays() {
           opts={{
             align: 'start',
             slidesToScroll: 1,
+            loop: true,
           }}
           className="w-full"
         >
-          <CarouselContent className="-ml-2 mr-2 my-2">
+          <CarouselContent className="my-2 mr-2 -ml-2">
             {holidayData.map((holiday) => (
               <CarouselItem
                 key={holiday.id}
-                className="basis-full pl-2 sm:basis-1/2 md:basis-1/3 md:pl-4 lg:basis-1/4 hover:scale-102"
+                className="basis-full pl-2 sm:basis-1/2 md:basis-1/3 md:pl-4 lg:basis-1/4"
               >
                 <HolidayCard holiday={holiday} />
               </CarouselItem>
