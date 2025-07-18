@@ -1,5 +1,4 @@
-import { Search } from '@/components/layout/header/search/Search'
-import { NavBar } from '@/components/layout/header/navBar/NavBar'
+import { Search, NavBar } from '@/components/sections'
 
 function Header() {
   return (

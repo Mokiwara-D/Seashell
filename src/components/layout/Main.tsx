@@ -1,11 +1,13 @@
-import { Hero } from '../sections/Hero'
-import { LocationInfo } from '../sections/LocationInfo'
-import { Holidays } from '../sections/holidays/Holidays'
-import { BookingReasons } from '../sections/booking-reasons/BookingReasons'
-import { Destinations } from '../sections/destinations/Destinations'
-import { CustomerReviews } from '../sections/customer-reviews/CustomerReviews'
-import { SignUp } from '../sections/SignUp'
-import { QueryTest } from '../sections/query-test/QueryTest'
+import {
+  Hero,
+  LocationInfo,
+  Holidays,
+  BookingReasons,
+  Destinations,
+  CustomerReviews,
+  SignUp,
+  QueryTest,
+} from '../sections'
 
 function Main() {
   return (

@@ -1,0 +1,11 @@
+// Section Components
+export { NavBar } from './navBar/NavBar'
+export { Search } from './search/Search'
+export { Hero } from './Hero'
+export { LocationInfo } from './LocationInfo'
+export { Holidays } from './holidays/Holidays'
+export { BookingReasons } from './booking-reasons/BookingReasons'
+export { Destinations } from './destinations/Destinations'
+export { CustomerReviews } from './customer-reviews/CustomerReviews'
+export { SignUp } from './SignUp'
+export { QueryTest } from './query-test/QueryTest'
