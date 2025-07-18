@@ -1,10 +1,11 @@
 import SearchOptions from './searchOptions/SearchOptions'
 import SearchForm from './searchForm/SearchForm'
-import { useReducer, useState, useEffect } from 'react'
+import { useReducer } from 'react'
 import type { SearchInput, SearchAction } from './searchTypes'
 import { Button } from '@/components/ui/button'
 import { ChevronDown } from 'lucide-react'
 import { Container } from '@/components/ui/container'
+import { useSearchExpansion, useScrollBehavior } from '@/hooks'
 
 const searchReducer = (
   state: SearchInput,
@@ -52,32 +53,15 @@ const initialState: SearchInput = {
 
 function Search() {
   const [searchInput, dispatch] = useReducer(searchReducer, initialState)
-  const [isExpanded, setIsExpanded] = useState(true)
+  const [isExpanded, setIsExpanded] = useSearchExpansion()
 
-  useEffect(() => {
-    let lastScrollY = window.scrollY
-
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY
-
-      // Check if search is expanded, user was at top, and is now scrolling down
-      if (isExpanded && lastScrollY === 0 && currentScrollY > 0) {
-        setIsExpanded(false)
-      }
-
-      lastScrollY = currentScrollY
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true })
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [isExpanded])
+  useScrollBehavior({ isExpanded, setIsExpanded })
 
   const handleSubmit = (input: SearchInput) => {
     console.log('Search submitted:', input)
   }
+
+  const toggleExpansion = () => setIsExpanded(!isExpanded)
 
   return (
     <div role="search" aria-label="Holiday search">
@@ -102,7 +86,7 @@ function Search() {
           size="icon"
           variant="outline"
           className="pointer-events-auto size-8 rounded-full"
-          onClick={() => setIsExpanded(!isExpanded)}
+          onClick={toggleExpansion}
           aria-label={
             isExpanded ? 'Collapse search form' : 'Expand search form'
           }

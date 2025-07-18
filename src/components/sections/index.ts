@@ -1,5 +1,5 @@
 // Section Components
-export { NavBar } from './navBar/NavBar'
+export { NavBar } from './nav-bar/NavBar'
 export { Search } from './search/Search'
 export { Hero } from './Hero'
 export { LocationInfo } from './LocationInfo'
