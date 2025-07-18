@@ -33,12 +33,12 @@ export const bookingReasonsData: BookingReason[] = [
       '£'
     ),
     title: 'Low deposits',
-    description: createElement(
-      'div',
-      null,
-      'Book now, pay later.',
-      createElement('br'),
-      'Deposits from only £49pp'
+    description: (
+      <>
+        Book now, pay later.
+        <br />
+        Deposits from only £49pp
+      </>
     ),
   },
   {
@@ -52,12 +52,12 @@ export const bookingReasonsData: BookingReason[] = [
       loading: 'lazy',
     }),
     title: 'Holiday protection',
-    description: createElement(
-      'div',
-      null,
-      "You're in safe hands.",
-      createElement('br'),
-      "We're ATOL & ABTA protected"
+    description: (
+      <>
+        You're in safe hands.
+        <br />
+        We're ATOL & ABTA protected
+      </>
     ),
   },
   {
