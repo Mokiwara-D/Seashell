@@ -114,10 +114,8 @@ export const parseDestinations = (
         })
         .join(' ')
 
-      // Special case: Convert 'Greece Mainland' to just 'Greece'
-      if (name === 'Greece Mainland') {
-        name = 'Greece'
-      }
+      name = name === 'Greece Mainland' ? 'Greece' : name
+      name = name === 'Usa' ? name.toUpperCase() : name
 
       // Handle edge case: empty name after processing
       if (!name) {

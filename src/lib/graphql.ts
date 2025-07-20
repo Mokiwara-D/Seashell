@@ -37,13 +37,8 @@ export const createOffersQuery = (destinationId: number): GraphQLQuery => ({
             id
             name
             resort {
-              name
               regions {
                 name
-                destinations {
-                  id
-                  name
-                }
               }
             }
           }

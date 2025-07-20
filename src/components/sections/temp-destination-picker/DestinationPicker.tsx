@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
 import { Container } from '../../ui/container'
 import { Tabs } from '../../ui/tabs'
 import { useDestination } from '../../../contexts/useDestination'
@@ -31,47 +31,48 @@ const DestinationPicker = () => {
   const isLoading = destinationsQuery.isLoading
   const hasError = destinationsQuery.error && !destinationsQuery.data
 
-  // Error handling with console.log for failed requests
+  // Error handling for failed requests
   useEffect(() => {
     if (destinationsQuery.error) {
-      console.log('Failed to fetch destinations:', destinationsQuery.error)
+      console.error('Failed to fetch destinations:', destinationsQuery.error)
+      // Could integrate with error tracking service here
     }
   }, [destinationsQuery.error])
 
   // Default destination selection logic - integrates with destination context initialization
   useEffect(() => {
-    // Only set default destination when destinations are available and not loading
-    if (!isLoading && destinations.length > 0) {
+    // Only run when we have fresh destination data, not on every destination change
+    if (!isLoading && destinations.length > 0 && destinationsQuery.data) {
       const defaultDestination = getDefaultDestination(destinations)
 
-      // Check if current destination exists in the available destinations
       const currentDestinationExists = destinations.some(
         (dest) => dest.id === destination.id
       )
 
-      // Set default destination if:
-      // 1. Current destination doesn't exist in available destinations, OR
-      // 2. Current destination is the initial fallback (Spain with id 60) and we have better data
-      if (
+      const shouldSetDefault =
         !currentDestinationExists ||
         (destination.id === 60 &&
           destination.name === 'Spain' &&
           defaultDestination.id !== destination.id)
-      ) {
+
+      if (shouldSetDefault) {
         setDestination(defaultDestination)
       }
     }
-  }, [destinations, isLoading, destination, setDestination])
+  }, [destinations, isLoading, destinationsQuery.data, destination.id, destination.name, setDestination])
 
   // Handle tab change
-  const handleTabChange = (tabName: string) => {
-    const selectedDestination = destinations.find(
-      (dest) => dest.name === tabName
-    )
-    if (selectedDestination) {
-      setDestination(selectedDestination)
-    }
-  }
+  const handleTabChange = useCallback(
+    (tabName: string) => {
+      const selectedDestination = destinations.find(
+        (dest) => dest.name === tabName
+      )
+      if (selectedDestination) {
+        setDestination(selectedDestination)
+      }
+    },
+    [destinations, setDestination]
+  )
 
   // Dynamic classes for height transition
   const wrapperClasses = cn(

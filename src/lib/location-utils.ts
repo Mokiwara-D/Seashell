@@ -15,10 +15,9 @@ interface LocationData {
  * Formats location text from nested accommodation data structure
  * Priority: "Region, Destination" > Region only > Destination only > Empty string
  */
-export const formatLocationText = (accommodation: LocationData): string => {
+export const formatLocationText = (accommodation: LocationData, destinationName?: string): string => {
   const region = accommodation.resort?.regions?.[0]
   const regionName = region?.name
-  const destinationName = region?.destinations?.[0]?.name
 
   if (regionName && destinationName) {
     return `${regionName}, ${destinationName}`
