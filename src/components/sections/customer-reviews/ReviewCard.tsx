@@ -9,10 +9,10 @@ interface ReviewCardProps {
 
 function ReviewCard({ review }: ReviewCardProps) {
   return (
-    <Card className="overflow-hidden border-none bg-transparent">
+    <Card className="overflow-hidden border-none bg-transparent text-center md:text-left">
       <CardContent className="flex flex-col gap-1 px-2">
         {/* Stars and Verified Badge */}
-        <div className="flex items-center justify-start gap-2">
+        <div className="flex items-center justify-center gap-2 md:justify-start">
           <Rating rating={review.rating} size="sm" variant="trustpilot" />
           {review.isVerified && (
             <div className="text-muted-foreground flex items-center gap-1 text-xs">

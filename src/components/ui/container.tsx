@@ -1,4 +1,5 @@
 import React from 'react'
+import { cn } from '@/lib/utils'
 
 type WrapperElement = 'header' | 'footer' | 'section' | 'div'
 
@@ -19,7 +20,10 @@ function Wrapper<T extends WrapperElement = 'section'>({
   return React.createElement(
     Component,
     {
-      className: `w-full flex flex-col items-center justify-center px-4 sm:px-12 overflow-hidden ${className || ''}`,
+      className: cn(
+        'w-full flex flex-col items-center justify-center px-4 sm:px-12 overflow-hidden',
+        className
+      ),
       ...props,
     },
     children
@@ -34,7 +38,10 @@ interface ContentProps {
 function Content({ children, className }: ContentProps) {
   return (
     <div
-      className={`mx-auto flex w-full max-w-7xl items-center justify-between ${className || ''}`}
+      className={cn(
+        'mx-auto flex w-full max-w-7xl items-center justify-between',
+        className
+      )}
     >
       {children}
     </div>

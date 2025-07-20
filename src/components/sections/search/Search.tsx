@@ -79,7 +79,7 @@ function Search() {
       />
       <Container
         wrapperElement="div"
-        wrapperClassName="absolute bottom-0 translate-y-12 pointer-events-none"
+        wrapperClassName="absolute bottom-0 translate-y-12 pointer-events-none px-2 sm:px-8 xl:mx-4"
         contentClassName="flex justify-end"
       >
         <Button
