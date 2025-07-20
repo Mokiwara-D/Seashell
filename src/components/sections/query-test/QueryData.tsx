@@ -42,7 +42,7 @@ const QueryData = () => {
         dragFree: true,
       }}
     >
-      <CarouselContent className="w-fit">
+      <CarouselContent>
         {offers.map(
           (
             offer: {
@@ -71,9 +71,9 @@ const QueryData = () => {
             return (
               <CarouselItem
                 key={isLoading ? `skeleton-${index}` : offer.accommodation.id}
-                className="flex basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
               >
-                <Card className="min-h-48 grow py-8">
+                <Card className="min-h-48 py-8">
                   <CardHeader>
                     {isLoading ? (
                       <Skeleton className="h-6 w-3/4" />

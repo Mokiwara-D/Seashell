@@ -1,4 +1,5 @@
 import { Header, Main, Footer } from './components/layout'
+import { DestinationPicker } from './components/sections/temp-destination-picker/DestinationPicker'
 import { DestinationProvider } from './contexts'
 
 function App() {
@@ -8,6 +9,7 @@ function App() {
         <Header />
         <Main />
         <Footer />
+        <DestinationPicker />
       </div>
     </DestinationProvider>
   )
