@@ -31,7 +31,7 @@ function CustomerReviews() {
         </div>
 
         {/* Reviews Carousel - Right Side */}
-        <div className="flex w-full flex-1 flex-col px-8 md:items-start lg:max-w-5/6 xl:ml-12">
+        <div className="flex w-full flex-1 flex-col px-12 md:items-start md:px-8 lg:max-w-5/6 xl:ml-12">
           <Carousel
             opts={{
               align: 'start',
@@ -50,11 +50,11 @@ function CustomerReviews() {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="-left-8" />
-            <CarouselNext className="-right-8" />
+            <CarouselPrevious className="md:-left-8" />
+            <CarouselNext className="md:-right-8" />
           </Carousel>
           {/* Additional Info */}
-          <p className="text-center text-xs sm:ml-4">
+          <p className="text-center text-xs sm:ml-2">
             Showing our 4 and 5 star reviews
           </p>
         </div>

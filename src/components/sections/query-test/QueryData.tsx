@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import { fetchGraphQL, OFFERS_QUERY } from '@/lib/graphql'
+import { fetchGraphQL, createOffersQuery } from '@/lib/graphql'
+import { formatLocationText, getResortName } from '@/lib/location-utils'
 import {
   Carousel,
   CarouselContent,
@@ -9,11 +10,16 @@ import {
 } from '@/components/ui/carousel'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useDestination } from '@/contexts'
 
 const QueryData = () => {
+  const { destination } = useDestination()
+  const destinationId = destination.id
+
   const { data, isLoading, error } = useQuery({
-    queryKey: ['offers'],
-    queryFn: () => fetchGraphQL(OFFERS_QUERY),
+    queryKey: ['offers', destinationId],
+    queryFn: () => fetchGraphQL(createOffersQuery(destinationId)),
+    staleTime: 1800000, // 30 minutes
   })
 
   if (error) return <>Error: {(error as Error).message}</>
@@ -33,9 +39,10 @@ const QueryData = () => {
       opts={{
         loop: true,
         align: 'start',
+        dragFree: true,
       }}
     >
-      <CarouselContent>
+      <CarouselContent className="w-fit">
         {offers.map(
           (
             offer: {
@@ -43,37 +50,46 @@ const QueryData = () => {
                 id: number
                 name: string
                 resort: {
-                  regions: { destinations: { id: number; name: string }[] }[]
+                  name: string
+                  regions: {
+                    name: string
+                    destinations: { id: number; name: string }[]
+                  }[]
                 }
               }
             },
             index: number
           ) => {
-            // Extract destination name from the nested structure
-            const destinationName =
-              offer.accommodation.resort?.regions?.[0]?.destinations?.[0]
-                ?.name || 'Unknown Destination'
+            // Extract resort name for card header and format location text
+            const resortName = isLoading
+              ? 'Loading...'
+              : getResortName(offer.accommodation)
+            const locationText = isLoading
+              ? 'Loading...'
+              : formatLocationText(offer.accommodation)
 
             return (
               <CarouselItem
                 key={isLoading ? `skeleton-${index}` : offer.accommodation.id}
-                className="md:basis-1/2 lg:basis-1/4"
+                className="flex basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
               >
-                <Card className="min-h-48 py-8">
+                <Card className="min-h-48 grow py-8">
                   <CardHeader>
                     {isLoading ? (
                       <Skeleton className="h-6 w-3/4" />
                     ) : (
-                      <CardTitle>{offer.accommodation.name}</CardTitle>
+                      <CardTitle>{resortName}</CardTitle>
                     )}
                   </CardHeader>
                   <CardContent>
                     {isLoading ? (
                       <Skeleton className="h-4 w-1/2" />
                     ) : (
-                      <p className="text-muted-foreground text-sm">
-                        {destinationName}
-                      </p>
+                      locationText && (
+                        <p className="text-muted-foreground text-sm">
+                          {locationText}
+                        </p>
+                      )
                     )}
                   </CardContent>
                 </Card>

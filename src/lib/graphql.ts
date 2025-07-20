@@ -3,17 +3,19 @@ interface GraphQLQuery {
   variables?: Record<string, unknown>
 }
 
-export const OFFERS_QUERY: GraphQLQuery = {
+export const createOffersQuery = (destinationId: number): GraphQLQuery => ({
   query: `
     query offers($destinations: [Int]) {
       offers(destinations: $destinations) {
         result {
           accommodation {
-						id
+            id
             name
             resort {
-              regions{
-                destinations{
+              name
+              regions {
+                name
+                destinations {
                   id
                   name
                 }
@@ -25,9 +27,9 @@ export const OFFERS_QUERY: GraphQLQuery = {
     }
   `,
   variables: {
-    destinations: [193],
+    destinations: [destinationId],
   },
-}
+})
 
 export async function fetchGraphQL(query: GraphQLQuery) {
   const res = await fetch(import.meta.env.VITE_GRAPHQL_ENDPOINT, {
