@@ -9,8 +9,10 @@ import {
 } from '@/components/ui/breadcrumb'
 import { Tabs } from '@/components/ui/tabs'
 import { useState } from 'react'
+import { useDestination } from '@/contexts/useDestination'
 
 function LocationInfo() {
+  const { destination } = useDestination()
   const [activeTab, setActiveTab] = useState('About')
   const [isExpanded, setIsExpanded] = useState(false)
 
@@ -80,7 +82,7 @@ function LocationInfo() {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>Spain</BreadcrumbPage>
+            <BreadcrumbPage>{destination.name}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
