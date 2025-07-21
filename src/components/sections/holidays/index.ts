@@ -6,5 +6,5 @@ export {
   useHolidayData,
   transformOfferToHoliday,
   filterOptions,
-  type Holiday,
 } from './holidayData'
+export type { Holiday } from './types'

@@ -44,6 +44,7 @@ export const OFFERS_QUERY = (destinationId: number): GraphQLQuery => ({
               regions {
                 id
                 name
+                detail
               }
             }
           }

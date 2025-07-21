@@ -4,7 +4,6 @@ import { MobileNavigation } from './mobile/MobileNavigation'
 import { MobileMenuOverlay } from './mobile/MobileMenuOverlay'
 import { DesktopNavigation } from './desktop/DesktopNavigation'
 import { NAVIGATION_ITEMS } from './navigationData'
-// Remove unused import
 
 function NavBar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false)

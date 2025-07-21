@@ -1,9 +1,9 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Rating } from '@/components/ui/rating'
 import { TripAdvisorBadge } from './TripAdvisorBadge'
-import { placeholderUrl } from '@/lib/imagePreloader'
+import { placeholder } from '@/lib/imagePreloader'
 import { useState, useEffect } from 'react'
-import type { Holiday } from './holidayData'
+import type { Holiday } from './types'
 
 interface HolidayCardProps {
   holiday: Holiday
@@ -11,12 +11,12 @@ interface HolidayCardProps {
 
 function HolidayCard({ holiday }: HolidayCardProps) {
   // Start with placeholder by default
-  const [imageSrc, setImageSrc] = useState(placeholderUrl)
+  const [imageSrc, setImageSrc] = useState(placeholder)
 
   // Try to load the API image in the background
   useEffect(() => {
     // Only try to load if we have a different image URL than placeholder
-    if (holiday.image && holiday.image !== placeholderUrl) {
+    if (holiday.image && holiday.image !== placeholder) {
       const img = new Image()
 
       img.onload = () => {

@@ -3,7 +3,7 @@
  */
 
 // Import the placeholder image as a static asset
-import placeholderUrl from '@/assets/placeholder.jpg'
+import placeholder from '@/assets/placeholder.jpg'
 
 class ImagePreloader {
   private preloadedImages = new Set<string>()
@@ -54,10 +54,10 @@ class ImagePreloader {
 export const imagePreloader = new ImagePreloader()
 
 // Preload the placeholder image immediately
-imagePreloader.preload(placeholderUrl).catch(console.warn)
+imagePreloader.preload(placeholder).catch(console.warn)
 
 // Export the placeholder URL for components
-export { placeholderUrl }
+export { placeholder }
 
 /**
  * Hook for preloading images in React components

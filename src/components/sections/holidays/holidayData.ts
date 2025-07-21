@@ -1,17 +1,7 @@
-import { placeholderUrl } from '@/lib/imagePreloader'
+import { placeholder } from '@/lib/imagePreloader'
 import { useOfferData } from '@/queries/hooks/useOfferData'
 import type { OfferData } from '@/queries/types'
-
-export interface Holiday {
-  id: number
-  name: string
-  image: string
-  stars: number
-  tripAdvisorRating: number
-  tripAdvisorReviews: number
-  price: number
-  location: string
-}
+import type { Holiday } from './types'
 
 // Transform API offer data to Holiday format
 export function transformOfferToHoliday(
@@ -28,7 +18,7 @@ export function transformOfferToHoliday(
   } = accommodation
 
   // Get the first image URL or fallback to placeholder
-  const imageUrl = images && images.length > 0 ? images[0].url : placeholderUrl
+  const imageUrl = images && images.length > 0 ? images[0].url : placeholder
 
   // Format location from resort and region data using destination name from context
   const region =

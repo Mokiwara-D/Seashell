@@ -1,4 +1,4 @@
-import placeholder from '@/assets/placeholder.jpg'
+import { placeholder } from '@/lib/imagePreloader'
 import { Content, Wrapper } from '@/components/ui/container'
 import { useDestination } from '@/contexts/useDestination'
 

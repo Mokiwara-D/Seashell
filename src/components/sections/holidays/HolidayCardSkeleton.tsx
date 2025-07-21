@@ -1,16 +1,24 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { placeholder } from '@/lib/imagePreloader'
 
 function HolidayCardSkeleton() {
   return (
-    <Card className="border-border bg-card overflow-hidden shadow-sm">
-      {/* Image Skeleton */}
+    <Card className="border-border bg-card h-full overflow-hidden shadow-sm">
+      {/* Image - Use placeholder instead of skeleton */}
       <div className="aspect-[4/3] overflow-hidden">
-        <Skeleton className="h-full w-full" />
+        <img
+          src={placeholder}
+          alt="Loading..."
+          className="h-full w-full object-cover"
+          width="320"
+          height="240"
+          loading="lazy"
+        />
       </div>
 
       {/* Content Skeleton */}
-      <CardContent className="flex flex-col justify-between pb-6">
+      <CardContent className="flex grow flex-col justify-between pb-6">
         <div>
           {/* Hotel Name */}
           <Skeleton className="mb-1 h-4 w-3/4" />

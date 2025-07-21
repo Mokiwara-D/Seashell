@@ -45,6 +45,7 @@ export interface OfferImage {
 export interface OfferRegion {
   id: number
   name: string
+  detail?: string
 }
 
 export interface OfferResort {

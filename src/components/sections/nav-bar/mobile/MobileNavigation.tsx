@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { PiUmbrellaBold } from 'react-icons/pi'
-import placeholder from '@/assets/placeholder.jpg'
+import { placeholder } from '@/lib/imagePreloader'
 import type { MobileNavigationProps } from '../types'
 
 function MobileNavigation({

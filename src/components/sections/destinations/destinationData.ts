@@ -1,43 +1,70 @@
-import placeholder from '@/assets/placeholder.jpg'
+import { placeholder } from '@/lib/imagePreloader'
+import { useOfferData } from '@/queries/hooks/useOfferData'
+import type { OfferData } from '@/queries/types'
+import type { Destination } from './types'
 
-export interface Destination {
-  id: number
-  name: string
-  image: string
-  description: string
-  priceFrom: number
+// Transform API offer data to extract unique regions
+export function transformOffersToRegions(offers: OfferData[]): Destination[] {
+  const regionMap = new Map<
+    string,
+    {
+      id: number
+      name: string
+      detail?: string
+      prices: number[]
+      images: string[]
+    }
+  >()
+
+  // Process all offers to collect region data
+  offers.forEach((offer) => {
+    const { accommodation, price_per_person } = offer
+    const { images, resort } = accommodation
+
+    resort.regions?.forEach((region) => {
+      const existingRegion = regionMap.get(region.name)
+      const imageUrl = images && images.length > 0 ? images[0].url : null
+
+      if (existingRegion) {
+        // Add price and image to existing region
+        existingRegion.prices.push(price_per_person)
+        if (imageUrl) {
+          existingRegion.images.push(imageUrl)
+        }
+      } else {
+        // Create new region entry
+        regionMap.set(region.name, {
+          id: region.id,
+          name: region.name,
+          detail: region.detail,
+          prices: [price_per_person],
+          images: imageUrl ? [imageUrl] : [],
+        })
+      }
+    })
+  })
+
+  // Convert map to Destination array
+  return Array.from(regionMap.values()).map((data) => ({
+    id: data.id,
+    name: data.name,
+    image: data.images.length > 0 ? data.images[0] : placeholder,
+    description: data.detail ?? '',
+    priceFrom: Math.min(...data.prices),
+  }))
 }
 
-export const destinationData: Destination[] = [
-  {
-    id: 1,
-    name: 'Costa Blanca',
-    image: placeholder,
-    description:
-      'Budget beach breaks and family fun await on a holiday to the Costa Blanca',
-    priceFrom: 209,
-  },
-  {
-    id: 2,
-    name: 'Costa Brava',
-    image: placeholder,
-    description:
-      'Calm coasts and culture-packed cities await on a holiday to Costa Brava',
-    priceFrom: 219,
-  },
-  {
-    id: 3,
-    name: 'Costa del Sol',
-    image: placeholder,
-    description: 'Sunshine coastlines await on a holiday to Costa Del Sol',
-    priceFrom: 225,
-  },
-  {
-    id: 4,
-    name: 'Costa Almeria',
-    image: placeholder,
-    description:
-      'Golden shores and beaches galore await on a holiday to Costa Almeria',
-    priceFrom: 240,
-  },
-]
+// Hook to get region data from API
+export function useRegionData(destinationId: number) {
+  const { data, isLoading, error } = useOfferData(destinationId)
+
+  const regions: Destination[] = data?.offers?.result
+    ? transformOffersToRegions(data.offers.result)
+    : []
+
+  return {
+    regions,
+    isLoading,
+    error,
+  }
+}

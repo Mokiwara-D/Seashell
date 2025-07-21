@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Tabs } from '@/components/ui/tabs'
 import { PiUmbrellaBold } from 'react-icons/pi'
-import placeholder from '@/assets/placeholder.jpg'
+import { placeholder } from '@/lib/imagePreloader'
 import type { DesktopNavigationProps } from '../types'
 
 function DesktopNavigation({
