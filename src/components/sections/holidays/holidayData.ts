@@ -1,4 +1,6 @@
-import placeholder from '@/assets/placeholder.jpg'
+import { placeholderUrl } from '@/lib/imagePreloader'
+import { useOfferData } from '@/queries/hooks/useOfferData'
+import type { OfferData } from '@/queries/types'
 
 export interface Holiday {
   id: number
@@ -11,58 +13,50 @@ export interface Holiday {
   location: string
 }
 
-export const holidayData: Holiday[] = [
-  {
-    id: 1,
-    name: 'Sol Costa Dorada',
-    image: placeholder,
-    stars: 4,
-    tripAdvisorRating: 4.5,
-    tripAdvisorReviews: 2991,
-    price: 296,
-    location: 'Costa Dorada, Spain',
-  },
-  {
-    id: 2,
-    name: 'Golden Costa Salou',
-    image: placeholder,
-    stars: 4,
-    tripAdvisorRating: 4.0,
-    tripAdvisorReviews: 339,
-    price: 338,
-    location: 'Salou, Spain',
-  },
-  {
-    id: 3,
-    name: 'Hotel Porta Coeli',
-    image: placeholder,
-    stars: 3,
-    tripAdvisorRating: 4.5,
-    tripAdvisorReviews: 715,
-    price: 345,
-    location: 'Valencia, Spain',
-  },
-  {
-    id: 4,
-    name: 'Sh Villa Gadea',
-    image: placeholder,
-    stars: 5,
-    tripAdvisorRating: 4.5,
-    tripAdvisorReviews: 2036,
-    price: 390,
-    location: 'Altea, Spain',
-  },
-  {
-    id: 5,
-    name: 'Costa del Sol Resort',
-    image: placeholder,
-    stars: 4,
-    tripAdvisorRating: 4.2,
-    tripAdvisorReviews: 1000,
-    price: 425,
-    location: 'Costa del Sol, Spain',
-  },
-]
+// Transform API offer data to Holiday format
+export function transformOfferToHoliday(offer: OfferData): Holiday {
+  const { accommodation, price_per_person } = offer
+  const {
+    images,
+    resort,
+    rating,
+    trip_advisor_rating,
+    trip_advisor_num_reviews,
+  } = accommodation
+
+  // Get the first image URL or fallback to placeholder
+  const imageUrl = images && images.length > 0 ? images[0].url : placeholderUrl
+
+  // Format location from resort and region data
+  const region =
+    resort.regions && resort.regions.length > 0 ? resort.regions[0].name : ''
+  const location = region ? `${region}, Spain` : 'Spain'
+
+  return {
+    id: accommodation.id,
+    name: accommodation.name,
+    image: imageUrl,
+    stars: rating || 0,
+    tripAdvisorRating: trip_advisor_rating || 0,
+    tripAdvisorReviews: trip_advisor_num_reviews || 0,
+    price: price_per_person || 0,
+    location: location,
+  }
+}
+
+// Hook to get holiday data from API
+export function useHolidayData(destinationId: number = 188) {
+  const { data, isLoading, error } = useOfferData(destinationId)
+
+  const holidays: Holiday[] =
+    data?.offers?.result?.map(transformOfferToHoliday) || []
+
+  return {
+    holidays,
+    isLoading,
+    error,
+  }
+}
 
 export const filterOptions = [
   'Last Minute',

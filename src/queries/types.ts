@@ -36,17 +36,35 @@ export interface AvailableDestinationsResponse {
 }
 
 // Offers types
+export interface OfferImage {
+  id: number
+  accommodation_id: number
+  url: string
+}
+
+export interface OfferRegion {
+  id: number
+  name: string
+}
+
+export interface OfferResort {
+  id: number
+  name: string
+  regions: OfferRegion[]
+}
+
 export interface OfferAccommodation {
   id: number
   name: string
-  resort: {
-    regions: {
-      name: string
-    }[]
-  }
+  rating: number
+  trip_advisor_rating: number
+  trip_advisor_num_reviews: number
+  images: OfferImage[]
+  resort: OfferResort
 }
 
 export interface OfferData {
+  price_per_person: number
   accommodation: OfferAccommodation
 }
 

@@ -1,6 +1,8 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Rating } from '@/components/ui/rating'
 import { TripAdvisorBadge } from './TripAdvisorBadge'
+import { placeholderUrl } from '@/lib/imagePreloader'
+import { useState } from 'react'
 import type { Holiday } from './holidayData'
 
 interface HolidayCardProps {
@@ -8,19 +10,26 @@ interface HolidayCardProps {
 }
 
 function HolidayCard({ holiday }: HolidayCardProps) {
+  const [imageSrc, setImageSrc] = useState(holiday.image)
+
+  const handleImageError = () => {
+    setImageSrc(placeholderUrl)
+  }
+
   return (
-    <Card className="border-border bg-card overflow-hidden shadow-sm transition-all hover:scale-102 hover:shadow-md">
+    <Card className="border-border bg-card h-full overflow-hidden shadow-sm transition-all hover:scale-102 hover:shadow-md">
       <div className="aspect-[4/3] overflow-hidden">
         <img
-          src={holiday.image}
+          src={imageSrc}
           alt={holiday.name}
           className="h-full w-full object-cover"
           width="320"
           height="240"
           loading="lazy"
+          onError={handleImageError}
         />
       </div>
-      <CardContent className="flex flex-col justify-between pb-6">
+      <CardContent className="flex grow flex-col justify-between pb-6">
         <div>
           <h3 className="text-foreground mb-1 text-sm font-semibold">
             {holiday.name}
@@ -31,11 +40,15 @@ function HolidayCard({ holiday }: HolidayCardProps) {
         </div>
 
         <div className="flex flex-wrap items-start justify-between gap-1">
-          <Rating rating={holiday.stars} variant="default" mode="integer" />
-          <TripAdvisorBadge
-            rating={holiday.tripAdvisorRating}
-            reviews={holiday.tripAdvisorReviews}
-          />
+          {holiday.stars > 0 && (
+            <Rating rating={holiday.stars} variant="default" mode="integer" />
+          )}
+          {holiday.tripAdvisorReviews > 0 && (
+            <TripAdvisorBadge
+              rating={holiday.tripAdvisorRating}
+              reviews={holiday.tripAdvisorReviews}
+            />
+          )}
         </div>
 
         <div className="mt-4 flex items-end">
