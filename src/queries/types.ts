@@ -24,14 +24,14 @@ export interface GraphQLResponse<T = unknown> {
 }
 
 // Available destinations types
-export interface RawDestination {
+export interface DestinationData {
   title: string
   result: number
 }
 
 export interface AvailableDestinationsResponse {
   available_destinations: {
-    result: RawDestination[]
+    result: DestinationData[]
   }
 }
 
@@ -57,7 +57,7 @@ export interface OffersResponse {
 }
 
 // Query key types for better type safety
-export type QueryKeys = 
+export type QueryKeys =
   | ['destinations']
   | ['offers', number]
   | ['offer', number]

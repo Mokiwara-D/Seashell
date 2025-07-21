@@ -1,4 +1,4 @@
-import { formatLocationText } from '@/lib/location-utils'
+import { formatLocationText } from '@/components/sections/holidays/location-utils'
 import {
   Carousel,
   CarouselContent,

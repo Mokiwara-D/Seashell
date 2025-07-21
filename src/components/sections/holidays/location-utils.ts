@@ -11,10 +11,6 @@ interface LocationData {
   }
 }
 
-/**
- * Formats location text from nested accommodation data structure
- * Priority: "Region, Destination" > Region only > Destination only > Empty string
- */
 export const formatLocationText = (accommodation: LocationData, destinationName?: string): string => {
   const region = accommodation.resort?.regions?.[0]
   const regionName = region?.name
@@ -34,9 +30,6 @@ export const formatLocationText = (accommodation: LocationData, destinationName?
   return ''
 }
 
-/**
- * Extracts resort name from accommodation data
- */
 export const getResortName = (accommodation: LocationData): string => {
   return accommodation.resort?.name || 'Unknown Resort'
 }

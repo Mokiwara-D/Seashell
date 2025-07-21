@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import { fetchDestinations } from '../queries'
-import type { RawDestination, QueryOptions } from '../types'
+import type { DestinationData, QueryOptions } from '../types'
 
 const useDestinationData = (options?: QueryOptions) => {
-  return useQuery<RawDestination[]>({
+  return useQuery<DestinationData[]>({
     queryKey: ['available-destinations'],
     queryFn: fetchDestinations,
     staleTime: 30 * 60 * 1000, // 30 minutes
@@ -14,4 +14,4 @@ const useDestinationData = (options?: QueryOptions) => {
   })
 }
 
-export { useDestinationData, type RawDestination }
+export { useDestinationData, type DestinationData as RawDestination }

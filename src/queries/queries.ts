@@ -1,7 +1,7 @@
 import { graphqlClient } from './client'
 import type {
   GraphQLQuery,
-  RawDestination,
+  DestinationData,
   AvailableDestinationsResponse as DestinationsResponse,
   OffersResponse,
 } from './types'
@@ -64,7 +64,7 @@ export async function fetchGraphQL<T = unknown>(
   return graphqlClient.request<T>(query)
 }
 
-export async function fetchDestinations(): Promise<RawDestination[]> {
+export async function fetchDestinations(): Promise<DestinationData[]> {
   const data = await fetchGraphQL<DestinationsResponse>(DESTINATIONS_QUERY)
   return data.available_destinations.result
 }

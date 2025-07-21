@@ -3,7 +3,7 @@ import { Container } from '@/components/ui/container'
 import { Tabs } from '@/components/ui/tabs'
 import { useDestination } from '@/contexts/useDestination'
 import { useDestinationData } from '@/queries'
-import { getDestinations, getDefaultDestination } from '@/lib/destinations'
+import { getDestinations, getDefaultDestination } from '@/queries/destinations'
 import { cn } from '@/lib/utils'
 
 const DestinationPicker = () => {
