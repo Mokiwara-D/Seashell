@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useCallback } from 'react'
-import { Container } from '../../ui/container'
-import { Tabs } from '../../ui/tabs'
-import { useDestination } from '../../../contexts/useDestination'
-import { fetchAvailableDestinations } from '../../../lib/graphql'
+import { Container } from '@/components/ui/container'
+import { Tabs } from '@/components/ui/tabs'
+import { useDestination } from '@/contexts/useDestination'
+import { fetchAvailableDestinations } from '@/queries/graphql'
 import {
   getDestinations,
   getDefaultDestination,
-} from '../../../lib/destinations'
-import { cn } from '../../../lib/utils'
+} from '@/lib/destinations'
+import { cn } from '@/lib/utils'
 
 const DestinationPicker = () => {
   const { destination, setDestination } = useDestination()

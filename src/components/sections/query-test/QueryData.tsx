@@ -1,5 +1,3 @@
-import { useQuery } from '@tanstack/react-query'
-import { fetchGraphQL, createOffersQuery } from '@/lib/graphql'
 import { formatLocationText } from '@/lib/location-utils'
 import {
   Carousel,
@@ -11,35 +9,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useDestination } from '@/contexts'
-
-// TypeScript interfaces for GraphQL response data
-interface OfferAccommodation {
-  id: number
-  name: string
-  resort: {
-    regions: {
-      name: string
-    }[]
-  }
-}
-
-interface OfferData {
-  accommodation: OfferAccommodation
-}
-
-interface OffersResponse {
-  offers: {
-    result: OfferData[]
-  }
-}
-
-const useOfferData = (destinationId: number) => {
-  return useQuery<OffersResponse>({
-    queryKey: ['offers', destinationId],
-    queryFn: () => fetchGraphQL(createOffersQuery(destinationId)),
-    staleTime: 1800000, // 30 minutes
-  })
-}
+import { useOfferData } from '@/queries'
 
 function QueryData() {
   const { destination } = useDestination()
