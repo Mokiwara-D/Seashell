@@ -26,14 +26,11 @@ function DestinationCardSkeleton() {
         <div className="mb-4 space-y-2">
           <Skeleton className="h-4 w-full" />
           <Skeleton className="h-4 w-5/6" />
-          <Skeleton className="h-4 w-2/3" />
         </div>
 
         {/* Price Section */}
-        <div className="mt-auto flex items-end pt-4">
-          <Skeleton className="mr-2 h-4 w-8" />
-          <Skeleton className="h-6 w-16" />
-          <Skeleton className="ml-1 h-4 w-6" />
+        <div className="mt-auto flex items-end">
+          <Skeleton className="h-8 w-24" />
         </div>
       </CardContent>
     </Card>
