@@ -1,6 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
 import { fetchOffers } from '../queries'
-import type { OffersResponse, OfferAccommodation, OfferData, QueryOptions } from '../types'
+import type {
+  OffersResponse,
+  OfferAccommodation,
+  OfferData,
+  QueryOptions,
+} from '../types'
 
 const useOfferData = (destinationId: number, options?: QueryOptions) => {
   return useQuery<OffersResponse>({
@@ -11,4 +16,9 @@ const useOfferData = (destinationId: number, options?: QueryOptions) => {
   })
 }
 
-export { useOfferData, type OfferAccommodation, type OfferData, type OffersResponse }
+export {
+  useOfferData,
+  type OfferAccommodation,
+  type OfferData,
+  type OffersResponse,
+}

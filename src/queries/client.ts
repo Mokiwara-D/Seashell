@@ -2,14 +2,7 @@ import { QueryClient } from '@tanstack/react-query'
 import type { GraphQLQuery } from './types'
 
 export const createQueryClient = () => {
-  return new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: 1000 * 60 * 5, // 5 minutes
-        gcTime: 1000 * 60 * 30, // 30 minutes
-      },
-    },
-  })
+  return new QueryClient()
 }
 
 export class GraphQLClient {
