@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import { fetchAvailableDestinations } from './graphql'
-import type { RawDestination, QueryOptions } from './types'
+import { fetchAvailableDestinations } from '../queries'
+import type { RawDestination, QueryOptions } from '../types'
 
 const useDestinationData = (options?: QueryOptions) => {
   return useQuery<RawDestination[]>({

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import { fetchOffers } from './graphql'
-import type { OffersResponse, OfferAccommodation, OfferData, QueryOptions } from './types'
+import { fetchOffers } from '../queries'
+import type { OffersResponse, OfferAccommodation, OfferData, QueryOptions } from '../types'
 
 const useOfferData = (destinationId: number, options?: QueryOptions) => {
   return useQuery<OffersResponse>({
