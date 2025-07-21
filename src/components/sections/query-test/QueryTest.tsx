@@ -3,7 +3,10 @@ import { QueryData } from './QueryData'
 
 const QueryTest = () => {
   return (
-    <Container contentClassName="flex flex-col gap-4 py-12">
+    <Container
+      wrapperClassName="py-12"
+      contentClassName="flex flex-col items-start gap-6"
+    >
       <QueryData />
     </Container>
   )

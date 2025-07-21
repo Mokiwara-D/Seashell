@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { fetchGraphQL, createOffersQuery } from '@/lib/graphql'
 import { formatLocationText } from '@/lib/location-utils'
-import { Container } from '@/components/ui/container'
 import {
   Carousel,
   CarouselContent,
@@ -49,10 +48,7 @@ function QueryData() {
   const offers = data?.offers.result || []
 
   return (
-    <Container
-      wrapperClassName="py-8 md:py-12"
-      contentClassName="flex flex-col gap-6 items-start"
-    >
+    <>
       {/* Header */}
       <div className="w-full">
         <h2 className="text-foreground mb-6 text-2xl font-bold md:text-3xl">
@@ -120,7 +116,7 @@ function QueryData() {
           </Carousel>
         </div>
       )}
-    </Container>
+    </>
   )
 }
 
