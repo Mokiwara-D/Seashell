@@ -47,9 +47,9 @@ function Destinations() {
       <div className="relative w-full">
         <Carousel
           opts={{
-            align: 'start',
-            slidesToScroll: 1,
             loop: true,
+            align: 'start',
+            dragFree: true,
           }}
           className="w-full"
         >

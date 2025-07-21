@@ -1,22 +1,16 @@
-/**
- * Preloads critical images for better performance
- */
-
-// Import the placeholder image as a static asset
 import placeholder from '@/assets/placeholder.jpg'
 
 class ImagePreloader {
+  // Cache of successfully preloaded image URLs
   private preloadedImages = new Set<string>()
 
-  /**
-   * Preloads an image and stores it in cache
-   */
   preload(src: string): Promise<void> {
     if (this.preloadedImages.has(src)) {
       return Promise.resolve()
     }
 
     return new Promise((resolve) => {
+      // Use browser's Image API to download and cache
       const img = new Image()
 
       img.onload = () => {
@@ -25,26 +19,19 @@ class ImagePreloader {
       }
 
       img.onerror = () => {
-        // Don't reject on failed preloads since we have fallback logic
-        // Just log a warning and resolve
         console.warn(`Failed to preload image: ${src}`)
         resolve()
       }
 
+      // Setting src triggers the browser download
       img.src = src
     })
   }
 
-  /**
-   * Preloads multiple images concurrently
-   */
   preloadBatch(sources: string[]): Promise<void[]> {
     return Promise.all(sources.map((src) => this.preload(src)))
   }
 
-  /**
-   * Checks if an image has been preloaded
-   */
   isPreloaded(src: string): boolean {
     return this.preloadedImages.has(src)
   }
@@ -53,15 +40,10 @@ class ImagePreloader {
 // Create singleton instance
 export const imagePreloader = new ImagePreloader()
 
-// Preload the placeholder image immediately
 imagePreloader.preload(placeholder).catch(console.warn)
 
-// Export the placeholder URL for components
 export { placeholder }
 
-/**
- * Hook for preloading images in React components
- */
 export function useImagePreloader() {
   return {
     preload: imagePreloader.preload.bind(imagePreloader),
