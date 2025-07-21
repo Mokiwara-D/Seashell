@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
-import { useMemo } from 'react'
 import { fetchGraphQL, createOffersQuery } from '@/lib/graphql'
 import { formatLocationText } from '@/lib/location-utils'
+import { Container } from '@/components/ui/container'
 import {
   Carousel,
   CarouselContent,
@@ -13,126 +13,114 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useDestination } from '@/contexts'
 
-// Types - Single Responsibility Principle
-interface OfferData {
-  accommodation: {
-    id: number
-    name: string
-    resort: {
-      regions: { name: string }[]
-    }
-  }
-}
-
-interface CardData {
-  id: string | number
+// TypeScript interfaces for GraphQL response data
+interface OfferAccommodation {
+  id: number
   name: string
-  location: string
-  isLoading: boolean
-}
-
-// Constants - DRY Principle
-const LOADING_SKELETON_COUNT = 6
-const LOADING_TEXT = 'Loading...'
-
-// Pure functions - Single Responsibility & DRY
-const createLoadingCards = (count: number): CardData[] =>
-  Array.from({ length: count }, (_, i) => ({
-    id: `skeleton-${i}`,
-    name: LOADING_TEXT,
-    location: LOADING_TEXT,
-    isLoading: true,
-  }))
-
-const transformOfferToCard = (
-  offer: OfferData,
-  destinationName: string
-): CardData => ({
-  id: offer.accommodation.id,
-  name: offer.accommodation.name,
-  location: formatLocationText(offer.accommodation, destinationName),
-  isLoading: false,
-})
-
-// Main transformation function - Open/Closed Principle
-const createCardData = (
-  offers: OfferData[],
-  destinationName: string,
-  isLoading: boolean
-): CardData[] => {
-  if (isLoading) {
-    return createLoadingCards(LOADING_SKELETON_COUNT)
+  resort: {
+    regions: {
+      name: string
+    }[]
   }
-
-  return offers.map((offer) => transformOfferToCard(offer, destinationName))
 }
 
-// Component for individual card rendering - Single Responsibility
-const OfferCard = ({ card }: { card: CardData }) => (
-  <Card className="min-h-48 py-8">
-    <CardHeader>
-      {card.isLoading ? (
-        <Skeleton className="h-6 w-3/4" />
-      ) : (
-        <CardTitle>{card.name}</CardTitle>
-      )}
-    </CardHeader>
-    <CardContent>
-      {card.isLoading ? (
-        <Skeleton className="h-4 w-1/2" />
-      ) : (
-        card.location && (
-          <p className="text-muted-foreground text-sm">{card.location}</p>
-        )
-      )}
-    </CardContent>
-  </Card>
-)
+interface OfferData {
+  accommodation: OfferAccommodation
+}
 
-// Custom hook for data fetching - Separation of Concerns
+interface OffersResponse {
+  offers: {
+    result: OfferData[]
+  }
+}
+
 const useOfferData = (destinationId: number) => {
-  return useQuery({
+  return useQuery<OffersResponse>({
     queryKey: ['offers', destinationId],
     queryFn: () => fetchGraphQL(createOffersQuery(destinationId)),
     staleTime: 1800000, // 30 minutes
   })
 }
 
-const QueryData = () => {
+function QueryData() {
   const { destination } = useDestination()
   const { data, isLoading, error } = useOfferData(destination.id)
 
-  // Memoize card data transformation - Performance optimization
-  const cardData = useMemo(
-    () =>
-      createCardData(data?.offers.result || [], destination.name, isLoading),
-    [data?.offers.result, destination.name, isLoading]
-  )
-
-  if (error) return <>Error: {(error as Error).message}</>
+  const offers = data?.offers.result || []
 
   return (
-    <Carousel
-      className="w-full"
-      opts={{
-        loop: true,
-        align: 'start',
-        dragFree: true,
-      }}
+    <Container
+      wrapperClassName="py-8 md:py-12"
+      contentClassName="flex flex-col gap-6 items-start"
     >
-      <CarouselContent>
-        {cardData.map((card) => (
-          <CarouselItem
-            key={card.id}
-            className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+      {/* Header */}
+      <div className="w-full">
+        <h2 className="text-foreground mb-6 text-2xl font-bold md:text-3xl">
+          Offers to {destination.name}
+        </h2>
+      </div>
+
+      {/* Error Display */}
+      {error && (
+        <div className="w-full py-8 text-center">
+          <p className="text-destructive">Error: {(error as Error).message}</p>
+        </div>
+      )}
+
+      {/* Carousel */}
+      {!error && (
+        <div className="relative w-full">
+          <Carousel
+            opts={{
+              loop: false,
+              align: 'start',
+            }}
+            className="w-full"
           >
-            <OfferCard card={card} />
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
-    </Carousel>
+            <CarouselContent className="my-2">
+              {isLoading
+                ? Array.from({ length: 6 }, (_, i) => (
+                    <CarouselItem
+                      key={`skeleton-${i}`}
+                      className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                    >
+                      <Card className="min-h-48 py-8">
+                        <CardHeader>
+                          <Skeleton className="h-6 w-3/4" />
+                        </CardHeader>
+                        <CardContent>
+                          <Skeleton className="h-4 w-1/2" />
+                        </CardContent>
+                      </Card>
+                    </CarouselItem>
+                  ))
+                : offers.map((offer) => (
+                    <CarouselItem
+                      key={offer.accommodation.id}
+                      className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                    >
+                      <Card className="min-h-48 py-8">
+                        <CardHeader>
+                          <CardTitle>{offer.accommodation.name}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-muted-foreground text-sm">
+                            {formatLocationText(
+                              offer.accommodation,
+                              destination.name
+                            )}
+                          </p>
+                        </CardContent>
+                      </Card>
+                    </CarouselItem>
+                  ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        </div>
+      )}
+    </Container>
   )
 }
 

@@ -37,9 +37,8 @@ function Holidays() {
       <div className="relative w-full">
         <Carousel
           opts={{
+            loop: false,
             align: 'start',
-            slidesToScroll: 1,
-            loop: true,
           }}
           className="w-full"
         >
@@ -62,7 +61,7 @@ function Holidays() {
 
       <Button
         variant="outline"
-        className="border-border bg-background text-foreground hover:bg-muted rounded-full px-6"
+        className="rounded-full px-6"
       >
         View all Last Minute holidays
       </Button>
