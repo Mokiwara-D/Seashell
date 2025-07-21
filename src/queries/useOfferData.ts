@@ -1,32 +1,13 @@
 import { useQuery } from '@tanstack/react-query'
-import { fetchGraphQL, createOffersQuery } from './graphql'
+import { fetchOffers } from './graphql'
+import type { OffersResponse, OfferAccommodation, OfferData, QueryOptions } from './types'
 
-// TypeScript interfaces for GraphQL response data
-interface OfferAccommodation {
-  id: number
-  name: string
-  resort: {
-    regions: {
-      name: string
-    }[]
-  }
-}
-
-interface OfferData {
-  accommodation: OfferAccommodation
-}
-
-interface OffersResponse {
-  offers: {
-    result: OfferData[]
-  }
-}
-
-const useOfferData = (destinationId: number) => {
+const useOfferData = (destinationId: number, options?: QueryOptions) => {
   return useQuery<OffersResponse>({
     queryKey: ['offers', destinationId],
-    queryFn: () => fetchGraphQL(createOffersQuery(destinationId)),
+    queryFn: () => fetchOffers(destinationId),
     staleTime: 1800000, // 30 minutes
+    ...options,
   })
 }
 

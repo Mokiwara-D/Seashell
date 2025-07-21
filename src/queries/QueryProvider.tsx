@@ -1,8 +1,10 @@
 import { type ReactNode } from 'react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { createQueryClient } from './client'
 
-const queryClient = new QueryClient()
+// Create query client instance
+const queryClient = createQueryClient()
 
 interface QueryProviderProps {
   children: ReactNode

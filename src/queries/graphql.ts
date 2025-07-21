@@ -1,23 +1,15 @@
-interface GraphQLQuery {
-  query: string
-  variables?: Record<string, unknown>
-}
+import { graphqlClient } from './client'
+import type { 
+  GraphQLQuery, 
+  RawDestination, 
+  AvailableDestinationsResponse,
+  OffersResponse 
+} from './types'
 
-// TypeScript interfaces for available destinations GraphQL response
-interface RawDestination {
-  title: string
-  result: number
-}
-
-interface AvailableDestinationsResponse {
-  available_destinations: {
-    result: RawDestination[]
-  }
-}
-
+// GraphQL query definitions
 export const AVAILABLE_DESTINATIONS_QUERY: GraphQLQuery = {
   query: `
-    query offers {
+    query GetAvailableDestinations {
       available_destinations {
         result {
           title
@@ -26,11 +18,12 @@ export const AVAILABLE_DESTINATIONS_QUERY: GraphQLQuery = {
       }
     }
   `,
+  operationName: 'GetAvailableDestinations',
 }
 
 export const createOffersQuery = (destinationId: number): GraphQLQuery => ({
   query: `
-    query offers($destinations: [Int]) {
+    query GetOffers($destinations: [Int]) {
       offers(destinations: $destinations) {
         result {
           accommodation {
@@ -49,25 +42,21 @@ export const createOffersQuery = (destinationId: number): GraphQLQuery => ({
   variables: {
     destinations: [destinationId],
   },
+  operationName: 'GetOffers',
 })
 
-export async function fetchGraphQL(query: GraphQLQuery) {
-  const res = await fetch(import.meta.env.VITE_GRAPHQL_ENDPOINT, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${import.meta.env.VITE_AUTH_TOKEN}`,
-    },
-    body: JSON.stringify(query),
-  })
-  const { data, errors } = await res.json()
-  if (errors) throw new Error(errors[0].message)
-  return data
+// Enhanced GraphQL fetch functions using the centralized client
+export async function fetchGraphQL<T = unknown>(query: GraphQLQuery): Promise<T> {
+  return graphqlClient.request<T>(query)
 }
 
 export async function fetchAvailableDestinations(): Promise<RawDestination[]> {
-  const data: AvailableDestinationsResponse = await fetchGraphQL(
+  const data = await fetchGraphQL<AvailableDestinationsResponse>(
     AVAILABLE_DESTINATIONS_QUERY
   )
   return data.available_destinations.result
+}
+
+export async function fetchOffers(destinationId: number): Promise<OffersResponse> {
+  return fetchGraphQL<OffersResponse>(createOffersQuery(destinationId))
 }

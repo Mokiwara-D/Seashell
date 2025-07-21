@@ -1,48 +1,31 @@
-import { useQuery } from '@tanstack/react-query'
 import { useEffect, useCallback } from 'react'
 import { Container } from '@/components/ui/container'
 import { Tabs } from '@/components/ui/tabs'
 import { useDestination } from '@/contexts/useDestination'
-import { fetchAvailableDestinations } from '@/queries/graphql'
-import {
-  getDestinations,
-  getDefaultDestination,
-} from '@/lib/destinations'
+import { useDestinationData } from '@/queries'
+import { getDestinations, getDefaultDestination } from '@/lib/destinations'
 import { cn } from '@/lib/utils'
 
 const DestinationPicker = () => {
   const { destination, setDestination } = useDestination()
-
-  // React Query configuration for fetching destinations
-  const destinationsQuery = useQuery({
-    queryKey: ['available-destinations'],
-    queryFn: fetchAvailableDestinations,
-    staleTime: 30 * 60 * 1000, // 30 minutes
-    gcTime: 35 * 60 * 1000, // 35 minutes (slightly longer than stale time)
-    retry: 1, // Retry once on failure
-    throwOnError: false, // Handle errors manually
-  })
+  const { data, isLoading, error } = useDestinationData()
 
   // Get destinations with fallback logic using centralized function
-  const destinations = getDestinations(
-    destinationsQuery.data,
-    !!destinationsQuery.error
-  )
-  const isLoading = destinationsQuery.isLoading
-  const hasError = destinationsQuery.error && !destinationsQuery.data
+  const destinations = getDestinations(data, !!error)
+  const hasError = error && !data
 
   // Error handling for failed requests
   useEffect(() => {
-    if (destinationsQuery.error) {
-      console.error('Failed to fetch destinations:', destinationsQuery.error)
+    if (error) {
+      console.error('Failed to fetch destinations:', error)
       // Could integrate with error tracking service here
     }
-  }, [destinationsQuery.error])
+  }, [error])
 
   // Default destination selection logic - integrates with destination context initialization
   useEffect(() => {
     // Only run when we have fresh destination data, not on every destination change
-    if (!isLoading && destinations.length > 0 && destinationsQuery.data) {
+    if (!isLoading && destinations.length > 0 && data) {
       const defaultDestination = getDefaultDestination(destinations)
 
       const currentDestinationExists = destinations.some(
@@ -59,7 +42,14 @@ const DestinationPicker = () => {
         setDestination(defaultDestination)
       }
     }
-  }, [destinations, isLoading, destinationsQuery.data, destination.id, destination.name, setDestination])
+  }, [
+    destinations,
+    isLoading,
+    data,
+    destination.id,
+    destination.name,
+    setDestination,
+  ])
 
   // Handle tab change
   const handleTabChange = useCallback(
