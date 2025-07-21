@@ -14,7 +14,10 @@ export interface Holiday {
 }
 
 // Transform API offer data to Holiday format
-export function transformOfferToHoliday(offer: OfferData): Holiday {
+export function transformOfferToHoliday(
+  offer: OfferData,
+  destinationName: string
+): Holiday {
   const { accommodation, price_per_person } = offer
   const {
     images,
@@ -27,10 +30,15 @@ export function transformOfferToHoliday(offer: OfferData): Holiday {
   // Get the first image URL or fallback to placeholder
   const imageUrl = images && images.length > 0 ? images[0].url : placeholderUrl
 
-  // Format location from resort and region data
+  // Format location from resort and region data using destination name from context
   const region =
     resort.regions && resort.regions.length > 0 ? resort.regions[0].name : ''
-  const location = region ? `${region}, Spain` : 'Spain'
+
+  // Avoid duplicate names when region and destination are the same
+  let location = destinationName
+  if (region && region.toLowerCase() !== destinationName.toLowerCase()) {
+    location = `${region}, ${destinationName}`
+  }
 
   return {
     id: accommodation.id,
@@ -45,11 +53,13 @@ export function transformOfferToHoliday(offer: OfferData): Holiday {
 }
 
 // Hook to get holiday data from API
-export function useHolidayData(destinationId: number = 188) {
+export function useHolidayData(destinationId: number, destinationName: string) {
   const { data, isLoading, error } = useOfferData(destinationId)
 
   const holidays: Holiday[] =
-    data?.offers?.result?.map(transformOfferToHoliday) || []
+    data?.offers?.result?.map((offer) =>
+      transformOfferToHoliday(offer, destinationName)
+    ) || []
 
   return {
     holidays,

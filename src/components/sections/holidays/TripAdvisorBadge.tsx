@@ -8,7 +8,7 @@ interface TripAdvisorBadgeProps {
 
 function TripAdvisorBadge({ rating, reviews }: TripAdvisorBadgeProps) {
   return (
-    <div className="flex flex-col items-start gap-1">
+    <div className="flex flex-col gap-1">
       <div className="flex items-center gap-1">
         <SiTripadvisor size={16} />
         <Rating rating={rating} variant="tripadvisor" size="xs" />

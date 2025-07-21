@@ -16,7 +16,7 @@ class ImagePreloader {
       return Promise.resolve()
     }
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const img = new Image()
 
       img.onload = () => {
@@ -25,7 +25,10 @@ class ImagePreloader {
       }
 
       img.onerror = () => {
-        reject(new Error(`Failed to preload image: ${src}`))
+        // Don't reject on failed preloads since we have fallback logic
+        // Just log a warning and resolve
+        console.warn(`Failed to preload image: ${src}`)
+        resolve()
       }
 
       img.src = src

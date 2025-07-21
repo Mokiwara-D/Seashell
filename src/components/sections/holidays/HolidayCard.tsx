@@ -2,7 +2,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Rating } from '@/components/ui/rating'
 import { TripAdvisorBadge } from './TripAdvisorBadge'
 import { placeholderUrl } from '@/lib/imagePreloader'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { Holiday } from './holidayData'
 
 interface HolidayCardProps {
@@ -10,11 +10,27 @@ interface HolidayCardProps {
 }
 
 function HolidayCard({ holiday }: HolidayCardProps) {
-  const [imageSrc, setImageSrc] = useState(holiday.image)
+  // Start with placeholder by default
+  const [imageSrc, setImageSrc] = useState(placeholderUrl)
 
-  const handleImageError = () => {
-    setImageSrc(placeholderUrl)
-  }
+  // Try to load the API image in the background
+  useEffect(() => {
+    // Only try to load if we have a different image URL than placeholder
+    if (holiday.image && holiday.image !== placeholderUrl) {
+      const img = new Image()
+
+      img.onload = () => {
+        // Only replace placeholder if API image loads successfully
+        setImageSrc(holiday.image)
+      }
+
+      img.onerror = () => {
+        // Keep placeholder on error (no action needed)
+      }
+
+      img.src = holiday.image
+    }
+  }, [holiday.image])
 
   return (
     <Card className="border-border bg-card h-full overflow-hidden shadow-sm transition-all hover:scale-102 hover:shadow-md">
@@ -26,36 +42,34 @@ function HolidayCard({ holiday }: HolidayCardProps) {
           width="320"
           height="240"
           loading="lazy"
-          onError={handleImageError}
         />
       </div>
       <CardContent className="flex grow flex-col justify-between pb-6">
         <div>
-          <h3 className="text-foreground mb-1 text-sm font-semibold">
+          <h3 className="text-foreground mb-1 truncate text-sm font-semibold">
             {holiday.name}
           </h3>
           <p className="text-muted-foreground mb-2 text-xs">
             {holiday.location}
           </p>
-        </div>
-
-        <div className="flex flex-wrap items-start justify-between gap-1">
-          {holiday.stars > 0 && (
-            <Rating rating={holiday.stars} variant="default" mode="integer" />
-          )}
-          {holiday.tripAdvisorReviews > 0 && (
-            <TripAdvisorBadge
-              rating={holiday.tripAdvisorRating}
-              reviews={holiday.tripAdvisorReviews}
-            />
-          )}
+          <div className="flex flex-wrap items-start justify-between gap-1">
+            {holiday.stars > 0 && (
+              <Rating rating={holiday.stars} variant="default" />
+            )}
+            {holiday.tripAdvisorReviews > 0 && (
+              <TripAdvisorBadge
+                rating={holiday.tripAdvisorRating}
+                reviews={holiday.tripAdvisorReviews}
+              />
+            )}
+          </div>
         </div>
 
         <div className="mt-4 flex items-end">
-          <h3 className="text-foreground text-2xl leading-none font-bold">
-            £{holiday.price}
+          <h3 className="text-foreground text-3xl leading-none font-bold">
+            £{Math.round(holiday.price)}
           </h3>
-          <h3 className="text-sm font-bold">pp</h3>
+          <h3 className="text-md font-bold">pp</h3>
         </div>
       </CardContent>
     </Card>

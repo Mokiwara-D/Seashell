@@ -12,11 +12,16 @@ import { HolidayCard } from './HolidayCard'
 import { HolidayCardSkeleton } from './HolidayCardSkeleton'
 import { useHolidayData, filterOptions } from './holidayData'
 import { useImagePreloader } from '@/lib/imagePreloader'
+import { useDestination } from '@/contexts'
 import { useState, useEffect } from 'react'
 
 function Holidays() {
   const [activeTab, setActiveTab] = useState('Last Minute')
-  const { holidays, isLoading } = useHolidayData(188) // Greek Islands destination ID
+  const { destination } = useDestination()
+  const { holidays, isLoading } = useHolidayData(
+    destination.id,
+    destination.name
+  )
   const { preloadBatch } = useImagePreloader()
 
   // Preload holiday images when data is loaded
@@ -40,7 +45,7 @@ function Holidays() {
       {/* Header */}
       <div className="w-full">
         <h2 className="text-foreground mb-6 text-2xl font-bold md:text-3xl">
-          Holidays to Spain
+          Holidays to {destination.name}
         </h2>
 
         {/* Filter Tabs */}
