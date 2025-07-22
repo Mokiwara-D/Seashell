@@ -11,22 +11,25 @@ interface LocationData {
   }
 }
 
-export const formatLocationText = (accommodation: LocationData, destinationName?: string): string => {
+export const formatLocationText = (
+  accommodation: LocationData,
+  destinationName?: string
+): string => {
   const region = accommodation.resort?.regions?.[0]
   const regionName = region?.name
 
   if (regionName && destinationName) {
     return `${regionName}, ${destinationName}`
   }
-  
+
   if (regionName) {
     return regionName
   }
-  
+
   if (destinationName) {
     return destinationName
   }
-  
+
   return ''
 }
 

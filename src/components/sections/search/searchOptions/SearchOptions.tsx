@@ -34,12 +34,15 @@ const SearchOptions = memo(function SearchOptions({
   }, [])
 
   // Memoize the button click handler
-  const handleTabClick = useCallback((tabId: string) => {
-    dispatch({ type: 'UPDATE_OPTION', payload: tabId })
-    if (!isExpanded) {
-      setIsExpanded(true)
-    }
-  }, [dispatch, isExpanded, setIsExpanded])
+  const handleTabClick = useCallback(
+    (tabId: string) => {
+      dispatch({ type: 'UPDATE_OPTION', payload: tabId })
+      if (!isExpanded) {
+        setIsExpanded(true)
+      }
+    },
+    [dispatch, isExpanded, setIsExpanded]
+  )
   return (
     <Container wrapperClassName="pt-2" contentClassName="justify-center py-0">
       <div className="flex justify-center gap-2">

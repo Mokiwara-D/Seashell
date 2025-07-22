@@ -4,7 +4,11 @@ export interface NavigationItem {
   href: string
 }
 
-export interface NavBarProps {}
+export interface NavBarProps {
+  navigationItems: NavigationItem[]
+  activeTab: string
+  onTabChange: (tab: string) => void
+}
 
 export interface MobileNavigationProps {
   isMenuOpen: boolean
@@ -23,4 +27,4 @@ export interface DesktopNavigationProps {
 export interface MobileMenuOverlayProps {
   isOpen: boolean
   onClose: () => void
-} 
+}

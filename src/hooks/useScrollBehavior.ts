@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef } from 'react'
 
 interface UseScrollBehaviorProps {
   isExpanded: boolean
@@ -40,22 +40,6 @@ function useScrollBehavior({
       window.removeEventListener('beforeunload', handleBeforeUnload)
     }
   }, [])
-
-  // Memoize the scroll handler to prevent recreation on every effect run
-  const handleScroll = useCallback(() => {
-    const currentScrollY = window.scrollY
-    const lastScrollY = window.scrollY
-
-    // Only collapse if user scrolls down from the top after initial load
-    if (
-      isExpanded &&
-      lastScrollY === 0 &&
-      currentScrollY > 10 &&
-      !isScrollingRef.current
-    ) {
-      setIsExpanded(false)
-    }
-  }, [isExpanded, setIsExpanded])
 
   useEffect(() => {
     let lastScrollY = window.scrollY

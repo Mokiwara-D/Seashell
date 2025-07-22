@@ -28,27 +28,31 @@ function Holidays() {
   }, [])
 
   // Memoize the skeleton items to prevent recreation on every render
-  const skeletonItems = useMemo(() => 
-    Array.from({ length: 4 }, (_, index) => (
-      <CarouselItem
-        key={`skeleton-${index}`}
-        className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
-      >
-        <HolidayCardSkeleton />
-      </CarouselItem>
-    )), []
+  const skeletonItems = useMemo(
+    () =>
+      Array.from({ length: 4 }, (_, index) => (
+        <CarouselItem
+          key={`skeleton-${index}`}
+          className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+        >
+          <HolidayCardSkeleton />
+        </CarouselItem>
+      )),
+    []
   )
 
   // Memoize the holiday items to prevent recreation when holidays array reference changes
-  const holidayItems = useMemo(() => 
-    holidays.map((holiday) => (
-      <CarouselItem
-        key={holiday.id}
-        className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
-      >
-        <HolidayCard holiday={holiday} />
-      </CarouselItem>
-    )), [holidays]
+  const holidayItems = useMemo(
+    () =>
+      holidays.map((holiday) => (
+        <CarouselItem
+          key={holiday.id}
+          className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+        >
+          <HolidayCard holiday={holiday} />
+        </CarouselItem>
+      )),
+    [holidays]
   )
 
   // Hide component if no data and not loading

@@ -31,4 +31,4 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     label: 'Careers',
     href: '#',
   },
-] as const 
+] as const

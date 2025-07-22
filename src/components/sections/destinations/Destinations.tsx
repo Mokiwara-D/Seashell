@@ -19,8 +19,8 @@ function Destinations() {
   const { preloadBatch } = useImagePreloader()
 
   // Memoize image URLs to prevent unnecessary recalculations
-  const imageUrls = useMemo(() => 
-    regions.map((region) => region.image).filter(Boolean), 
+  const imageUrls = useMemo(
+    () => regions.map((region) => region.image).filter(Boolean),
     [regions]
   )
 
@@ -37,27 +37,31 @@ function Destinations() {
   }, [handleImagePreload])
 
   // Memoize the skeleton items to prevent recreation on every render
-  const skeletonItems = useMemo(() => 
-    Array.from({ length: 4 }, (_, index) => (
-      <CarouselItem
-        key={`skeleton-${index}`}
-        className="flex basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
-      >
-        <DestinationCardSkeleton />
-      </CarouselItem>
-    )), []
+  const skeletonItems = useMemo(
+    () =>
+      Array.from({ length: 4 }, (_, index) => (
+        <CarouselItem
+          key={`skeleton-${index}`}
+          className="flex basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+        >
+          <DestinationCardSkeleton />
+        </CarouselItem>
+      )),
+    []
   )
 
   // Memoize the destination items to prevent recreation when regions array reference changes
-  const destinationItems = useMemo(() => 
-    regions.map((region) => (
-      <CarouselItem
-        key={region.id}
-        className="flex basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
-      >
-        <DestinationCard destination={region} />
-      </CarouselItem>
-    )), [regions]
+  const destinationItems = useMemo(
+    () =>
+      regions.map((region) => (
+        <CarouselItem
+          key={region.id}
+          className="flex basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+        >
+          <DestinationCard destination={region} />
+        </CarouselItem>
+      )),
+    [regions]
   )
 
   // Hide component if no data and not loading

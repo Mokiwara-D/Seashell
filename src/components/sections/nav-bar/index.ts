@@ -9,4 +9,4 @@ export type {
   MobileNavigationProps,
   DesktopNavigationProps,
   MobileMenuOverlayProps,
-} from './types' 
+} from './types'

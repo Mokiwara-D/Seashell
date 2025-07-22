@@ -56,10 +56,13 @@ function Search() {
   const [isExpanded, setIsExpanded] = useSearchExpansion()
 
   // Memoize the scroll behavior props to prevent unnecessary hook re-runs
-  const scrollBehaviorProps = useMemo(() => ({
-    isExpanded,
-    setIsExpanded
-  }), [isExpanded, setIsExpanded])
+  const scrollBehaviorProps = useMemo(
+    () => ({
+      isExpanded,
+      setIsExpanded,
+    }),
+    [isExpanded, setIsExpanded]
+  )
 
   useScrollBehavior(scrollBehaviorProps)
 

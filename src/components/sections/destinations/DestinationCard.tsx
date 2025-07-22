@@ -7,7 +7,9 @@ interface DestinationCardProps {
   destination: Destination
 }
 
-const DestinationCard = memo(function DestinationCard({ destination }: DestinationCardProps) {
+const DestinationCard = memo(function DestinationCard({
+  destination,
+}: DestinationCardProps) {
   // Start with placeholder by default
   const [imageSrc, setImageSrc] = useState(placeholder)
 

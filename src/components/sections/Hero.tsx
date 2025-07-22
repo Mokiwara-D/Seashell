@@ -5,15 +5,18 @@ import { useMemo } from 'react'
 
 function Hero() {
   const { destination } = useDestination()
-  
+
   // Memoize the background style to prevent object recreation
-  const backgroundStyle = useMemo(() => ({
-    backgroundImage: `url(${placeholder})`,
-  }), [])
+  const backgroundStyle = useMemo(
+    () => ({
+      backgroundImage: `url(${placeholder})`,
+    }),
+    []
+  )
 
   // Memoize the destination title to prevent unnecessary string operations
-  const destinationTitle = useMemo(() => 
-    `${destination.name.toUpperCase()} HOLIDAYS`, 
+  const destinationTitle = useMemo(
+    () => `${destination.name.toUpperCase()} HOLIDAYS`,
     [destination.name]
   )
 

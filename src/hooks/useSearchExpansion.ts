@@ -21,9 +21,12 @@ function useSearchExpansion() {
   }, [isExpanded])
 
   // Memoize the setter to prevent unnecessary re-renders in consuming components
-  const memoizedSetIsExpanded = useCallback((value: boolean | ((prev: boolean) => boolean)) => {
-    setIsExpanded(value)
-  }, [])
+  const memoizedSetIsExpanded = useCallback(
+    (value: boolean | ((prev: boolean) => boolean)) => {
+      setIsExpanded(value)
+    },
+    []
+  )
 
   return [isExpanded, memoizedSetIsExpanded] as const
 }
