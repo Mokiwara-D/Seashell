@@ -12,7 +12,7 @@ import { HolidayCard } from './HolidayCard'
 import { HolidayCardSkeleton } from './HolidayCardSkeleton'
 import { useHolidayData, filterOptions } from './holidayData'
 import { useDestination } from '@/contexts'
-import { useState } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 
 function Holidays() {
   const [activeTab, setActiveTab] = useState('Last Minute')
@@ -20,6 +20,35 @@ function Holidays() {
   const { holidays, isLoading } = useHolidayData(
     destination.id,
     destination.name
+  )
+
+  // Memoize the tab change handler
+  const handleTabChange = useCallback((tab: string) => {
+    setActiveTab(tab)
+  }, [])
+
+  // Memoize the skeleton items to prevent recreation on every render
+  const skeletonItems = useMemo(() => 
+    Array.from({ length: 4 }, (_, index) => (
+      <CarouselItem
+        key={`skeleton-${index}`}
+        className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+      >
+        <HolidayCardSkeleton />
+      </CarouselItem>
+    )), []
+  )
+
+  // Memoize the holiday items to prevent recreation when holidays array reference changes
+  const holidayItems = useMemo(() => 
+    holidays.map((holiday) => (
+      <CarouselItem
+        key={holiday.id}
+        className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+      >
+        <HolidayCard holiday={holiday} />
+      </CarouselItem>
+    )), [holidays]
   )
 
   // Hide component if no data and not loading
@@ -42,7 +71,7 @@ function Holidays() {
         <Tabs
           tabs={filterOptions}
           activeTab={activeTab}
-          onTabChange={setActiveTab}
+          onTabChange={handleTabChange}
         />
       </div>
 
@@ -57,25 +86,7 @@ function Holidays() {
           className="w-full"
         >
           <CarouselContent className="my-2">
-            {isLoading
-              ? // Show skeleton cards while loading
-                Array.from({ length: 4 }, (_, index) => (
-                  <CarouselItem
-                    key={`skeleton-${index}`}
-                    className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
-                  >
-                    <HolidayCardSkeleton />
-                  </CarouselItem>
-                ))
-              : // Show actual holiday cards
-                holidays.map((holiday) => (
-                  <CarouselItem
-                    key={holiday.id}
-                    className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
-                  >
-                    <HolidayCard holiday={holiday} />
-                  </CarouselItem>
-                ))}
+            {isLoading ? skeletonItems : holidayItems}
           </CarouselContent>
           <CarouselPrevious />
           <CarouselNext />

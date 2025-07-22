@@ -1,20 +1,24 @@
 import { Container } from '@/components/ui/container'
 import { Button } from '@/components/ui/button'
+import { memo, useCallback } from 'react'
 import type { SearchAction } from '../searchTypes'
 import { searchOptionTabs } from './searchOptionsData'
 
-const SearchOptions = ({
-  selectedOption = 'flightHotel',
-  dispatch,
-  isExpanded = false,
-  setIsExpanded,
-}: {
+interface SearchOptionsProps {
   selectedOption?: string
   dispatch: React.Dispatch<SearchAction>
   isExpanded?: boolean
   setIsExpanded: React.Dispatch<React.SetStateAction<boolean>>
-}) => {
-  const parseLabel = (label: string) => {
+}
+
+const SearchOptions = memo(function SearchOptions({
+  selectedOption = 'flightHotel',
+  dispatch,
+  isExpanded = false,
+  setIsExpanded,
+}: SearchOptionsProps) {
+  // Memoize the label parsing function
+  const parseLabel = useCallback((label: string) => {
     const parts = label.split('|')
     return parts.map((part, index) => (
       <span key={index}>
@@ -27,7 +31,15 @@ const SearchOptions = ({
         )}
       </span>
     ))
-  }
+  }, [])
+
+  // Memoize the button click handler
+  const handleTabClick = useCallback((tabId: string) => {
+    dispatch({ type: 'UPDATE_OPTION', payload: tabId })
+    if (!isExpanded) {
+      setIsExpanded(true)
+    }
+  }, [dispatch, isExpanded, setIsExpanded])
   return (
     <Container wrapperClassName="pt-2" contentClassName="justify-center py-0">
       <div className="flex justify-center gap-2">
@@ -39,12 +51,7 @@ const SearchOptions = ({
                 ? 'bg-accent text-foreground'
                 : 'bg-primary hover:bg-accent/50 hover:text-foreground text-muted-foreground'
             } `}
-            onClick={() => {
-              dispatch({ type: 'UPDATE_OPTION', payload: tab.id })
-              if (!isExpanded) {
-                setIsExpanded(true)
-              }
-            }}
+            onClick={() => handleTabClick(tab.id)}
           >
             <div className="flex flex-col items-center gap-1 sm:flex-row sm:gap-2">
               <img
@@ -61,6 +68,6 @@ const SearchOptions = ({
       </div>
     </Container>
   )
-}
+})
 
 export default SearchOptions

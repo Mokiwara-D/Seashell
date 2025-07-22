@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 const STORAGE_KEY = 'searchBarExpanded'
 
@@ -20,7 +20,12 @@ function useSearchExpansion() {
     }
   }, [isExpanded])
 
-  return [isExpanded, setIsExpanded] as const
+  // Memoize the setter to prevent unnecessary re-renders in consuming components
+  const memoizedSetIsExpanded = useCallback((value: boolean | ((prev: boolean) => boolean)) => {
+    setIsExpanded(value)
+  }, [])
+
+  return [isExpanded, memoizedSetIsExpanded] as const
 }
 
 export { useSearchExpansion }

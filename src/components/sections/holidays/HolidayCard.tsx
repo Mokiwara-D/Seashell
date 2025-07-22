@@ -2,16 +2,25 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Rating } from '@/components/ui/rating'
 import { TripAdvisorBadge } from './TripAdvisorBadge'
 import { placeholder } from '@/lib/imagePreloader'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, memo } from 'react'
 import type { Holiday } from './types'
 
 interface HolidayCardProps {
   holiday: Holiday
 }
 
-function HolidayCard({ holiday }: HolidayCardProps) {
+const HolidayCard = memo(function HolidayCard({ holiday }: HolidayCardProps) {
   // Start with placeholder by default
   const [imageSrc, setImageSrc] = useState(placeholder)
+
+  // Memoize the image loading callback
+  const handleImageLoad = useCallback(() => {
+    setImageSrc(holiday.image)
+  }, [holiday.image])
+
+  const handleImageError = useCallback(() => {
+    // Keep placeholder on error (no action needed)
+  }, [])
 
   // Try to load the API image in the background
   useEffect(() => {
@@ -19,18 +28,17 @@ function HolidayCard({ holiday }: HolidayCardProps) {
     if (holiday.image && holiday.image !== placeholder) {
       const img = new Image()
 
-      img.onload = () => {
-        // Only replace placeholder if API image loads successfully
-        setImageSrc(holiday.image)
-      }
-
-      img.onerror = () => {
-        // Keep placeholder on error (no action needed)
-      }
-
+      img.onload = handleImageLoad
+      img.onerror = handleImageError
       img.src = holiday.image
+
+      // Cleanup function
+      return () => {
+        img.onload = null
+        img.onerror = null
+      }
     }
-  }, [holiday.image])
+  }, [holiday.image, handleImageLoad, handleImageError])
 
   return (
     <Card className="border-border bg-card h-full overflow-hidden shadow-sm transition-all hover:scale-102 hover:shadow-md">
@@ -74,6 +82,6 @@ function HolidayCard({ holiday }: HolidayCardProps) {
       </CardContent>
     </Card>
   )
-}
+})
 
 export { HolidayCard }

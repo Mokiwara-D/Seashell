@@ -1,13 +1,14 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { IoCheckmarkCircle } from 'react-icons/io5'
 import { Rating } from '@/components/ui/rating'
+import { memo } from 'react'
 import type { CustomerReview } from './customerReviewsData'
 
 interface ReviewCardProps {
   review: CustomerReview
 }
 
-function ReviewCard({ review }: ReviewCardProps) {
+const ReviewCard = memo(function ReviewCard({ review }: ReviewCardProps) {
   return (
     <Card className="overflow-hidden border-none bg-transparent text-center md:text-left">
       <CardContent className="flex flex-col gap-1 px-2">
@@ -41,6 +42,6 @@ function ReviewCard({ review }: ReviewCardProps) {
       </CardContent>
     </Card>
   )
-}
+})
 
 export { ReviewCard }

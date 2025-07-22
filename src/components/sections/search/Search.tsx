@@ -1,6 +1,6 @@
 import SearchOptions from './searchOptions/SearchOptions'
 import SearchForm from './searchForm/SearchForm'
-import { useReducer } from 'react'
+import { useReducer, useCallback, useMemo } from 'react'
 import type { SearchInput, SearchAction } from './searchTypes'
 import { Button } from '@/components/ui/button'
 import { ChevronDown } from 'lucide-react'
@@ -55,13 +55,23 @@ function Search() {
   const [searchInput, dispatch] = useReducer(searchReducer, initialState)
   const [isExpanded, setIsExpanded] = useSearchExpansion()
 
-  useScrollBehavior({ isExpanded, setIsExpanded })
+  // Memoize the scroll behavior props to prevent unnecessary hook re-runs
+  const scrollBehaviorProps = useMemo(() => ({
+    isExpanded,
+    setIsExpanded
+  }), [isExpanded, setIsExpanded])
 
-  const handleSubmit = (input: SearchInput) => {
+  useScrollBehavior(scrollBehaviorProps)
+
+  // Memoize the submit handler to prevent unnecessary re-renders
+  const handleSubmit = useCallback((input: SearchInput) => {
     console.log('Search submitted:', input)
-  }
+  }, [])
 
-  const toggleExpansion = () => setIsExpanded(!isExpanded)
+  // Memoize the toggle function to prevent unnecessary re-renders
+  const toggleExpansion = useCallback(() => {
+    setIsExpanded(!isExpanded)
+  }, [isExpanded, setIsExpanded])
 
   return (
     <div role="search" aria-label="Holiday search">

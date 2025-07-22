@@ -1,15 +1,24 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { placeholder } from '@/lib/imagePreloader'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, memo } from 'react'
 import type { Destination } from './types'
 
 interface DestinationCardProps {
   destination: Destination
 }
 
-function DestinationCard({ destination }: DestinationCardProps) {
+const DestinationCard = memo(function DestinationCard({ destination }: DestinationCardProps) {
   // Start with placeholder by default
   const [imageSrc, setImageSrc] = useState(placeholder)
+
+  // Memoize the image loading callbacks
+  const handleImageLoad = useCallback(() => {
+    setImageSrc(destination.image)
+  }, [destination.image])
+
+  const handleImageError = useCallback(() => {
+    // Keep placeholder on error (no action needed)
+  }, [])
 
   // Try to load the API image in the background
   useEffect(() => {
@@ -17,18 +26,17 @@ function DestinationCard({ destination }: DestinationCardProps) {
     if (destination.image && destination.image !== placeholder) {
       const img = new Image()
 
-      img.onload = () => {
-        // Only replace placeholder if API image loads successfully
-        setImageSrc(destination.image)
-      }
-
-      img.onerror = () => {
-        // Keep placeholder on error (no action needed)
-      }
-
+      img.onload = handleImageLoad
+      img.onerror = handleImageError
       img.src = destination.image
+
+      // Cleanup function
+      return () => {
+        img.onload = null
+        img.onerror = null
+      }
     }
-  }, [destination.image])
+  }, [destination.image, handleImageLoad, handleImageError])
 
   return (
     <Card className="h-full gap-4 border-none bg-transparent not-even:overflow-hidden">
@@ -59,6 +67,6 @@ function DestinationCard({ destination }: DestinationCardProps) {
       </CardContent>
     </Card>
   )
-}
+})
 
 export { DestinationCard }
