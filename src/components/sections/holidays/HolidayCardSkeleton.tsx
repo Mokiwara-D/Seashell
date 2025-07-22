@@ -36,25 +36,10 @@ function HolidayCardSkeleton() {
             <Skeleton className="h-3 w-3 rounded-full" />
             <Skeleton className="h-3 w-3 rounded-full" />
           </div>
-
-          {/* TripAdvisor Badge */}
-          <div className="flex flex-col items-start gap-1">
-            <div className="flex items-center gap-1">
-              <Skeleton className="h-4 w-4" />
-              <div className="flex items-center gap-1">
-                <Skeleton className="h-3 w-3 rounded-full" />
-                <Skeleton className="h-3 w-3 rounded-full" />
-                <Skeleton className="h-3 w-3 rounded-full" />
-                <Skeleton className="h-3 w-3 rounded-full" />
-                <Skeleton className="h-3 w-3 rounded-full" />
-              </div>
-            </div>
-            <Skeleton className="h-3 w-12" />
-          </div>
         </div>
 
         {/* Price Section */}
-        <div className="mt-4 flex items-end">
+        <div className="mt-8 flex items-end">
           <Skeleton className="h-8 w-24" />
         </div>
       </CardContent>

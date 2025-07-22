@@ -33,9 +33,8 @@ export const OFFERS_QUERY = (destinationId: number): GraphQLQuery => ({
             rating
             trip_advisor_rating
             trip_advisor_num_reviews
-            images {
+            images{
               id
-              accommodation_id
               url
             }
             resort {
@@ -56,6 +55,39 @@ export const OFFERS_QUERY = (destinationId: number): GraphQLQuery => ({
     destinations: [destinationId],
   },
   operationName: 'GetOffers',
+})
+
+export const REGIONS_QUERY = (destinationId: number): GraphQLQuery => ({
+  query: `
+    query offers($destinations: [Int]) {
+      available_regions(destinations: $destinations){
+        result{
+          result
+        }
+      }
+    }
+  `,
+  variables: {
+    destinations: [destinationId],
+  },
+  operationName: 'GetRegions',
+})
+
+export const REGION_QUERY = (regionId: number): GraphQLQuery => ({
+  query: `
+    query offers($region_id: Int!) {
+      region(region_id: $region_id){
+        result{
+          name
+          detail
+        }
+      }
+    }
+  `,
+  variables: {
+    region_id: regionId,
+  },
+  operationName: 'GetRegion',
 })
 
 // Enhanced GraphQL fetch functions using the centralized client

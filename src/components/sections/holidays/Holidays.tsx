@@ -11,9 +11,8 @@ import { Tabs } from '@/components/ui/tabs'
 import { HolidayCard } from './HolidayCard'
 import { HolidayCardSkeleton } from './HolidayCardSkeleton'
 import { useHolidayData, filterOptions } from './holidayData'
-import { useImagePreloader } from '@/lib/imagePreloader'
 import { useDestination } from '@/contexts'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 function Holidays() {
   const [activeTab, setActiveTab] = useState('Last Minute')
@@ -22,15 +21,6 @@ function Holidays() {
     destination.id,
     destination.name
   )
-  const { preloadBatch } = useImagePreloader()
-
-  // Preload holiday images when data is loaded
-  useEffect(() => {
-    if (holidays.length > 0) {
-      const imageUrls = holidays.map((holiday) => holiday.image).filter(Boolean)
-      preloadBatch(imageUrls).catch(console.warn)
-    }
-  }, [holidays, preloadBatch])
 
   // Hide component if no data and not loading
   if (!isLoading && holidays.length === 0) {

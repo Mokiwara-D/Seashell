@@ -23,7 +23,10 @@ export function transformOffersToRegions(offers: OfferData[]): Destination[] {
 
     resort.regions?.forEach((region) => {
       const existingRegion = regionMap.get(region.name)
-      const imageUrl = images && images.length > 0 ? images[0].url : null
+      const baseImageUrl = images && images.length > 0 ? images[0].url : null
+      const imageUrl = baseImageUrl
+        ? `https://assets.ncl.holidaywebtech.co.uk${baseImageUrl}`
+        : null
 
       if (existingRegion) {
         // Add price and image to existing region

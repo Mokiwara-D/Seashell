@@ -17,8 +17,11 @@ export function transformOfferToHoliday(
     trip_advisor_num_reviews,
   } = accommodation
 
-  // Get the first image URL or fallback to placeholder
-  const imageUrl = images && images.length > 0 ? images[0].url : placeholder
+  // Get the first image URL and add base URL prefix, or fallback to placeholder
+  const baseImageUrl = images && images.length > 0 ? images[0].url : null
+  const imageUrl = baseImageUrl
+    ? `https://assets.ncl.holidaywebtech.co.uk${baseImageUrl}`
+    : placeholder
 
   // Format location from resort and region data using destination name from context
   const region =

@@ -28,6 +28,12 @@ const DestinationPicker = () => {
     if (!isLoading && destinations.length > 0 && data) {
       const defaultDestination = getDefaultDestination(destinations)
 
+      // Only proceed if we have a valid default destination
+      if (!defaultDestination) {
+        console.warn('No default destination available')
+        return
+      }
+
       const currentDestinationExists = destinations.some(
         (dest) => dest.id === destination.id
       )
@@ -67,10 +73,20 @@ const DestinationPicker = () => {
   // Dynamic classes for height transition
   const wrapperClasses = cn(
     'overflow-hidden transition-all duration-300 ease-in-out bottom-0 sticky bg-accent',
-    isLoading || (hasError && destinations.length === 0)
+    isLoading ||
+      (hasError && destinations.length === 0) ||
+      destinations.length === 0
       ? 'py-0 h-0'
       : 'py-8 h-auto'
   )
+
+  // Don't render anything if no destinations are available (after loading completes)
+  if (!isLoading && destinations.length === 0) {
+    if (hasError) {
+      console.warn('Failed to load destinations and no fallback available')
+    }
+    return null
+  }
 
   return (
     <Container
@@ -79,7 +95,6 @@ const DestinationPicker = () => {
     >
       {!isLoading && destinations.length > 0 && (
         <>
-          <h1 className="font-bold">TEMP Destination Picker</h1>
           <Tabs
             tabs={destinations.map((dest) => dest.name)}
             activeTab={destination.name}

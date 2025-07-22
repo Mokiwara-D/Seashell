@@ -13,59 +13,28 @@ export interface RawDestination {
   result: number // The destination ID
 }
 
-export const DESTINATIONS: Destination[] = [
-  { id: 186, name: 'Balearics' },
-  { id: 21, name: 'Bulgaria' },
-  { id: 187, name: 'Canaries' },
-  { id: 206, name: 'Channel Islands' },
-  { id: 84, name: 'Croatia' },
-  { id: 48, name: 'Cyprus' },
-  { id: 192, name: 'Dominican Republic' },
-  { id: 58, name: 'Egypt' },
-  { id: 196, name: 'France' },
-  { id: 195, name: 'Gambia' },
-  { id: 78, name: 'Greece Mainland' },
-  { id: 188, name: 'Greek Islands' },
-  { id: 193, name: 'Italy' },
-  { id: 126, name: 'Malta' },
-  { id: 130, name: 'Mexico' },
-  { id: 152, name: 'Portugal' },
-  { id: 60, name: 'Spain' },
-  { id: 172, name: 'Tunisia' },
-  { id: 174, name: 'Turkey' },
-  { id: 200, name: 'USA' },
-]
-
-export const getDestinationById = (id: number): Destination | undefined => {
-  return DESTINATIONS.find((dest) => dest.id === id)
-}
-
 /**
- * Gets destinations with fallback logic - prioritizes GraphQL data over static data
+ * Gets destinations from GraphQL data only - no hardcoded fallback
  *
  * @param graphqlData - Raw destination data from GraphQL (optional)
  * @param hasError - Whether there was an error fetching GraphQL data
- * @returns Array of Destination objects from GraphQL or fallback to static data
+ * @returns Array of Destination objects from GraphQL or empty array
  */
 export const getDestinations = (
   graphqlData?: RawDestination[] | null,
   hasError?: boolean
 ): Destination[] => {
-  // Priority 1: Use GraphQL data if available and no error occurred
-  if (graphqlData && !hasError) {
-    try {
-      return parseDestinations(graphqlData)
-    } catch (error) {
-      console.warn(
-        'Error parsing GraphQL destinations, falling back to static data:',
-        error
-      )
-      // Fall through to static fallback
-    }
+  // Return empty array if there was an error or no data
+  if (hasError || !graphqlData) {
+    return []
   }
 
-  // Priority 2: Fallback to static destinations array
-  return DESTINATIONS
+  try {
+    return parseDestinations(graphqlData)
+  } catch (error) {
+    console.warn('Error parsing GraphQL destinations:', error)
+    return []
+  }
 }
 
 /**
@@ -143,16 +112,17 @@ export const parseDestinations = (
 /**
  * Gets the default destination with Spain (id: 60) priority
  * Falls back to first available destination if Spain not found
+ * Returns null if no destinations available
  *
  * @param destinations - Array of available destinations
- * @returns Default destination object
+ * @returns Default destination object or null if none available
  */
 export const getDefaultDestination = (
   destinations: Destination[]
-): Destination => {
+): Destination | null => {
   // Handle edge case: empty destinations array
   if (!destinations || destinations.length === 0) {
-    return { id: 60, name: 'Spain' }
+    return null
   }
 
   // Priority 1: Spain (id: 60)
