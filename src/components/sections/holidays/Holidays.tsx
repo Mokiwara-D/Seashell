@@ -14,6 +14,7 @@ import { useHolidayData, filterOptions } from './holidayData'
 import { useDestination } from '@/contexts'
 import { useState, useCallback, useMemo } from 'react'
 import type { Holiday } from './types'
+import { NoResults } from '@/components/ui/noResults'
 
 function Holidays() {
   const [activeTab, setActiveTab] = useState('Last Minute')
@@ -104,20 +105,24 @@ function Holidays() {
 
       {/* Carousel */}
       <div className="relative h-108 w-full">
-        <Carousel
-          opts={{
-            loop: true,
-            align: 'start',
-            dragFree: true,
-          }}
-          isFullHeight={true}
-        >
-          <CarouselContent>
-            {isLoading ? skeletonItems : holidayItems}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+        {filteredHolidays.length === 0 && !isLoading ? (
+          <NoResults />
+        ) : (
+          <Carousel
+            opts={{
+              loop: true,
+              align: 'start',
+              dragFree: true,
+            }}
+            isFullHeight={true}
+          >
+            <CarouselContent>
+              {isLoading ? skeletonItems : holidayItems}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        )}
       </div>
 
       {/* View All Button */}

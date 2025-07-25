@@ -157,7 +157,7 @@ function CarouselContent({
     >
       <div
         className={cn(
-          'mt-2 flex pb-4 pl-4',
+          'mt-2 flex pb-4',
           orientation === 'horizontal' ? '-ml-4' : '-mt-4 flex-col',
           isFullHeight ? 'h-full' : 'h-fit',
           className

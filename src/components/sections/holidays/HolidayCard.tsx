@@ -41,7 +41,7 @@ const HolidayCard = memo(function HolidayCard({ holiday }: HolidayCardProps) {
   }, [holiday.image, handleImageLoad, handleImageError])
 
   return (
-    <Card className="border-border bg-card h-full overflow-hidden shadow-sm transition-all hover:scale-102 hover:shadow-md">
+    <Card className="border-border bg-card -mb-2 h-full overflow-hidden shadow-sm transition-all hover:scale-102 hover:shadow-md">
       <div className="h-58 overflow-hidden">
         <img
           src={imageSrc}

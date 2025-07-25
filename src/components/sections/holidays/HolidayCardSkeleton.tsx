@@ -18,7 +18,7 @@ function HolidayCardSkeleton() {
       </div>
 
       {/* Content Skeleton */}
-      <CardContent className="flex grow flex-col justify-between pt-2 pb-6">
+      <CardContent className="-mb-1 flex h-full grow flex-col justify-between pt-2 pb-6">
         <div>
           {/* Hotel Name */}
           <Skeleton className="mb-1 h-4 w-3/4" />
