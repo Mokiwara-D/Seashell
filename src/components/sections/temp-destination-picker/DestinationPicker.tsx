@@ -72,7 +72,7 @@ const DestinationPicker = () => {
 
   // Dynamic classes for height transition
   const wrapperClasses = cn(
-    'overflow-hidden transition-all duration-300 ease-in-out bottom-0 sticky bg-accent',
+    'overflow-hidden transition-all duration-300 ease-in-out bottom-0 sticky bg-accent z-20',
     isLoading ||
       (hasError && destinations.length === 0) ||
       destinations.length === 0

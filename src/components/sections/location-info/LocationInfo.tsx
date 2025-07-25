@@ -8,6 +8,7 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
 import { Tabs } from '@/components/ui/tabs'
+import { Fade } from '@/components/ui/fade'
 import { useState } from 'react'
 import { useDestination } from '@/contexts/useDestination'
 
@@ -106,10 +107,8 @@ function LocationInfo() {
             {currentContent}
           </div>
 
-          {/* Gradient Overlay - only visible when not expanded */}
-          {!isExpanded && (
-            <div className="from-background pointer-events-none absolute right-0 bottom-0 left-0 h-16 bg-gradient-to-t to-transparent" />
-          )}
+          {/* Fade Overlay - only visible when not expanded */}
+          {!isExpanded && <Fade direction="bottom" width="h-16" />}
         </div>
 
         {/* Read More Button */}

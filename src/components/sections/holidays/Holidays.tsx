@@ -5,7 +5,7 @@ import {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
-} from '@/components/ui/carousel'
+} from '@/components/ui/fadeCarousel/fadeCarousel'
 import { Button } from '@/components/ui/button'
 import { Tabs } from '@/components/ui/tabs'
 import { HolidayCard } from './HolidayCard'
@@ -85,7 +85,7 @@ function Holidays() {
 
   return (
     <Container
-      wrapperClassName="py-8 md:py-12"
+      wrapperClassName="py-8 md:py-12 overflow-hidden"
       contentClassName="flex flex-col gap-6 items-start"
     >
       {/* Header */}
@@ -112,11 +112,11 @@ function Holidays() {
           }}
           className="size-full"
         >
-          <CarouselContent className="mt-2 h-full pb-4">
+          <CarouselContent className="mt-2 h-full pb-4 pl-4">
             {isLoading ? skeletonItems : holidayItems}
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
+          <CarouselPrevious className="" />
+          <CarouselNext className="" />
         </Carousel>
       </div>
 
