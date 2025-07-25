@@ -21,13 +21,13 @@ function FadeContainer({
   return (
     <Container
       wrapperClassName={cn(
-        'absolute left-1/2 z-0 -ml-[50vw] w-screen overflow-hidden',
+        'w-screen items-start !pl-2 !pr-12 overflow-hidden -ml-2',
         isFullHeight ? 'h-full' : 'h-fit',
         className
       )}
       wrapperElement="div"
       contentClassName={cn(
-        'max-w-[81rem] relative',
+        'max-w-[81rem] relative m-0',
         isFullHeight ? 'h-full' : 'h-fit'
       )}
       {...props}

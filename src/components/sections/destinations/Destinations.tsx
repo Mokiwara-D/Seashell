@@ -82,7 +82,7 @@ function Destinations() {
       </div>
 
       {/* Carousel */}
-      <div className="relative h-80 w-full">
+      <div className="h-fit w-full">
         <Carousel
           opts={{
             loop: true,
@@ -90,7 +90,6 @@ function Destinations() {
             dragFree: true,
           }}
           className="w-full"
-          isFullHeight={true}
         >
           <CarouselContent>
             {isLoading ? skeletonItems : destinationItems}
