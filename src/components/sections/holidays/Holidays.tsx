@@ -112,7 +112,7 @@ function Holidays() {
           }}
           isFullHeight={true}
         >
-          <CarouselContent className="mt-2 pb-4 pl-4">
+          <CarouselContent>
             {isLoading ? skeletonItems : holidayItems}
           </CarouselContent>
           <CarouselPrevious />

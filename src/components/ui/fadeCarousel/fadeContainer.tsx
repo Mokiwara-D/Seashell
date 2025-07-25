@@ -21,7 +21,7 @@ function FadeContainer({
   return (
     <Container
       wrapperClassName={cn(
-        'w-screen items-start !pl-2 !pr-12 overflow-hidden -ml-2',
+        'w-screen items-start overflow-hidden -ml-6 sm:-ml-14',
         isFullHeight ? 'h-full' : 'h-fit',
         className
       )}

@@ -82,22 +82,19 @@ function Destinations() {
       </div>
 
       {/* Carousel */}
-      <div className="h-fit w-full">
-        <Carousel
-          opts={{
-            loop: true,
-            align: 'start',
-            dragFree: true,
-          }}
-          className="w-full"
-        >
-          <CarouselContent>
-            {isLoading ? skeletonItems : destinationItems}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
-      </div>
+      <Carousel
+        opts={{
+          loop: true,
+          align: 'start',
+          dragFree: true,
+        }}
+      >
+        <CarouselContent>
+          {isLoading ? skeletonItems : destinationItems}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
     </Container>
   )
 }

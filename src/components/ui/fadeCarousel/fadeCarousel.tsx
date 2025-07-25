@@ -122,7 +122,7 @@ function Carousel({
         <div
           onKeyDownCapture={handleKeyDown}
           className={cn(
-            'relative',
+            'relative pb-2',
             isFullHeight ? 'size-full' : 'size-fit',
             className
           )}
@@ -149,7 +149,7 @@ function CarouselContent({
     <div
       ref={carouselRef}
       className={cn(
-        '-mr-2 overflow-hidden pl-2',
+        '-mx-2 mt-2 overflow-hidden pb-4 pl-4',
         isFullHeight ? 'h-full' : 'h-fit',
         className
       )}
@@ -157,7 +157,7 @@ function CarouselContent({
     >
       <div
         className={cn(
-          'flex',
+          'mt-2 flex pb-4 pl-4',
           orientation === 'horizontal' ? '-ml-4' : '-mt-4 flex-col',
           isFullHeight ? 'h-full' : 'h-fit',
           className
