@@ -110,13 +110,13 @@ function Holidays() {
             align: 'start',
             dragFree: true,
           }}
-          className="size-full"
+          isFullHeight={true}
         >
-          <CarouselContent className="mt-2 h-full pb-4 pl-4">
+          <CarouselContent className="mt-2 pb-4 pl-4">
             {isLoading ? skeletonItems : holidayItems}
           </CarouselContent>
-          <CarouselPrevious className="" />
-          <CarouselNext className="" />
+          <CarouselPrevious />
+          <CarouselNext />
         </Carousel>
       </div>
 

@@ -41,7 +41,7 @@ const DestinationCard = memo(function DestinationCard({
   }, [destination.image, handleImageLoad, handleImageError])
 
   return (
-    <Card className="h-full gap-4 border-none bg-transparent not-even:overflow-hidden">
+    <Card className="h-fit max-h-108 gap-4 border-none bg-transparent not-even:overflow-hidden">
       <div className="aspect-[4/3] overflow-hidden rounded-lg">
         <img
           src={imageSrc}
@@ -52,14 +52,14 @@ const DestinationCard = memo(function DestinationCard({
           loading="lazy"
         />
       </div>
-      <CardContent className="flex grow flex-col justify-between">
+      <CardContent className="flex grow flex-col justify-start">
         <h3 className="text-xl font-bold">{destination.name}</h3>
 
         <p className="text-muted-foreground line-clamp-3 text-sm leading-relaxed">
           {destination.description}
         </p>
 
-        <div className="mt-auto flex items-end pt-4">
+        <div className="flex items-end pt-4">
           <span className="mr-1.5 text-sm">from</span>
           <h3 className="text-2xl leading-none font-bold">
             £{Math.round(destination.priceFrom)}

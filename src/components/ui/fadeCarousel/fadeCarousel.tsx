@@ -17,6 +17,7 @@ type CarouselProps = {
   plugins?: CarouselPlugin
   orientation?: 'horizontal' | 'vertical'
   setApi?: (api: CarouselApi) => void
+  isFullHeight?: boolean
 }
 
 type CarouselContextProps = {
@@ -45,6 +46,7 @@ function Carousel({
   opts,
   setApi,
   plugins,
+  isFullHeight = false,
   className,
   children,
   ...props
@@ -103,7 +105,7 @@ function Carousel({
   }, [api, onSelect])
 
   return (
-    <FadeContainer>
+    <FadeContainer isFullHeight={isFullHeight}>
       <CarouselContext.Provider
         value={{
           carouselRef,
@@ -119,7 +121,11 @@ function Carousel({
       >
         <div
           onKeyDownCapture={handleKeyDown}
-          className={cn('relative', className)}
+          className={cn(
+            'relative',
+            isFullHeight ? 'size-full' : 'size-fit',
+            className
+          )}
           role="region"
           aria-roledescription="carousel"
           data-slot="carousel"
@@ -132,19 +138,28 @@ function Carousel({
   )
 }
 
-function CarouselContent({ className, ...props }: React.ComponentProps<'div'>) {
+function CarouselContent({
+  className,
+  isFullHeight,
+  ...props
+}: React.ComponentProps<'div'> & { isFullHeight?: boolean }) {
   const { carouselRef, orientation } = useCarousel()
 
   return (
     <div
       ref={carouselRef}
-      className="-mr-2 h-full overflow-hidden pl-2"
+      className={cn(
+        '-mr-2 overflow-hidden pl-2',
+        isFullHeight ? 'h-full' : 'h-fit',
+        className
+      )}
       data-slot="carousel-content"
     >
       <div
         className={cn(
           'flex',
-          orientation === 'horizontal' ? '-ml-4 h-full' : '-mt-4 flex-col',
+          orientation === 'horizontal' ? '-ml-4' : '-mt-4 flex-col',
+          isFullHeight ? 'h-full' : 'h-fit',
           className
         )}
         {...props}

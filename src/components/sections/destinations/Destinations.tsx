@@ -5,7 +5,7 @@ import {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
-} from '@/components/ui/carousel'
+} from '@/components/ui/fadeCarousel/fadeCarousel'
 import { DestinationCard } from './DestinationCard'
 import { DestinationCardSkeleton } from './DestinationCardSkeleton'
 import { useRegionData } from './destinationData'
@@ -42,7 +42,7 @@ function Destinations() {
       Array.from({ length: 4 }, (_, index) => (
         <CarouselItem
           key={`skeleton-${index}`}
-          className="flex basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+          className="basis-full md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
         >
           <DestinationCardSkeleton />
         </CarouselItem>
@@ -56,7 +56,7 @@ function Destinations() {
       regions.map((region) => (
         <CarouselItem
           key={region.id}
-          className="flex basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+          className="basis-full md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
         >
           <DestinationCard destination={region} />
         </CarouselItem>
@@ -82,7 +82,7 @@ function Destinations() {
       </div>
 
       {/* Carousel */}
-      <div className="relative w-full">
+      <div className="relative h-80 w-full">
         <Carousel
           opts={{
             loop: true,
@@ -90,6 +90,7 @@ function Destinations() {
             dragFree: true,
           }}
           className="w-full"
+          isFullHeight={true}
         >
           <CarouselContent>
             {isLoading ? skeletonItems : destinationItems}
