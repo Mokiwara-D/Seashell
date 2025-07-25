@@ -42,11 +42,11 @@ const HolidayCard = memo(function HolidayCard({ holiday }: HolidayCardProps) {
 
   return (
     <Card className="border-border bg-card h-full overflow-hidden shadow-sm transition-all hover:scale-102 hover:shadow-md">
-      <div className="aspect-[4/3] overflow-hidden">
+      <div className="h-58 overflow-hidden">
         <img
           src={imageSrc}
           alt={holiday.name}
-          className="h-full w-full object-cover"
+          className="size-full object-cover"
           width="320"
           height="240"
           loading="lazy"

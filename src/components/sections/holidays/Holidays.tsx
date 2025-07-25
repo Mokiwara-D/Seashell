@@ -13,6 +13,7 @@ import { HolidayCardSkeleton } from './HolidayCardSkeleton'
 import { useHolidayData, filterOptions } from './holidayData'
 import { useDestination } from '@/contexts'
 import { useState, useCallback, useMemo } from 'react'
+import type { Holiday } from './types'
 
 function Holidays() {
   const [activeTab, setActiveTab] = useState('Last Minute')
@@ -27,7 +28,29 @@ function Holidays() {
     setActiveTab(tab)
   }, [])
 
-  // Memoize the skeleton items to prevent recreation on every render
+  // Filter logic for each tab
+  const getFilteredHolidays = useCallback(
+    (holidays: Holiday[], filter: string) => {
+      const filters: Record<string, (holiday: Holiday) => boolean> = {
+        'Under £400pp': (holiday) => holiday.price <= 400,
+        '5-Star': (holiday) => holiday.stars === 5,
+        'Last Minute': (holiday) => holiday.stars >= 3,
+        'All Inclusive': (holiday) => holiday.stars >= 3,
+        'City Breaks': (holiday) => holiday.stars >= 3,
+      }
+
+      const filterFn = filters[filter]
+      return filterFn ? holidays.filter(filterFn) : holidays
+    },
+    []
+  )
+
+  // Apply filtering and memoize results
+  const filteredHolidays = useMemo(() => {
+    return getFilteredHolidays(holidays, activeTab)
+  }, [holidays, activeTab, getFilteredHolidays])
+
+  // Memoize the skeleton items
   const skeletonItems = useMemo(
     () =>
       Array.from({ length: 4 }, (_, index) => (
@@ -44,15 +67,15 @@ function Holidays() {
   // Memoize the holiday items to prevent recreation when holidays array reference changes
   const holidayItems = useMemo(
     () =>
-      holidays.map((holiday) => (
+      filteredHolidays.map((holiday) => (
         <CarouselItem
           key={holiday.id}
-          className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+          className="basis-full md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
         >
           <HolidayCard holiday={holiday} />
         </CarouselItem>
       )),
-    [holidays]
+    [filteredHolidays]
   )
 
   // Hide component if no data and not loading
@@ -80,16 +103,16 @@ function Holidays() {
       </div>
 
       {/* Carousel */}
-      <div className="relative w-full">
+      <div className="relative h-108 w-full">
         <Carousel
           opts={{
             loop: true,
             align: 'start',
             dragFree: true,
           }}
-          className="w-full"
+          className="size-full"
         >
-          <CarouselContent className="my-2">
+          <CarouselContent className="mt-2 h-full pb-4">
             {isLoading ? skeletonItems : holidayItems}
           </CarouselContent>
           <CarouselPrevious />
@@ -98,7 +121,11 @@ function Holidays() {
       </div>
 
       {/* View All Button */}
-      <Button variant="outline" className="rounded-full px-6">
+      <Button
+        variant="outline"
+        className="rounded-full px-6"
+        disabled={filteredHolidays.length <= 4}
+      >
         View all {activeTab} holidays
       </Button>
     </Container>
