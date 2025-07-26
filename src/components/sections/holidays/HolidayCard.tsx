@@ -41,8 +41,8 @@ const HolidayCard = memo(function HolidayCard({ holiday }: HolidayCardProps) {
   }, [holiday.image, handleImageLoad, handleImageError])
 
   return (
-    <Card className="border-border bg-card -mb-2 h-full overflow-hidden shadow-sm transition-all hover:scale-102 hover:shadow-md">
-      <div className="h-58 overflow-hidden">
+    <Card className="border-border bg-card -mb-2 overflow-hidden shadow-sm transition-all hover:scale-102 hover:shadow-md">
+      <div className="h-58 shrink-0 overflow-hidden">
         <img
           src={imageSrc}
           alt={holiday.name}
@@ -60,7 +60,7 @@ const HolidayCard = memo(function HolidayCard({ holiday }: HolidayCardProps) {
           <p className="text-muted-foreground mb-2 text-xs">
             {holiday.location}
           </p>
-          <div className="flex flex-wrap items-start justify-between gap-1">
+          <div className="flex items-start justify-between gap-2">
             {holiday.stars > 0 && (
               <Rating rating={holiday.stars} variant="default" />
             )}

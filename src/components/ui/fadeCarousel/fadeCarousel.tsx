@@ -149,7 +149,7 @@ function CarouselContent({
     <div
       ref={carouselRef}
       className={cn(
-        '-mx-2 mt-2 overflow-hidden pb-4 pl-4',
+        '-mr-2 -ml-2 overflow-hidden px-4 pb-4',
         isFullHeight ? 'h-full' : 'h-fit',
         className
       )}
@@ -157,7 +157,7 @@ function CarouselContent({
     >
       <div
         className={cn(
-          'mt-2 flex pb-4',
+          'mt-2 flex',
           orientation === 'horizontal' ? '-ml-4' : '-mt-4 flex-col',
           isFullHeight ? 'h-full' : 'h-fit',
           className
