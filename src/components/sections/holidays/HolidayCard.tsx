@@ -41,8 +41,8 @@ const HolidayCard = memo(function HolidayCard({ holiday }: HolidayCardProps) {
   }, [holiday.image, handleImageLoad, handleImageError])
 
   return (
-    <Card className="border-border bg-card -mb-2 overflow-hidden shadow-sm transition-all hover:scale-102 hover:shadow-md">
-      <div className="h-58 shrink-0 overflow-hidden">
+    <Card className="border-border bg-card -mb-2 h-full gap-4 overflow-hidden shadow-sm transition-all hover:scale-102 hover:shadow-md">
+      <div className="h-54 shrink-0">
         <img
           src={imageSrc}
           alt={holiday.name}
@@ -52,28 +52,23 @@ const HolidayCard = memo(function HolidayCard({ holiday }: HolidayCardProps) {
           loading="lazy"
         />
       </div>
-      <CardContent className="flex grow flex-col justify-between pb-6">
-        <div>
-          <h3 className="text-foreground mb-1 truncate text-sm font-semibold">
-            {holiday.name}
-          </h3>
-          <p className="text-muted-foreground mb-2 text-xs">
-            {holiday.location}
-          </p>
-          <div className="flex items-start justify-between gap-2">
-            {holiday.stars > 0 && (
-              <Rating rating={holiday.stars} variant="default" />
-            )}
-            {holiday.tripAdvisorReviews > 0 && (
-              <TripAdvisorBadge
-                rating={holiday.tripAdvisorRating}
-                reviews={holiday.tripAdvisorReviews}
-              />
-            )}
-          </div>
+      <CardContent className="flex shrink-0 grow flex-col justify-between gap-1 pb-8">
+        <h3 className="text-foreground mb-1 truncate text-sm font-semibold">
+          {holiday.name}
+        </h3>
+        <p className="text-muted-foreground mb-2 text-xs">{holiday.location}</p>
+        <div className="flex grow items-start justify-between gap-2">
+          {holiday.stars > 0 && (
+            <Rating rating={holiday.stars} variant="default" />
+          )}
+          {holiday.tripAdvisorReviews > 0 && (
+            <TripAdvisorBadge
+              rating={holiday.tripAdvisorRating}
+              reviews={holiday.tripAdvisorReviews}
+            />
+          )}
         </div>
-
-        <div className="mt-4 flex items-end">
+        <div className="mt-5 flex items-end">
           <h3 className="text-foreground text-3xl leading-none font-bold">
             £{Math.round(holiday.price)}
           </h3>
