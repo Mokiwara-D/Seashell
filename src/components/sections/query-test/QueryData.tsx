@@ -9,7 +9,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useDestination } from '@/contexts'
-import { useOfferData } from '@/queries'
+import { useOfferData } from '@/query'
 
 function QueryData() {
   const { destination } = useDestination()

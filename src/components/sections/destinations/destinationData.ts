@@ -1,6 +1,6 @@
 import { placeholder } from '@/lib/imagePreloader'
-import { useOfferData } from '@/queries/hooks/useOfferData'
-import type { OfferData } from '@/queries/types'
+import { useOfferData } from '@/query/hooks/useOfferData'
+import type { OfferData } from '@/query/types'
 import type { Destination } from './types'
 
 // Transform API offer data to extract unique regions

@@ -1,6 +1,6 @@
 import { placeholder } from '@/lib/imagePreloader'
-import { useOfferData } from '@/queries/hooks/useOfferData'
-import type { OfferData } from '@/queries/types'
+import { useOfferData } from '@/query/hooks/useOfferData'
+import type { OfferData } from '@/query/types'
 import type { Holiday } from './types'
 
 // Transform API offer data to Holiday format

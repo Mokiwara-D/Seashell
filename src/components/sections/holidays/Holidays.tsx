@@ -110,7 +110,6 @@ function Holidays() {
         ) : (
           <Carousel
             opts={{
-              loop: true,
               align: 'start',
               dragFree: true,
             }}
