@@ -20,6 +20,13 @@ A centralized, efficient GraphQL query system for holiday data with lazy loading
 - **Buffer system**: Maintain 4 items ahead of current view
 - **Maximum items**: 20 items per filter (configurable)
 
+### Loading States and UX
+
+- **First Time Loading**: Show skeleton cards when no previous results exist
+- **Filter Changes**: Keep showing previous results while new filtered data loads (stale-while-revalidate)
+- **Lazy Loading**: Show additional skeleton cards at end when fetching next page
+- **No Immediate Skeletons**: Avoid jarring transitions by maintaining previous results during filter changes
+
 ### Caching Strategy
 
 - **Per-tab caching**: Results cached separately for each filter combination
@@ -110,12 +117,20 @@ interface FilterState {
 
 ```typescript
 interface LoadingState {
-  isInitialLoading: boolean
-  isLoadingMore: boolean
+  isInitialLoading: boolean // True only for first-time load (no previous data)
+  isFetching: boolean // True for any fetch operation (initial + filter changes)
+  isFetchingNextPage: boolean // True when loading additional pages
   hasNextPage: boolean
   error: Error | null
 }
 ```
+
+### Loading UX Principles
+
+1. **Stale-While-Revalidate**: Show previous results during filter changes
+2. **Skeleton Only When Necessary**: Only show skeletons for true loading states
+3. **Smooth Transitions**: Avoid jarring content replacements
+4. **Progressive Loading**: Append skeleton cards for pagination, don't replace content
 
 ## Caching Configuration
 

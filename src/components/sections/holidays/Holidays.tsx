@@ -7,51 +7,54 @@ import {
   CarouselNext,
 } from '@/components/ui/fadeCarousel/fadeCarousel'
 import { Button } from '@/components/ui/button'
-import { Tabs } from '@/components/ui/tabs'
 import { HolidayCard } from './HolidayCard'
 import { HolidayCardSkeleton } from './HolidayCardSkeleton'
 import { useHolidayData, filterOptions } from './holidayData'
+import { useFilterManager } from '@/query/hooks/useFilterManager'
 import { useDestination } from '@/contexts'
-import { useState, useCallback, useMemo } from 'react'
-import type { Holiday } from './types'
-import { NoResults } from '@/components/ui/noResults'
+
+import { useMemo } from 'react'
+import { NoResults } from '@/components/ui/errors/noResults'
+import { ResultsError } from '@/components/ui/errors/resultsError'
+import { cn } from '@/lib/utils'
+import { Loader2 } from 'lucide-react'
 
 function Holidays() {
-  const [activeTab, setActiveTab] = useState('Last Minute')
   const { destination } = useDestination()
-  const { holidays, isLoading } = useHolidayData(
+
+  // Filter management
+  const {
+    activeFilters,
+    combinedVariables,
+    toggleFilter,
+    isFilterActive,
+    hasActiveFilters,
+    clearFilters,
+  } = useFilterManager()
+
+  // Holiday data with infinite query
+  const {
+    holidays,
+    isLoading,
+    isFetching,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+    error,
+    refetch,
+  } = useHolidayData(
     destination.id,
-    destination.name
+    destination.name,
+    combinedVariables,
+    activeFilters
   )
 
-  // Memoize the tab change handler
-  const handleTabChange = useCallback((tab: string) => {
-    setActiveTab(tab)
-  }, [])
+  // Simple loading states
+  const isInitialLoading = isLoading && holidays.length === 0
+  const isLoadingNewFilter =
+    isFetching && !isFetchingNextPage && holidays.length > 0
 
-  // Filter logic for each tab
-  const getFilteredHolidays = useCallback(
-    (holidays: Holiday[], filter: string) => {
-      const filters: Record<string, (holiday: Holiday) => boolean> = {
-        'Under £400pp': (holiday) => holiday.price <= 400,
-        '5-Star': (holiday) => holiday.stars === 5,
-        'Last Minute': (holiday) => holiday.stars >= 3,
-        'All Inclusive': (holiday) => holiday.stars >= 3,
-        'City Breaks': (holiday) => holiday.stars >= 3,
-      }
-
-      const filterFn = filters[filter]
-      return filterFn ? holidays.filter(filterFn) : holidays
-    },
-    []
-  )
-
-  // Apply filtering and memoize results
-  const filteredHolidays = useMemo(() => {
-    return getFilteredHolidays(holidays, activeTab)
-  }, [holidays, activeTab, getFilteredHolidays])
-
-  // Memoize the skeleton items
+  // Memoize skeleton items
   const skeletonItems = useMemo(
     () =>
       Array.from({ length: 4 }, (_, index) => (
@@ -65,73 +68,163 @@ function Holidays() {
     []
   )
 
-  // Memoize the holiday items to prevent recreation when holidays array reference changes
-  const holidayItems = useMemo(
-    () =>
-      filteredHolidays.map((holiday) => (
-        <CarouselItem
-          key={holiday.id}
-          className="basis-full md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
-        >
-          <HolidayCard holiday={holiday} />
-        </CarouselItem>
-      )),
-    [filteredHolidays]
-  )
+  // Memoize holiday items
+  const holidayItems = useMemo(() => {
+    const items = holidays.map((holiday) => (
+      <CarouselItem
+        key={holiday.id}
+        className="basis-full md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
+      >
+        <HolidayCard holiday={holiday} />
+      </CarouselItem>
+    ))
 
-  // Hide component if no data and not loading
-  if (!isLoading && holidays.length === 0) {
-    return null
+    // Add loading items if fetching next page
+    if (isFetchingNextPage) {
+      const loadingItems = Array.from({ length: 4 }, (_, index) => (
+        <CarouselItem
+          key={`loading-${index}`}
+          className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+        >
+          <HolidayCardSkeleton />
+        </CarouselItem>
+      ))
+      items.push(...loadingItems)
+    }
+
+    return items
+  }, [holidays, isFetchingNextPage])
+
+  // Determine carousel content
+  const renderCarouselContent = () => {
+    // Handle error state
+    if (error && holidays.length === 0) {
+      return <ResultsError onRetry={() => refetch()} />
+    }
+
+    // Handle no results
+    if (!isInitialLoading && holidays.length === 0 && !error) {
+      return <NoResults />
+    }
+
+    // Render carousel
+    return (
+      <Carousel
+        opts={{
+          align: 'start',
+          dragFree: true,
+          loop: !hasNextPage,
+        }}
+        isFullHeight={true}
+      >
+        <CarouselContent className="h-full">
+          {isInitialLoading ? skeletonItems : holidayItems}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext
+          hasNextPage={hasNextPage}
+          onLoadMore={fetchNextPage}
+          isLoadingMore={isFetchingNextPage}
+        />
+      </Carousel>
+    )
   }
 
   return (
     <Container
       wrapperClassName="py-8 md:py-12 overflow-hidden"
-      contentClassName="flex flex-col gap-6 items-start"
+      contentClassName="flex flex-col items-start"
     >
       {/* Header */}
       <div className="w-full">
-        <h2 className="text-foreground mb-6 text-2xl font-bold md:text-3xl">
-          Holidays to {destination.name}
-        </h2>
+        <div className="mb-4 flex items-end justify-between">
+          {/* Title and Filters */}
+          <div>
+            <h2 className="text-foreground mb-4 text-center text-2xl font-bold sm:text-left md:mb-6 md:text-3xl">
+              Holidays to {destination.name}
+            </h2>
 
-        {/* Filter Tabs */}
-        <Tabs
-          tabs={filterOptions}
-          activeTab={activeTab}
-          onTabChange={handleTabChange}
-        />
+            {/* Filter Buttons */}
+            <div className="flex flex-wrap justify-center gap-2 gap-x-2 md:justify-start md:gap-x-4">
+              {filterOptions.map((filter) => (
+                <Button
+                  key={filter}
+                  variant={isFilterActive(filter) ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => toggleFilter(filter)}
+                  className={cn(
+                    'rounded-full text-sm transition-all',
+                    isFilterActive(filter)
+                      ? 'bg-primary text-primary-foreground shadow-sm'
+                      : 'hover:bg-secondary'
+                  )}
+                >
+                  {filter}
+                </Button>
+              ))}
+
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={clearFilters}
+                disabled={!hasActiveFilters}
+                className="text-muted-foreground hover:text-foreground rounded-full text-sm"
+              >
+                Clear all
+              </Button>
+            </div>
+          </div>
+
+          {/* Loading indicator for larger screens */}
+          {(isLoadingNewFilter || isFetchingNextPage || isInitialLoading) && (
+            <div className="hidden items-center gap-2 md:flex">
+              <Loader2
+                className="text-muted-foreground animate-spin"
+                size={32}
+              />
+              <span className="text-muted-foreground text-lg">Loading...</span>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Carousel */}
-      <div className="relative h-108 w-full">
-        {filteredHolidays.length === 0 && !isLoading ? (
-          <NoResults />
-        ) : (
-          <Carousel
-            opts={{
-              align: 'start',
-              dragFree: true,
-            }}
-            isFullHeight={true}
-          >
-            <CarouselContent className="h-full">
-              {isLoading ? skeletonItems : holidayItems}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
+      <div className="relative mb-4 h-108 w-full">
+        {/* Loading overlay for mobile */}
+        {isLoadingNewFilter && (
+          <div className="bg-background/10 absolute inset-0 z-10 flex items-center justify-center backdrop-blur-xs md:hidden">
+            <div className="flex items-center gap-2">
+              <Loader2
+                className="text-muted-foreground animate-spin"
+                size={32}
+              />
+              <span className="text-muted-foreground text-lg">Loading...</span>
+            </div>
+          </div>
         )}
+
+        {renderCarouselContent()}
       </div>
 
-      {/* View All Button */}
-      <Button
-        variant="outline"
-        className="rounded-full px-6"
-        disabled={filteredHolidays.length <= 4}
-      >
-        View all {activeTab} holidays
-      </Button>
+      {/* Footer */}
+      <div className="flex w-full flex-col items-center justify-between gap-2 md:flex-row md:items-start">
+        <div className="text-muted-foreground text-center text-sm md:text-left">
+          Viewing
+          <span className="font-bold"> Discounted</span>
+          {activeFilters.length > 0 && (
+            <span className="font-bold">
+              {', '}
+              {activeFilters.join(', ')}
+            </span>
+          )}
+          <span> holidays to </span>
+          <span className="font-bold">{destination.name}</span>
+        </div>
+        <div className="grow" />
+        <Button variant="outline" className="rounded-full px-6" disabled={true}>
+          View all holidays
+        </Button>
+      </div>
     </Container>
   )
 }

@@ -2,7 +2,7 @@ import * as React from 'react'
 import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from 'embla-carousel-react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Plus } from 'lucide-react'
 import { FadeContainer } from '@/components/ui/fadeCarousel/fadeContainer'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -220,9 +220,29 @@ function CarouselNext({
   className,
   variant = 'outline',
   size = 'icon',
+  hasNextPage,
+  onLoadMore,
+  isLoadingMore,
   ...props
-}: React.ComponentProps<typeof Button>) {
+}: React.ComponentProps<typeof Button> & {
+  hasNextPage?: boolean
+  onLoadMore?: () => void
+  isLoadingMore?: boolean
+}) {
   const { orientation, scrollNext, canScrollNext } = useCarousel()
+
+  // Determine button behavior based on scroll state and infinite loading
+  const canLoadMore = !canScrollNext && hasNextPage && onLoadMore
+  const isEnabled = canScrollNext || canLoadMore
+  const shouldShowPlusIcon = canLoadMore && !isLoadingMore
+
+  const handleClick = () => {
+    if (canScrollNext) {
+      scrollNext()
+    } else if (canLoadMore) {
+      onLoadMore()
+    }
+  }
 
   return (
     <Button
@@ -236,12 +256,14 @@ function CarouselNext({
           : '-bottom-12 left-1/2 -translate-x-1/2 rotate-90',
         className
       )}
-      disabled={!canScrollNext}
-      onClick={scrollNext}
+      disabled={!isEnabled}
+      onClick={handleClick}
       {...props}
     >
-      <ChevronRight />
-      <span className="sr-only">Next slide</span>
+      {shouldShowPlusIcon ? <Plus /> : <ChevronRight />}
+      <span className="sr-only">
+        {shouldShowPlusIcon ? 'Load more' : 'Next slide'}
+      </span>
     </Button>
   )
 }

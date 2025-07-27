@@ -1,11 +1,12 @@
 import { placeholder } from '@/lib/imagePreloader'
-import { useOfferData } from '@/query/hooks/useOfferData'
-import type { OfferData } from '@/query/types'
+import { useHolidaysInfiniteQuery } from '@/query/hooks/useHolidaysInfiniteQuery'
+import type { HolidayOffer } from '@/query/hooks/useHolidaysInfiniteQuery'
 import type { Holiday } from './types'
+import { useEffect, useRef } from 'react'
 
 // Transform API offer data to Holiday format
 export function transformOfferToHoliday(
-  offer: OfferData,
+  offer: HolidayOffer,
   destinationName: string
 ): Holiday {
   const { accommodation, price_per_person } = offer
@@ -45,26 +46,68 @@ export function transformOfferToHoliday(
   }
 }
 
-// Hook to get holiday data from API
-export function useHolidayData(destinationId: number, destinationName: string) {
-  const { data, isLoading, error } = useOfferData(destinationId)
+// Hook to get holiday data from infinite query
+export function useHolidayData(
+  destinationId: number,
+  destinationName: string,
+  filterVariables: Record<string, unknown>,
+  activeFilters: string[] = []
+) {
+  const {
+    holidays: rawHolidays,
+    totalCount,
+    isLoading,
+    isFetching,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+    error,
+    refetch,
+  } = useHolidaysInfiniteQuery(destinationId, filterVariables, activeFilters)
 
-  const holidays: Holiday[] =
-    data?.offers?.result?.map((offer) =>
-      transformOfferToHoliday(offer, destinationName)
-    ) || []
+  // Track if we've done the automatic second page load
+  const hasAutoLoaded = useRef(false)
+
+  // Create a stable key for active filters to detect filter changes
+  const activeFiltersKey = JSON.stringify(activeFilters.sort())
+
+  // Reset auto-load flag when filters change
+  useEffect(() => {
+    hasAutoLoaded.current = false
+  }, [activeFiltersKey])
+
+  // Automatic load of second page after initial load
+  useEffect(() => {
+    if (
+      !isLoading && // Initial load is complete
+      !isFetching && // Not currently fetching
+      rawHolidays.length > 0 && // We have some data
+      hasNextPage && // More pages available
+      !hasAutoLoaded.current && // Haven't auto-loaded yet
+      !error // No error state
+    ) {
+      hasAutoLoaded.current = true
+      fetchNextPage()
+    }
+  }, [isLoading, isFetching, rawHolidays.length, hasNextPage, fetchNextPage, error])
+
+  // Transform all offers into Holiday format
+  const holidays: Holiday[] = rawHolidays.map((offer) =>
+    transformOfferToHoliday(offer, destinationName)
+  )
 
   return {
     holidays,
     isLoading,
+    isFetching,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+    totalCount,
     error,
+    refetch,
   }
 }
 
-export const filterOptions = [
-  'Last Minute',
-  'Under £400pp',
-  'All Inclusive',
-  '5-Star',
-  'City Breaks',
-]
+// Filter options are now exported from useFilterManager hook
+export { filterOptions } from '@/query/hooks/useFilterManager'

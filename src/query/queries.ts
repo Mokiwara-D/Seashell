@@ -3,7 +3,6 @@ import type {
   GraphQLQuery,
   DestinationData,
   AvailableDestinationsResponse as DestinationsResponse,
-  OffersResponse,
 } from './types'
 
 // GraphQL query definitions
@@ -21,41 +20,7 @@ export const DESTINATIONS_QUERY: GraphQLQuery = {
   operationName: 'availableDestinations',
 }
 
-export const OFFERS_QUERY = (destinationId: number): GraphQLQuery => ({
-  query: `
-    query offers($destinations: [Int]) {
-      offers(destinations: $destinations) {
-        result {
-          price_per_person
-          accommodation {
-            id
-            name
-            rating
-            trip_advisor_rating
-            trip_advisor_num_reviews
-            images{
-              id
-              url
-            }
-            resort {
-              id
-              name
-              regions {
-                id
-                name
-                detail
-              }
-            }
-          }
-        }
-      }
-    }
-  `,
-  variables: {
-    destinations: [destinationId],
-  },
-  operationName: 'offers',
-})
+// OFFERS_QUERY removed - replaced by holidays query in useHolidaysInfiniteQuery
 
 export const REGIONS_QUERY = (destinationId: number): GraphQLQuery => ({
   query: `
@@ -102,8 +67,4 @@ export async function fetchDestinations(): Promise<DestinationData[]> {
   return data.available_destinations.result
 }
 
-export async function fetchOffers(
-  destinationId: number
-): Promise<OffersResponse> {
-  return fetchGraphQL<OffersResponse>(OFFERS_QUERY(destinationId))
-}
+// fetchOffers removed - replaced by holidays query in useHolidaysInfiniteQuery

@@ -1,7 +1,37 @@
 import { placeholder } from '@/lib/imagePreloader'
-import { useOfferData } from '@/query/hooks/useOfferData'
-import type { OfferData } from '@/query/types'
+// Temporary: useOfferData removed - destinations system will be reworked
+// import { useOfferData } from '@/query/hooks/useOfferData'
+// import type { OfferData } from '@/query/types'
 import type { Destination } from './types'
+
+// Temporary stub interface until destinations system is reworked
+interface OfferData {
+  price_per_person: number
+  accommodation: {
+    images?: { url: string }[]
+    resort: {
+      regions?: {
+        id: number
+        name: string
+        detail?: string
+      }[]
+    }
+  }
+}
+
+// Temporary stub hook until destinations system is reworked
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function useOfferData(_destinationId: number) {
+  return {
+    data: {
+      offers: {
+        result: [] as OfferData[],
+      },
+    },
+    isLoading: false,
+    error: null,
+  }
+}
 
 // Transform API offer data to extract unique regions
 export function transformOffersToRegions(offers: OfferData[]): Destination[] {
