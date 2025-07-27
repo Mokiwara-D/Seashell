@@ -38,9 +38,10 @@ function Holidays() {
     isLoading,
     isFetching,
     isFetchingNextPage,
-    hasNextPage,
     fetchNextPage,
     totalCount,
+    canLoadMore,
+    allItemsLoaded,
     error,
     refetch,
   } = useHolidayData(
@@ -55,10 +56,10 @@ function Holidays() {
   const isLoadingNewFilter =
     isFetching && !isFetchingNextPage && holidays.length > 0
 
-  // Memoize skeleton items
+  // Memoize skeleton items (reduced to 4 for initial load)
   const skeletonItems = useMemo(
     () =>
-      Array.from({ length: 8 }, (_, index) => (
+      Array.from({ length: 4 }, (_, index) => (
         <CarouselItem
           key={`skeleton-${index}`}
           className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
@@ -114,7 +115,7 @@ function Holidays() {
         opts={{
           align: 'start',
           dragFree: true,
-          loop: false,
+          loop: allItemsLoaded, // Enable loop when all items are loaded
         }}
         isFullHeight={true}
       >
@@ -123,7 +124,7 @@ function Holidays() {
         </CarouselContent>
         <CarouselPrevious />
         <CarouselNext
-          hasNextPage={hasNextPage}
+          hasNextPage={canLoadMore}
           onLoadMore={fetchNextPage}
           isLoadingMore={isFetchingNextPage}
         />

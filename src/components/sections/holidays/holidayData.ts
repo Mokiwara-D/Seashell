@@ -55,6 +55,9 @@ export function useHolidayData(
   const {
     holidays: rawHolidays,
     totalCount,
+    loadedCount,
+    canLoadMore,
+    allItemsLoaded,
     isLoading,
     isFetching,
     isFetchingNextPage,
@@ -62,7 +65,12 @@ export function useHolidayData(
     fetchNextPage,
     error,
     refetch,
-  } = useHolidaysInfiniteQuery(destinationId, filterVariables, activeFilters)
+  } = useHolidaysInfiniteQuery(
+    destinationId,
+    filterVariables,
+    activeFilters,
+    { keepPreviousData: true } // Keep previous data during filter changes
+  )
 
   // Transform all offers into Holiday format
   const holidays: Holiday[] = rawHolidays.map((offer) =>
@@ -77,6 +85,9 @@ export function useHolidayData(
     hasNextPage,
     fetchNextPage,
     totalCount,
+    loadedCount,
+    canLoadMore,
+    allItemsLoaded,
     error,
     refetch,
   }

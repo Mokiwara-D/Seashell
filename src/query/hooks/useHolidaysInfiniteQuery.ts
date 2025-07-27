@@ -180,7 +180,7 @@ export interface UseHolidaysInfiniteQueryOptions {
   enabled?: boolean
   staleTime?: number
   gcTime?: number
-  maxPages?: number
+  keepPreviousData?: boolean
 }
 
 export function useHolidaysInfiniteQuery(
@@ -193,7 +193,7 @@ export function useHolidaysInfiniteQuery(
     enabled = true,
     staleTime = 5 * 60 * 1000,
     gcTime = 10 * 60 * 1000,
-    maxPages = 10,
+    keepPreviousData = false,
   } = options
 
   // Create stable query key - use object structure for better cache management
@@ -217,26 +217,23 @@ export function useHolidaysInfiniteQuery(
     staleTime,
     gcTime,
     refetchOnWindowFocus: false,
-    retry: 2, // Reduced from 3
-    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000), // Reduced max delay
+    retry: 2,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
     initialPageParam: 0,
+    placeholderData: keepPreviousData ? (prev) => prev : undefined,
     getNextPageParam: (lastPage, allPages, lastPageParam) => {
       const totalFetched = allPages.reduce(
         (total, page) => total + (page.offers.result?.length || 0),
         0
       )
       const totalAvailable = lastPage.offers.count || 0
-      const lastPageSize = lastPage.offers.result?.length || 0
 
-      // Stop if we've hit limits or no more data
-      if (
-        allPages.length >= maxPages ||
-        totalFetched >= totalAvailable ||
-        lastPageSize < ITEMS_PER_PAGE
-      ) {
+      // Stop if we've fetched all available items
+      if (totalFetched >= totalAvailable) {
         return undefined
       }
 
+      // Calculate next page start index
       return lastPageParam + ITEMS_PER_PAGE
     },
     getPreviousPageParam: (_, __, firstPageParam) => {
@@ -244,7 +241,6 @@ export function useHolidaysInfiniteQuery(
         ? Math.max(0, firstPageParam - ITEMS_PER_PAGE)
         : undefined
     },
-    maxPages,
   })
 
   // Flatten data for easier consumption
@@ -253,10 +249,20 @@ export function useHolidaysInfiniteQuery(
   }, [query.data])
 
   const totalCount = query.data?.pages[0]?.offers.count || 0
+  const loadedCount = holidays.length
+
+  // Check if more items can be loaded
+  const canLoadMore = loadedCount < totalCount && totalCount > 0
+
+  // Check if all items are loaded for carousel loop
+  const allItemsLoaded = loadedCount >= totalCount && totalCount > 0
 
   return {
     ...query,
     holidays,
     totalCount,
+    loadedCount,
+    canLoadMore,
+    allItemsLoaded,
   }
 }
