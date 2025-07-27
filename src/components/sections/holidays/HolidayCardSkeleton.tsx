@@ -1,8 +1,9 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { placeholder } from '@/lib/imagePreloader'
+import { memo } from 'react'
 
-function HolidayCardSkeleton() {
+const HolidayCardSkeleton = memo(function HolidayCardSkeleton() {
   return (
     <Card className="border-border bg-card h-full overflow-hidden shadow-sm">
       {/* Image - Use placeholder instead of skeleton */}
@@ -45,6 +46,6 @@ function HolidayCardSkeleton() {
       </CardContent>
     </Card>
   )
-}
+})
 
 export { HolidayCardSkeleton }

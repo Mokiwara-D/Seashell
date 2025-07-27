@@ -1,4 +1,8 @@
-import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  useInfiniteQuery,
+  useQueryClient,
+  keepPreviousData,
+} from '@tanstack/react-query'
 import { graphqlClient } from '../client'
 import type { GraphQLQuery } from '../types'
 import { useMemo, useEffect } from 'react'
@@ -309,7 +313,7 @@ export function useHolidaysInfiniteQuery(
     enabled = true,
     staleTime = 5 * 60 * 1000,
     gcTime = 10 * 60 * 1000,
-    keepPreviousData = false,
+    keepPreviousData: shouldKeepPreviousData = false,
   } = options
 
   // Create stable query key - use object structure for better cache management
@@ -336,7 +340,27 @@ export function useHolidaysInfiniteQuery(
     retry: 2,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
     initialPageParam: 0,
-    placeholderData: keepPreviousData ? (prev) => prev : undefined,
+    placeholderData: shouldKeepPreviousData ? keepPreviousData : undefined, // Keep previous data visible during transitions
+    // Prevent unnecessary re-renders during data transitions
+    notifyOnChangeProps: [
+      'data',
+      'error',
+      'isLoading',
+      'isFetchingNextPage',
+      'isPlaceholderData',
+    ],
+    // Use structural sharing to maintain stable references
+    structuralSharing: (oldData, newData) => {
+      // If the data is the same, return the old reference to prevent re-renders
+      if (
+        oldData &&
+        newData &&
+        JSON.stringify(oldData) === JSON.stringify(newData)
+      ) {
+        return oldData
+      }
+      return newData
+    },
 
     getNextPageParam: (lastPage, allPages, lastPageParam) => {
       const totalFetched = allPages.reduce(
@@ -404,8 +428,10 @@ export function useHolidaysInfiniteQuery(
   }, [query.isSuccess, query.data, queryClient, queryKey])
 
   // Flatten data for easier consumption and cap at adjusted total
+  // Use select to minimize re-renders by only extracting the data we need
   const allHolidays = useMemo(() => {
-    return query.data?.pages.flatMap((page) => page.offers.result || []) || []
+    const pages = query.data?.pages || []
+    return pages.flatMap((page) => page.offers.result || [])
   }, [query.data])
 
   const totalCount = query.data?.pages[0]?.offers.count || 0
@@ -455,5 +481,6 @@ export function useHolidaysInfiniteQuery(
     lostResults, // For debugging purposes
     canLoadMore,
     allItemsLoaded,
+    isPlaceholderData: query.isPlaceholderData, // Indicates if showing previous data
   }
 }

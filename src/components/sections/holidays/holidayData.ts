@@ -67,6 +67,7 @@ export function useHolidayData(
     fetchNextPage,
     error,
     refetch,
+    isPlaceholderData,
   } = useHolidaysInfiniteQuery(
     destinationId,
     filterVariables,
@@ -94,6 +95,7 @@ export function useHolidayData(
     allItemsLoaded,
     error,
     refetch,
+    isPlaceholderData, // Indicates if showing previous data during transitions
   }
 }
 

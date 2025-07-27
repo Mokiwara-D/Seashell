@@ -5,6 +5,7 @@ import {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
+  type CarouselApi,
 } from '@/components/ui/fadeCarousel/fadeCarousel'
 import { Button } from '@/components/ui/button'
 import { HolidayCard } from './HolidayCard'
@@ -13,14 +14,15 @@ import { useHolidayData, filterOptions } from './holidayData'
 import { useFilterManager } from '@/query/hooks/useFilterManager'
 import { useDestination } from '@/contexts'
 
-import { useMemo } from 'react'
+import { useMemo, useEffect, useState, useRef } from 'react'
 import { NoResults } from '@/components/ui/errors/noResults'
 import { ResultsError } from '@/components/ui/errors/resultsError'
+import { Loading } from '@/components/ui/loading'
 import { cn } from '@/lib/utils'
-import { Loader2 } from 'lucide-react'
 
 function Holidays() {
   const { destination } = useDestination()
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>()
 
   // Filter management
   const {
@@ -31,6 +33,13 @@ function Holidays() {
     hasActiveFilters,
     clearFilters,
   } = useFilterManager()
+
+  // Reset carousel scroll position when destination or filters change
+  useEffect(() => {
+    if (carouselApi) {
+      carouselApi.scrollTo(0)
+    }
+  }, [destination.id, activeFilters, carouselApi])
 
   // Holiday data with infinite query
   const {
@@ -44,6 +53,7 @@ function Holidays() {
     allItemsLoaded,
     error,
     refetch,
+    isPlaceholderData,
   } = useHolidayData(
     destination.id,
     destination.name,
@@ -55,6 +65,52 @@ function Holidays() {
   const isInitialLoading = isLoading && holidays.length === 0
   const isLoadingNewFilter =
     isFetching && !isFetchingNextPage && holidays.length > 0
+
+  // Track previous destination and filters to detect actual changes
+  const previousQueryRef = useRef<{
+    destinationId: number
+    filters: string[]
+  }>({ destinationId: destination.id, filters: activeFilters })
+
+  // Reset carousel scroll position ONLY when destination or filters change
+  useEffect(() => {
+    const currentQuery = {
+      destinationId: destination.id,
+      filters: activeFilters,
+    }
+
+    // Check if destination or filters actually changed
+    const destinationChanged =
+      previousQueryRef.current.destinationId !== currentQuery.destinationId
+    const filtersChanged =
+      JSON.stringify(previousQueryRef.current.filters.sort()) !==
+      JSON.stringify(currentQuery.filters.sort())
+
+    if (
+      (destinationChanged || filtersChanged) &&
+      carouselApi &&
+      !isPlaceholderData &&
+      holidays.length > 0
+    ) {
+      // Update the previous query ref
+      previousQueryRef.current = currentQuery
+
+      // Small delay to ensure new content has rendered
+      const timer = setTimeout(() => {
+        carouselApi.scrollTo(0)
+      }, 150)
+      return () => clearTimeout(timer)
+    }
+
+    // Always update the ref for next comparison
+    previousQueryRef.current = currentQuery
+  }, [
+    destination.id,
+    activeFilters,
+    carouselApi,
+    isPlaceholderData,
+    holidays.length,
+  ])
 
   // Memoize skeleton items (reduced to 4 for initial load)
   const skeletonItems = useMemo(
@@ -70,25 +126,37 @@ function Holidays() {
     []
   )
 
-  // Memoize holiday items
+  // Stable key prefix that doesn't change during placeholder data
+  const stableQueryPrefix = useMemo(() => {
+    // Only update the prefix when we have real data (not placeholder)
+    if (!isPlaceholderData) {
+      return `${destination.id}-${activeFilters.sort().join(',')}`
+    }
+    // During placeholder data, return a stable prefix to prevent re-renders
+    return 'stable-placeholder'
+  }, [destination.id, activeFilters, isPlaceholderData])
+
+  // Memoize holiday items with stable references during transitions
   const holidayItems = useMemo(() => {
-    // Create a unique key prefix based on current query to prevent duplicates during filter changes
-    const queryPrefix = `${destination.id}-${activeFilters.sort().join(',')}`
+    // Don't regenerate items during placeholder data transitions
+    if (isPlaceholderData && holidays.length === 0) {
+      return []
+    }
 
     const items = holidays.map((holiday, index) => (
       <CarouselItem
-        key={`${queryPrefix}-${holiday.id}-${index}`}
+        key={`${stableQueryPrefix}-${holiday.id}-${index}`}
         className="basis-full md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
       >
-        <HolidayCard holiday={holiday} />
+        <HolidayCard holiday={holiday} isPlaceholderData={isPlaceholderData} />
       </CarouselItem>
     ))
 
-    // Add loading items if fetching next page
-    if (isFetchingNextPage) {
+    // Add loading items if fetching next page (but not during placeholder transitions)
+    if (isFetchingNextPage && !isPlaceholderData) {
       const loadingItems = Array.from({ length: 8 }, (_, index) => (
         <CarouselItem
-          key={`${queryPrefix}-loading-${index}`}
+          key={`${stableQueryPrefix}-loading-${index}`}
           className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
         >
           <HolidayCardSkeleton />
@@ -98,7 +166,7 @@ function Holidays() {
     }
 
     return items
-  }, [holidays, isFetchingNextPage, destination.id, activeFilters])
+  }, [holidays, isFetchingNextPage, stableQueryPrefix, isPlaceholderData])
 
   // Determine carousel content
   const renderCarouselContent = () => {
@@ -116,11 +184,14 @@ function Holidays() {
     return (
       <Carousel
         opts={{
-          align: 'start',
+          align: 'start' as const,
           dragFree: true,
-          loop: allItemsLoaded && holidays.length > 4, // Enable loop when all items are loaded and more than 4 items
+          loop: !isPlaceholderData && allItemsLoaded && holidays.length > 4,
+          watchSlides: true, // Enable automatic slide detection for pagination
+          watchResize: true, // Keep resize watching for responsive behavior
         }}
         isFullHeight={true}
+        setApi={setCarouselApi}
       >
         <CarouselContent className="h-full">
           {isInitialLoading ? skeletonItems : holidayItems}
@@ -179,34 +250,16 @@ function Holidays() {
               </Button>
             </div>
           </div>
-
-          {/* Loading indicator for larger screens */}
-          {(isLoadingNewFilter || isFetchingNextPage || isInitialLoading) && (
-            <div className="hidden items-center gap-2 md:flex">
-              <Loader2
-                className="text-muted-foreground animate-spin"
-                size={32}
-              />
-              <span className="text-muted-foreground text-lg">Loading...</span>
-            </div>
-          )}
         </div>
       </div>
 
       {/* Carousel */}
       <div className="relative mb-4 h-108 w-full">
-        {/* Loading overlay for mobile */}
-        {isLoadingNewFilter && (
-          <div className="bg-background/10 absolute inset-0 z-10 flex items-center justify-center backdrop-blur-xs md:hidden">
-            <div className="flex items-center gap-2">
-              <Loader2
-                className="text-muted-foreground animate-spin"
-                size={32}
-              />
-              <span className="text-muted-foreground text-lg">Loading...</span>
-            </div>
-          </div>
-        )}
+        {/* Loading - show during any loading state, but respect smooth transitions */}
+        {(isInitialLoading ||
+          isLoadingNewFilter ||
+          isFetchingNextPage ||
+          (isLoading && holidays.length === 0)) && <Loading />}
 
         {renderCarouselContent()}
       </div>
