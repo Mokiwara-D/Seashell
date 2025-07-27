@@ -187,7 +187,10 @@ async function fetchHolidaysPage(
   const shortfall = requestedCount - receivedCount
   const nextAvailablePosition = pageParam + requestedCount // Skip ahead to avoid duplicates
   const remainingAfterSkip = Math.max(0, totalAvailable - nextAvailablePosition)
-  const shouldFetchMore = shortfall > 0 && remainingAfterSkip > 0
+
+  // Only attempt compensation if total is larger than our page size AND there are results to compensate with
+  const shouldFetchMore =
+    shortfall > 0 && remainingAfterSkip > 0 && totalAvailable > ITEMS_PER_PAGE
 
   if (shouldFetchMore) {
     // Calculate how many additional results to request from the next clean position
@@ -199,6 +202,7 @@ async function fetchHolidaysPage(
       shortfall: shortfall,
       compensationRequesting: additionalToRequest,
       compensationStartIndex: nextAvailablePosition,
+      totalAvailable: totalAvailable,
     })
 
     try {
@@ -236,7 +240,7 @@ async function fetchHolidaysPage(
         // Add metadata about the shortfall for accurate tracking
         _metadata: {
           originalShortfall: shortfall,
-          compensated: true,
+          compensated: additionalResults.length > 0,
         },
       }
     } catch (error) {
@@ -255,11 +259,32 @@ async function fetchHolidaysPage(
     }
   }
 
-  // Return normal result (no shortfall)
+  // For small datasets or uncompensatable shortfalls, calculate realistic shortfall
+  let actualShortfall = shortfall
+  if (totalAvailable <= ITEMS_PER_PAGE) {
+    // For small datasets, shortfall should be based on realistic expectations
+    const maxPossibleForThisPage = Math.min(
+      ITEMS_PER_PAGE,
+      totalAvailable - pageParam
+    )
+    actualShortfall = Math.max(0, maxPossibleForThisPage - receivedCount)
+
+    if (actualShortfall > 0) {
+      console.info('Small dataset shortfall detected:', {
+        totalAvailable: totalAvailable,
+        pageParam: pageParam,
+        maxPossible: maxPossibleForThisPage,
+        received: receivedCount,
+        actualShortfall: actualShortfall,
+      })
+    }
+  }
+
+  // Return result with proper shortfall metadata
   return {
     ...result,
     _metadata: {
-      originalShortfall: 0,
+      originalShortfall: actualShortfall,
       compensated: false,
     },
   }
