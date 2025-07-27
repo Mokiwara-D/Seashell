@@ -115,7 +115,7 @@ function Holidays() {
         opts={{
           align: 'start',
           dragFree: true,
-          loop: allItemsLoaded, // Enable loop when all items are loaded
+          loop: allItemsLoaded && holidays.length > 4, // Enable loop when all items are loaded and more than 4 items
         }}
         isFullHeight={true}
       >

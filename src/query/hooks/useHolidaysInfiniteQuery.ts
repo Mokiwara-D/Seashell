@@ -1,7 +1,7 @@
-import { useInfiniteQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query'
 import { graphqlClient } from '../client'
 import type { GraphQLQuery } from '../types'
-import { useMemo } from 'react'
+import { useMemo, useEffect } from 'react'
 
 // Response types for holidays query
 export interface HolidayOffer {
@@ -189,6 +189,8 @@ export function useHolidaysInfiniteQuery(
   activeFilters: string[] = [],
   options: UseHolidaysInfiniteQueryOptions = {}
 ) {
+  const queryClient = useQueryClient()
+
   const {
     enabled = true,
     staleTime = 5 * 60 * 1000,
@@ -221,6 +223,7 @@ export function useHolidaysInfiniteQuery(
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
     initialPageParam: 0,
     placeholderData: keepPreviousData ? (prev) => prev : undefined,
+
     getNextPageParam: (lastPage, allPages, lastPageParam) => {
       const totalFetched = allPages.reduce(
         (total, page) => total + (page.offers.result?.length || 0),
@@ -242,6 +245,41 @@ export function useHolidaysInfiniteQuery(
         : undefined
     },
   })
+
+  // Trim cache AFTER successful data load using useEffect (v5 pattern)
+  useEffect(() => {
+    // Only trim when we have successfully loaded data
+    if (query.isSuccess && query.data) {
+      // Find all other holiday queries in cache
+      const allHolidayQueries = queryClient.getQueriesData({
+        queryKey: ['holidays'],
+        exact: false,
+      })
+
+      // Trim each query (except current one) to max 16 results (2 pages)
+      allHolidayQueries.forEach(([otherQueryKey, otherData]) => {
+        // Skip current query
+        if (JSON.stringify(otherQueryKey) === JSON.stringify(queryKey)) return
+
+        // Type guard and trim if it has more than 2 pages (16 results)
+        if (
+          otherData &&
+          typeof otherData === 'object' &&
+          'pages' in otherData &&
+          'pageParams' in otherData &&
+          Array.isArray(otherData.pages) &&
+          otherData.pages.length > 2
+        ) {
+          queryClient.setQueryData(otherQueryKey, {
+            pages: otherData.pages.slice(0, 2),
+            pageParams: Array.isArray(otherData.pageParams)
+              ? otherData.pageParams.slice(0, 2)
+              : [],
+          })
+        }
+      })
+    }
+  }, [query.isSuccess, query.data, queryClient, queryKey])
 
   // Flatten data for easier consumption
   const holidays = useMemo(() => {
