@@ -16,7 +16,7 @@ export const bookingReasonsData: BookingReason[] = [
     icon: createElement(
       'h2',
       {
-        className: 'text-foreground text-3xl font-bold',
+        className: 'text-foreground text-4xl font-bold ',
       },
       '0%'
     ),
@@ -28,7 +28,7 @@ export const bookingReasonsData: BookingReason[] = [
     icon: createElement(
       'h2',
       {
-        className: 'text-foreground text-4xl font-extrabold',
+        className: 'text-foreground text-5xl font-bold',
       },
       '£'
     ),

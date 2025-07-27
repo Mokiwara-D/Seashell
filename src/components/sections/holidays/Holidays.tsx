@@ -34,21 +34,15 @@ function Holidays() {
     clearFilters,
   } = useFilterManager()
 
-  // Reset carousel scroll position when destination or filters change
-  useEffect(() => {
-    if (carouselApi) {
-      carouselApi.scrollTo(0)
-    }
-  }, [destination.id, activeFilters, carouselApi])
-
-  // Holiday data with infinite query
+  // Holiday data with infinite query - destination name is managed automatically
   const {
     holidays,
+    displayDestinationName,
     isLoading,
     isFetching,
     isFetchingNextPage,
     fetchNextPage,
-    totalCount, // This is now the adjusted total count
+    totalCount,
     canLoadMore,
     allItemsLoaded,
     error,
@@ -152,21 +146,8 @@ function Holidays() {
       </CarouselItem>
     ))
 
-    // Add loading items if fetching next page (but not during placeholder transitions)
-    if (isFetchingNextPage && !isPlaceholderData) {
-      const loadingItems = Array.from({ length: 8 }, (_, index) => (
-        <CarouselItem
-          key={`${stableQueryPrefix}-loading-${index}`}
-          className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
-        >
-          <HolidayCardSkeleton />
-        </CarouselItem>
-      ))
-      items.push(...loadingItems)
-    }
-
     return items
-  }, [holidays, isFetchingNextPage, stableQueryPrefix, isPlaceholderData])
+  }, [holidays, stableQueryPrefix, isPlaceholderData])
 
   // Determine carousel content
   const renderCarouselContent = () => {
@@ -217,7 +198,7 @@ function Holidays() {
           {/* Title and Filters */}
           <div className="w-full md:w-auto">
             <h2 className="text-foreground mb-4 text-center text-2xl font-bold md:mb-6 md:text-left md:text-3xl">
-              Holidays to {destination.name}
+              Holidays to {displayDestinationName}
             </h2>
 
             {/* Filter Buttons */}
@@ -276,7 +257,7 @@ function Holidays() {
             </span>
           )}
           <span> holidays to </span>
-          <span className="font-bold">{destination.name}</span>
+          <span className="font-bold">{displayDestinationName}</span>
         </div>
         <div className="grow" />
         <Button variant="outline" className="rounded-full px-6" disabled={true}>

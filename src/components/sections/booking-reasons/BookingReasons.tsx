@@ -17,7 +17,7 @@ function BookingReasons() {
             key={reason.id}
             className="flex flex-col items-center space-y-4 text-center"
           >
-            <div className="bg-primary flex h-24 w-24 items-center justify-center rounded-full">
+            <div className="bg-secondary flex size-24 items-center justify-center rounded-full">
               {reason.icon}
             </div>
             <div className="mt-2 space-y-2">

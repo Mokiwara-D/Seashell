@@ -2,6 +2,7 @@ import { placeholder } from '@/lib/imagePreloader'
 import { useHolidaysInfiniteQuery } from '@/query/hooks/useHolidaysInfiniteQuery'
 import type { HolidayOffer } from '@/query/hooks/useHolidaysInfiniteQuery'
 import type { Holiday } from './types'
+import { useMemo } from 'react'
 
 // Transform API offer data to Holiday format
 export function transformOfferToHoliday(
@@ -52,50 +53,32 @@ export function useHolidayData(
   filterVariables: Record<string, unknown>,
   activeFilters: string[] = []
 ) {
-  const {
-    holidays: rawHolidays,
-    totalCount, // This is now the adjusted total count
-    originalTotalCount,
-    loadedCount,
-    lostResults,
-    canLoadMore,
-    allItemsLoaded,
-    isLoading,
-    isFetching,
-    isFetchingNextPage,
-    hasNextPage,
-    fetchNextPage,
-    error,
-    refetch,
-    isPlaceholderData,
-  } = useHolidaysInfiniteQuery(
+  const queryResult = useHolidaysInfiniteQuery(
     destinationId,
+    destinationName,
     filterVariables,
     activeFilters,
-    { keepPreviousData: true } // Keep previous data during filter changes
+    { keepPreviousData: true }
   )
 
-  // Transform all offers into Holiday format
-  const holidays: Holiday[] = rawHolidays.map((offer) =>
-    transformOfferToHoliday(offer, destinationName)
-  )
+  // Use select-like transformation to derive holidays and stable destination name
+  const transformedData = useMemo(() => {
+    const rawHolidays = queryResult.holidays || []
+    const currentDestination =
+      queryResult.data?.pages?.[0]?.destinationName || destinationName
+
+    return {
+      holidays: rawHolidays.map((offer) =>
+        transformOfferToHoliday(offer, currentDestination)
+      ),
+      displayDestinationName: currentDestination,
+    }
+  }, [queryResult.holidays, queryResult.data?.pages, destinationName])
 
   return {
-    holidays,
-    isLoading,
-    isFetching,
-    isFetchingNextPage,
-    hasNextPage,
-    fetchNextPage,
-    totalCount, // Adjusted total count that accounts for API discrepancies
-    originalTotalCount, // Original API-reported count for debugging
-    loadedCount,
-    lostResults, // Number of results lost due to API issues
-    canLoadMore,
-    allItemsLoaded,
-    error,
-    refetch,
-    isPlaceholderData, // Indicates if showing previous data during transitions
+    ...queryResult,
+    holidays: transformedData.holidays,
+    displayDestinationName: transformedData.displayDestinationName,
   }
 }
 

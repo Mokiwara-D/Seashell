@@ -21,10 +21,10 @@ const HolidayCard = memo(function HolidayCard({
   const [imageSrc, setImageSrc] = useState(() => {
     return imageCache.get(holiday.image) || placeholder
   })
-  
+
   // Track if component is mounted to prevent state updates after unmount
   const isMountedRef = useRef(true)
-  
+
   // Memoize the image loading callback
   const handleImageLoad = useCallback(() => {
     if (isMountedRef.current) {
@@ -45,7 +45,7 @@ const HolidayCard = memo(function HolidayCard({
     if (isPlaceholderData) {
       return
     }
-    
+
     // Check cache first
     if (imageCache.has(holiday.image)) {
       const cachedSrc = imageCache.get(holiday.image)!
@@ -70,7 +70,7 @@ const HolidayCard = memo(function HolidayCard({
       }
     }
   }, [holiday.image, handleImageLoad, handleImageError, isPlaceholderData])
-  
+
   // Cleanup on unmount
   useEffect(() => {
     isMountedRef.current = true
@@ -115,22 +115,6 @@ const HolidayCard = memo(function HolidayCard({
         </div>
       </CardContent>
     </Card>
-  )
-}, (prevProps, nextProps) => {
-  // Custom comparison to prevent re-renders during placeholder data transitions
-  // Only re-render if the holiday data actually changes
-  return (
-    prevProps.holiday.id === nextProps.holiday.id &&
-    prevProps.holiday.image === nextProps.holiday.image &&
-    prevProps.holiday.name === nextProps.holiday.name &&
-    prevProps.holiday.price === nextProps.holiday.price &&
-    prevProps.holiday.location === nextProps.holiday.location &&
-    prevProps.holiday.stars === nextProps.holiday.stars &&
-    prevProps.holiday.tripAdvisorRating === nextProps.holiday.tripAdvisorRating &&
-    prevProps.holiday.tripAdvisorReviews === nextProps.holiday.tripAdvisorReviews &&
-    // Only re-render when transitioning from/to placeholder data state if the data is different
-    (prevProps.isPlaceholderData === nextProps.isPlaceholderData || 
-     prevProps.holiday.id === nextProps.holiday.id)
   )
 })
 

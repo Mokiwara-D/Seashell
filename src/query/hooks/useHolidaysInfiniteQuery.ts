@@ -167,9 +167,10 @@ const buildHolidaysQuery = (
 // Fetch function for infinite query with gap-filling logic
 async function fetchHolidaysPage(
   destinationId: number,
+  destinationName: string,
   filterVariables: HolidayQueryVariables,
   pageParam: number = 0
-): Promise<HolidaysResponse> {
+): Promise<HolidaysResponse & { destinationName: string }> {
   const variables = {
     ...filterVariables,
     destinations: [destinationId],
@@ -246,6 +247,7 @@ async function fetchHolidaysPage(
           originalShortfall: shortfall,
           compensated: additionalResults.length > 0,
         },
+        destinationName,
       }
     } catch (error) {
       console.warn(
@@ -259,6 +261,7 @@ async function fetchHolidaysPage(
           originalShortfall: shortfall,
           compensated: false,
         },
+        destinationName,
       }
     }
   }
@@ -291,6 +294,7 @@ async function fetchHolidaysPage(
       originalShortfall: actualShortfall,
       compensated: false,
     },
+    destinationName,
   }
 }
 
@@ -303,6 +307,7 @@ export interface UseHolidaysInfiniteQueryOptions {
 
 export function useHolidaysInfiniteQuery(
   destinationId: number,
+  destinationName: string,
   filterVariables: HolidayQueryVariables,
   activeFilters: string[] = [],
   options: UseHolidaysInfiniteQueryOptions = {}
@@ -332,7 +337,12 @@ export function useHolidaysInfiniteQuery(
   const query = useInfiniteQuery({
     queryKey,
     queryFn: ({ pageParam = 0 }) =>
-      fetchHolidaysPage(destinationId, filterVariables, pageParam),
+      fetchHolidaysPage(
+        destinationId,
+        destinationName,
+        filterVariables,
+        pageParam
+      ),
     enabled: enabled && destinationId > 0,
     staleTime,
     gcTime,
