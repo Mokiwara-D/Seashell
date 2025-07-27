@@ -9,7 +9,7 @@ import type {
 // GraphQL query definitions
 export const DESTINATIONS_QUERY: GraphQLQuery = {
   query: `
-    query GetAvailableDestinations {
+    query availableDestinations {
       available_destinations {
         result {
           title
@@ -18,12 +18,12 @@ export const DESTINATIONS_QUERY: GraphQLQuery = {
       }
     }
   `,
-  operationName: 'GetAvailableDestinations',
+  operationName: 'availableDestinations',
 }
 
 export const OFFERS_QUERY = (destinationId: number): GraphQLQuery => ({
   query: `
-    query GetOffers($destinations: [Int]) {
+    query offers($destinations: [Int]) {
       offers(destinations: $destinations) {
         result {
           price_per_person
@@ -54,12 +54,12 @@ export const OFFERS_QUERY = (destinationId: number): GraphQLQuery => ({
   variables: {
     destinations: [destinationId],
   },
-  operationName: 'GetOffers',
+  operationName: 'offers',
 })
 
 export const REGIONS_QUERY = (destinationId: number): GraphQLQuery => ({
   query: `
-    query offers($destinations: [Int]) {
+    query regions($destinations: [Int]) {
       available_regions(destinations: $destinations){
         result{
           result
@@ -70,12 +70,12 @@ export const REGIONS_QUERY = (destinationId: number): GraphQLQuery => ({
   variables: {
     destinations: [destinationId],
   },
-  operationName: 'GetRegions',
+  operationName: 'regions',
 })
 
 export const REGION_QUERY = (regionId: number): GraphQLQuery => ({
   query: `
-    query offers($region_id: Int!) {
+    query region($region_id: Int!) {
       region(region_id: $region_id){
         result{
           name
@@ -87,7 +87,7 @@ export const REGION_QUERY = (regionId: number): GraphQLQuery => ({
   variables: {
     region_id: regionId,
   },
-  operationName: 'GetRegion',
+  operationName: 'region',
 })
 
 // Enhanced GraphQL fetch functions using the centralized client

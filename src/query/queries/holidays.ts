@@ -1,6 +1,7 @@
 import type { GraphQLQuery } from '../types'
+import { graphqlClient } from '../client'
 
-export const HOLIDAYS_QUERY = (): GraphQLQuery => ({
+export const HOLIDAYS_QUERY = (destinationId: number): GraphQLQuery => ({
   query: `
       query holidays(
 	$rooms: [String]
@@ -91,17 +92,21 @@ export const HOLIDAYS_QUERY = (): GraphQLQuery => ({
     trip_ratings: [],
     departure_date: null,
     departure_date_type: 0,
-    destinations: [],
+    destinations: [destinationId],
     regions: [],
     resorts: [],
     trip_type: -1,
     start_index: 0,
     sort: 0,
     fav_accommodations: [],
-    client_4ist_id: -1,
+    client_list_id: -1,
     max_price: -1,
     take: 4,
     accommodation_id: null,
   },
-  operationName: 'GetHolidays',
+  operationName: 'holidays',
 })
+
+export async function fetchHolidays(destinationId: number) {
+  return graphqlClient.request(HOLIDAYS_QUERY(destinationId))
+}
