@@ -34,7 +34,7 @@ export function transformOfferToHoliday(
   }
 
   return {
-    id: accommodation.id,
+    id: offer.id, // Use offer ID instead of accommodation.id for uniqueness
     name: accommodation.name,
     image: imageUrl,
     stars: rating || 0,
@@ -54,8 +54,10 @@ export function useHolidayData(
 ) {
   const {
     holidays: rawHolidays,
-    totalCount,
+    totalCount, // This is now the adjusted total count
+    originalTotalCount,
     loadedCount,
+    lostResults,
     canLoadMore,
     allItemsLoaded,
     isLoading,
@@ -84,8 +86,10 @@ export function useHolidayData(
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
-    totalCount,
+    totalCount, // Adjusted total count that accounts for API discrepancies
+    originalTotalCount, // Original API-reported count for debugging
     loadedCount,
+    lostResults, // Number of results lost due to API issues
     canLoadMore,
     allItemsLoaded,
     error,

@@ -41,6 +41,10 @@ export interface HolidaysResponse {
       message: string
     }
   }
+  _metadata?: {
+    originalShortfall: number
+    compensated: boolean
+  }
 }
 
 // Holiday query variables interface
@@ -156,7 +160,7 @@ const buildHolidaysQuery = (
   operationName: 'holidays',
 })
 
-// Fetch function for infinite query
+// Fetch function for infinite query with gap-filling logic
 async function fetchHolidaysPage(
   destinationId: number,
   filterVariables: HolidayQueryVariables,
@@ -169,11 +173,96 @@ async function fetchHolidaysPage(
     take: ITEMS_PER_PAGE,
   }
 
+  // Make initial request
   const result = await graphqlClient.request<HolidaysResponse>(
     buildHolidaysQuery(variables)
   )
 
-  return result
+  const initialResults = result.offers.result || []
+  const totalAvailable = result.offers.count || 0
+  const receivedCount = initialResults.length
+  const requestedCount = ITEMS_PER_PAGE
+
+  // Check if we got fewer results than requested AND there are more results available
+  const shortfall = requestedCount - receivedCount
+  const nextAvailablePosition = pageParam + requestedCount // Skip ahead to avoid duplicates
+  const remainingAfterSkip = Math.max(0, totalAvailable - nextAvailablePosition)
+  const shouldFetchMore = shortfall > 0 && remainingAfterSkip > 0
+
+  if (shouldFetchMore) {
+    // Calculate how many additional results to request from the next clean position
+    const additionalToRequest = Math.min(shortfall, remainingAfterSkip)
+
+    console.info('Detected page shortfall, fetching compensation results:', {
+      requested: requestedCount,
+      received: receivedCount,
+      shortfall: shortfall,
+      compensationRequesting: additionalToRequest,
+      compensationStartIndex: nextAvailablePosition,
+    })
+
+    try {
+      // Make follow-up request for compensation results from further ahead
+      const additionalVariables = {
+        ...filterVariables,
+        destinations: [destinationId],
+        start_index: nextAvailablePosition,
+        take: additionalToRequest,
+      }
+
+      const additionalResult = await graphqlClient.request<HolidaysResponse>(
+        buildHolidaysQuery(additionalVariables)
+      )
+
+      const additionalResults = additionalResult.offers.result || []
+
+      // Combine initial and additional results (no duplicates since we fetched from ahead)
+      const combinedResults = [...initialResults, ...additionalResults]
+
+      console.info('Successfully fetched compensation results:', {
+        initialCount: initialResults.length,
+        compensationCount: additionalResults.length,
+        finalCount: combinedResults.length,
+        originalShortfall: shortfall,
+        compensated: additionalResults.length,
+      })
+
+      // Return combined response
+      return {
+        offers: {
+          ...result.offers,
+          result: combinedResults,
+        },
+        // Add metadata about the shortfall for accurate tracking
+        _metadata: {
+          originalShortfall: shortfall,
+          compensated: true,
+        },
+      }
+    } catch (error) {
+      console.warn(
+        'Failed to fetch compensation results, using original response:',
+        error
+      )
+      // Return original result with shortfall metadata if follow-up fails
+      return {
+        ...result,
+        _metadata: {
+          originalShortfall: shortfall,
+          compensated: false,
+        },
+      }
+    }
+  }
+
+  // Return normal result (no shortfall)
+  return {
+    ...result,
+    _metadata: {
+      originalShortfall: 0,
+      compensated: false,
+    },
+  }
 }
 
 export interface UseHolidaysInfiniteQueryOptions {
@@ -229,10 +318,18 @@ export function useHolidaysInfiniteQuery(
         (total, page) => total + (page.offers.result?.length || 0),
         0
       )
-      const totalAvailable = lastPage.offers.count || 0
+      const originalTotal = lastPage.offers.count || 0
 
-      // Stop if we've fetched all available items
-      if (totalFetched >= totalAvailable) {
+      // Calculate lost results to get adjusted total
+      const lostFromSequence = allPages.reduce((totalLost, page) => {
+        const pageShortfall = page._metadata?.originalShortfall || 0
+        return totalLost + pageShortfall
+      }, 0)
+
+      const adjustedTotal = Math.max(0, originalTotal - lostFromSequence)
+
+      // Stop if we've fetched enough items based on adjusted total
+      if (totalFetched >= adjustedTotal) {
         return undefined
       }
 
@@ -281,25 +378,56 @@ export function useHolidaysInfiniteQuery(
     }
   }, [query.isSuccess, query.data, queryClient, queryKey])
 
-  // Flatten data for easier consumption
-  const holidays = useMemo(() => {
+  // Flatten data for easier consumption and cap at adjusted total
+  const allHolidays = useMemo(() => {
     return query.data?.pages.flatMap((page) => page.offers.result || []) || []
   }, [query.data])
 
   const totalCount = query.data?.pages[0]?.offers.count || 0
+
+  // Calculate lost results using metadata from each page (always count shortfalls)
+  const lostResults = useMemo(() => {
+    if (!query.data?.pages) return 0
+
+    return query.data.pages.reduce((totalLost, page) => {
+      // Always count shortfalls as "lost" regardless of compensation
+      // Compensation fills the page but doesn't restore the missing sequence position
+      const pageShortfall = page._metadata?.originalShortfall || 0
+      return totalLost + pageShortfall
+    }, 0)
+  }, [query.data])
+
+  // Adjust total count based on lost results to reflect actual available results
+  const adjustedTotalCount = Math.max(0, totalCount - lostResults)
+
+  // Cap holidays array at adjusted total count
+  const holidays = useMemo(() => {
+    return allHolidays.slice(0, adjustedTotalCount)
+  }, [allHolidays, adjustedTotalCount])
+
   const loadedCount = holidays.length
 
-  // Check if more items can be loaded
-  const canLoadMore = loadedCount < totalCount && totalCount > 0
+  // Log when we detect API discrepancies for debugging
+  if (lostResults > 0 && totalCount > 0) {
+    console.info('API Discrepancy - Total Adjusted:', {
+      original: totalCount,
+      adjusted: adjustedTotalCount,
+      lost: lostResults,
+    })
+  }
 
-  // Check if all items are loaded for carousel loop
-  const allItemsLoaded = loadedCount >= totalCount && totalCount > 0
+  // Use adjusted total for load more and completion logic
+  const canLoadMore = loadedCount < adjustedTotalCount && adjustedTotalCount > 0
+  const allItemsLoaded =
+    loadedCount >= adjustedTotalCount && adjustedTotalCount > 0
 
   return {
     ...query,
     holidays,
-    totalCount,
+    totalCount: adjustedTotalCount, // Return adjusted count instead of original
+    originalTotalCount: totalCount, // Keep original for debugging if needed
     loadedCount,
+    lostResults, // For debugging purposes
     canLoadMore,
     allItemsLoaded,
   }

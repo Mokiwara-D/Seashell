@@ -1,5 +1,5 @@
 export interface Holiday {
-  id: number
+  id: string // Changed to string to match API offer.id for uniqueness
   name: string
   image: string
   stars: number

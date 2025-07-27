@@ -39,7 +39,7 @@ function Holidays() {
     isFetching,
     isFetchingNextPage,
     fetchNextPage,
-    totalCount,
+    totalCount, // This is now the adjusted total count
     canLoadMore,
     allItemsLoaded,
     error,
@@ -72,9 +72,12 @@ function Holidays() {
 
   // Memoize holiday items
   const holidayItems = useMemo(() => {
-    const items = holidays.map((holiday) => (
+    // Create a unique key prefix based on current query to prevent duplicates during filter changes
+    const queryPrefix = `${destination.id}-${activeFilters.sort().join(',')}`
+
+    const items = holidays.map((holiday, index) => (
       <CarouselItem
-        key={holiday.id}
+        key={`${queryPrefix}-${holiday.id}-${index}`}
         className="basis-full md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
       >
         <HolidayCard holiday={holiday} />
@@ -85,7 +88,7 @@ function Holidays() {
     if (isFetchingNextPage) {
       const loadingItems = Array.from({ length: 8 }, (_, index) => (
         <CarouselItem
-          key={`loading-${index}`}
+          key={`${queryPrefix}-loading-${index}`}
           className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
         >
           <HolidayCardSkeleton />
@@ -95,7 +98,7 @@ function Holidays() {
     }
 
     return items
-  }, [holidays, isFetchingNextPage])
+  }, [holidays, isFetchingNextPage, destination.id, activeFilters])
 
   // Determine carousel content
   const renderCarouselContent = () => {
