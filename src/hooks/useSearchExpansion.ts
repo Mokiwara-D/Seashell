@@ -1,9 +1,10 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useCallback, useLayoutEffect } from 'react'
 
 const STORAGE_KEY = 'searchBarExpanded'
 
-function useSearchExpansion() {
+const useSearchExpansion = () => {
   const [isExpanded, setIsExpanded] = useState(() => {
+    if (typeof window === 'undefined') return true
     try {
       const saved = localStorage.getItem(STORAGE_KEY)
       return saved !== null ? JSON.parse(saved) : true
@@ -12,7 +13,7 @@ function useSearchExpansion() {
     }
   })
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(isExpanded))
     } catch {
@@ -20,7 +21,6 @@ function useSearchExpansion() {
     }
   }, [isExpanded])
 
-  // Memoize the setter to prevent unnecessary re-renders in consuming components
   const memoizedSetIsExpanded = useCallback(
     (value: boolean | ((prev: boolean) => boolean)) => {
       setIsExpanded(value)

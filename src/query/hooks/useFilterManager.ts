@@ -63,16 +63,13 @@ export function useFilterManager(defaultFilters: string[] = []) {
 
   // Get variables for active filters
   const filterVariables = useMemo(() => {
-    const variables: Record<string, unknown> = {}
-
-    activeFilters.forEach((filter) => {
-      const filterVars = FILTER_MAPPINGS[filter]
-      if (filterVars) {
-        Object.assign(variables, filterVars)
-      }
-    })
-
-    return variables
+    return activeFilters.reduce(
+      (acc, filter) => {
+        const filterVars = FILTER_MAPPINGS[filter]
+        return filterVars ? { ...acc, ...filterVars } : acc
+      },
+      {} as Record<string, unknown>
+    )
   }, [activeFilters])
 
   // Base variables for holidays query with index signature

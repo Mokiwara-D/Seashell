@@ -167,7 +167,7 @@ function Holidays() {
         opts={{
           align: 'start' as const,
           dragFree: true,
-          loop: !isPlaceholderData && allItemsLoaded && holidays.length > 4,
+          loop: !isPlaceholderData && allItemsLoaded,
           watchSlides: true, // Enable automatic slide detection for pagination
           watchResize: true, // Keep resize watching for responsive behavior
         }}

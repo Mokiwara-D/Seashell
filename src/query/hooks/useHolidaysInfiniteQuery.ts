@@ -325,11 +325,10 @@ export function useHolidaysInfiniteQuery(
   const queryKey = useMemo(
     () => [
       'holidays',
-      {
-        destinationId,
-        filters: activeFilters.sort().join(','), // Simpler string join
-        variables: filterVariables,
-      },
+      destinationId,
+      activeFilters.sort().join(','),
+      // Hash the variables for stability
+      JSON.stringify(filterVariables),
     ],
     [destinationId, activeFilters, filterVariables]
   )
