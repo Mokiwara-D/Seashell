@@ -40,6 +40,7 @@ function Holidays() {
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
+    totalCount,
     error,
     refetch,
   } = useHolidayData(
@@ -113,7 +114,7 @@ function Holidays() {
         opts={{
           align: 'start',
           dragFree: true,
-          loop: !hasNextPage,
+          loop: false,
         }}
         isFullHeight={true}
       >
@@ -139,13 +140,13 @@ function Holidays() {
       <div className="w-full">
         <div className="mb-4 flex items-end justify-between">
           {/* Title and Filters */}
-          <div>
-            <h2 className="text-foreground mb-4 text-center text-2xl font-bold sm:text-left md:mb-6 md:text-3xl">
+          <div className="w-full md:w-auto">
+            <h2 className="text-foreground mb-4 text-center text-2xl font-bold md:mb-6 md:text-left md:text-3xl">
               Holidays to {destination.name}
             </h2>
 
             {/* Filter Buttons */}
-            <div className="flex flex-wrap justify-center gap-2 gap-x-2 md:justify-start md:gap-x-4">
+            <div className="flex w-full flex-wrap justify-center gap-2 gap-x-2 md:justify-start md:gap-x-4">
               {filterOptions.map((filter) => (
                 <Button
                   key={filter}
@@ -209,7 +210,7 @@ function Holidays() {
       {/* Footer */}
       <div className="flex w-full flex-col items-center justify-between gap-2 md:flex-row md:items-start">
         <div className="text-muted-foreground text-center text-sm md:text-left">
-          Viewing
+          Viewing {holidays.length} of {totalCount}
           <span className="font-bold"> Discounted</span>
           {activeFilters.length > 0 && (
             <span className="font-bold">
