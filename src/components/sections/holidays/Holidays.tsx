@@ -57,7 +57,7 @@ function Holidays() {
   // Memoize skeleton items
   const skeletonItems = useMemo(
     () =>
-      Array.from({ length: 4 }, (_, index) => (
+      Array.from({ length: 8 }, (_, index) => (
         <CarouselItem
           key={`skeleton-${index}`}
           className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
@@ -81,7 +81,7 @@ function Holidays() {
 
     // Add loading items if fetching next page
     if (isFetchingNextPage) {
-      const loadingItems = Array.from({ length: 4 }, (_, index) => (
+      const loadingItems = Array.from({ length: 8 }, (_, index) => (
         <CarouselItem
           key={`loading-${index}`}
           className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"

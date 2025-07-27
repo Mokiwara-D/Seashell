@@ -66,7 +66,7 @@ interface HolidayQueryVariables extends Record<string, unknown> {
   max_price?: number
 }
 
-const ITEMS_PER_PAGE = 4
+const ITEMS_PER_PAGE = 8
 
 // Build holidays query with variables
 const buildHolidaysQuery = (

@@ -2,7 +2,6 @@ import { placeholder } from '@/lib/imagePreloader'
 import { useHolidaysInfiniteQuery } from '@/query/hooks/useHolidaysInfiniteQuery'
 import type { HolidayOffer } from '@/query/hooks/useHolidaysInfiniteQuery'
 import type { Holiday } from './types'
-import { useEffect, useRef } from 'react'
 
 // Transform API offer data to Holiday format
 export function transformOfferToHoliday(
@@ -64,32 +63,6 @@ export function useHolidayData(
     error,
     refetch,
   } = useHolidaysInfiniteQuery(destinationId, filterVariables, activeFilters)
-
-  // Track if we've done the automatic second page load
-  const hasAutoLoaded = useRef(false)
-
-  // Create a stable key for active filters to detect filter changes
-  const activeFiltersKey = JSON.stringify(activeFilters.sort())
-
-  // Reset auto-load flag when filters change
-  useEffect(() => {
-    hasAutoLoaded.current = false
-  }, [activeFiltersKey])
-
-  // Automatic load of second page after initial load
-  useEffect(() => {
-    if (
-      !isLoading && // Initial load is complete
-      !isFetching && // Not currently fetching
-      rawHolidays.length > 0 && // We have some data
-      hasNextPage && // More pages available
-      !hasAutoLoaded.current && // Haven't auto-loaded yet
-      !error // No error state
-    ) {
-      hasAutoLoaded.current = true
-      fetchNextPage()
-    }
-  }, [isLoading, isFetching, rawHolidays.length, hasNextPage, fetchNextPage, error])
 
   // Transform all offers into Holiday format
   const holidays: Holiday[] = rawHolidays.map((offer) =>
