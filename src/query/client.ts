@@ -2,7 +2,15 @@ import { QueryClient } from '@tanstack/react-query'
 import type { GraphQLQuery } from './types'
 
 export const createQueryClient = () => {
-  return new QueryClient()
+  return new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 5 * 60 * 1000, // 5 minutes
+        retry: 3,
+        retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+      },
+    },
+  })
 }
 
 export class GraphQLClient {
@@ -25,7 +33,7 @@ export class GraphQLClient {
     })
 
     if (!response.ok) {
-      throw new Error(`HTTP Error: ${response.status} ${response.statusText}`)
+      throw new Error('Network response was not ok')
     }
 
     const result = await response.json()

@@ -34,7 +34,7 @@ function Holidays() {
     clearFilters,
   } = useFilterManager()
 
-  // Holiday data with infinite query - destination name is managed automatically
+  // Holiday data with infinite query
   const {
     holidays,
     displayDestinationName,
@@ -236,11 +236,11 @@ function Holidays() {
 
       {/* Carousel */}
       <div className="relative mb-4 h-108 w-full">
-        {/* Loading - show during any loading state, but respect smooth transitions */}
+        {/* Loading */}
         {(isInitialLoading ||
           isLoadingNewFilter ||
           isFetchingNextPage ||
-          (isLoading && holidays.length === 0)) && <Loading />}
+          isLoading) && <Loading />}
 
         {renderCarouselContent()}
       </div>
